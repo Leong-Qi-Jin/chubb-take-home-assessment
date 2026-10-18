@@ -94,3 +94,10 @@ Format per entry: prompt, what the AI did, decision (accepted / challenged / ove
 - **AI:** Consolidated the decisions into the backend architecture and aligned existing identity wording.
 - **Decision:** Use seeded development identities and built-in .NET capabilities; defer production integrations.
 - **Reasoning:** Keep the MVP safe and explainable without adding infrastructure outside the assessment scope.
+
+### 2026-10-18: repository guidance
+
+- **Prompt:** Add initial agent and contributor guidance, using sibling projects as references, then refine its scope and wording.
+- **AI:** Expanded `AGENTS.md` with repository context and operational safeguards. Added `CONTRIBUTING.md` with explicit precedence and focused conventions for file organization, code, UI, copy, and tests.
+- **Decision:** Kept agent workflow in `AGENTS.md`, preliminary implementation decisions in the design documents, and durable, non-obvious conventions in `CONTRIBUTING.md`. Removed duplicated, basic, and implementation-heavy rules and clarified ambiguous wording.
+- **Reasoning:** Provide useful guardrails without repeating guidance or treating early design decisions as absolute.

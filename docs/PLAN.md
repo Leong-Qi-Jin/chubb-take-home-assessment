@@ -30,7 +30,7 @@ One SPA, one backend, and one database. No Kafka or service split.
 
 ### Set up
 
-- [ ] Establish initial repository guidance in `AGENTS.md` and `CONTRIBUTING.md`.
+- [x] Establish initial repository guidance in `AGENTS.md` and `CONTRIBUTING.md`.
 - [ ] Create the monorepo.
 - [ ] Scaffold applications using official CLIs.
 - [ ] Configure coding conventions, shared commands, and quality checks.

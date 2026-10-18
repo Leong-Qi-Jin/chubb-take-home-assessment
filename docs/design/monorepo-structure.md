@@ -28,11 +28,13 @@ The repository contains one Angular SPA and one ASP.NET Core API. They remain in
 │   ├── design/
 │   └── reference/
 ├── Claims.slnx
+├── global.json
+├── .editorconfig
 ├── Directory.Build.props
 └── docker-compose.yml
 ```
 
-Application-owned folders will be defined during the frontend and backend architecture steps rather than prematurely here.
+Application-owned folders are detailed in the [frontend](frontend-architecture.md) and [backend](backend-architecture.md) architecture documents.
 
 ## Responsibilities
 
@@ -49,5 +51,5 @@ Docker Compose provides one-command startup for the SPA, API, and SQL Server.
 
 ## Boundaries
 
-- The SPA communicates with the API only through HTTP and its generated OpenAPI client.
+- The SPA communicates with the API only through HTTP, using generated OpenAPI types and handwritten adapters.
 - Shared projects are introduced only when there is a demonstrated second consumer.

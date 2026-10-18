@@ -66,3 +66,17 @@ Format per entry: prompt, what the AI did, decision (accepted / challenged / ove
 - **AI:** Checked current Angular compatibility and licensing, proposed the architecture, revised it through discussion, and completed an independent final review.
 - **Decision:** Accepted Angular Material over PrimeNG, Signal Forms, Material's server-backed table controls, `httpResource` reads, `HttpClient` commands, Tailwind layout, Lucide SVG icons, Vitest, Playwright, route-oriented feature slices, and minimal RxJS, with accessibility deferred.
 - **Reasoning:** Prefer first-party Angular defaults for this small application, adding focused libraries only where they improve developer experience without duplicating responsibilities.
+
+### 2026-10-18: backend and database architecture
+
+- **Prompt:** Decide how to structure the backend and database, including seed data, Docker, workflow state, and money.
+- **AI:** Compared the current .NET options and suggested a single API organised around the claims operations, then shortened and independently reviewed the design.
+- **Decision:** Use .NET 10, Minimal APIs, vertical slices, EF Core, SQL Server, decimal amounts, and repeatable local seed data. Prefer built-in validation and tooling instead of adding libraries before they are needed.
+- **Reasoning:** This is the newest stable .NET stack and fits the assessment without adding extra layers or moving parts.
+
+### 2026-10-18: architecture detail level
+
+- **Prompt:** Keep the frontend and backend architecture documents from locking in implementation details too early.
+- **AI:** Removed repeated request behaviour, setup mechanics, and speculative tooling, then completed a final independent review across the architecture documents.
+- **Decision:** Keep the stack, boundaries, feature structure, and core conventions; decide lower-level mechanics during setup and implementation.
+- **Reasoning:** Architecture should guide the build without prescribing details that have not yet been tested.

@@ -2,7 +2,7 @@
 
 ## Principles
 
-- The backend owns the contract via OpenAPI; the Angular client is generated from it.
+- The backend owns the contract via OpenAPI; TypeScript contract types are generated from it.
 - JSON under `/api/v1`, with one endpoint per workflow action.
 - Claims are addressed by `Reference`, not `Id`.
 - Enums are strings, timestamps are UTC ISO 8601, and money is `{ "amount": "1250.00", "currency": "SGD" }`.

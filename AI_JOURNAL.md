@@ -17,3 +17,10 @@ Format per entry: prompt, what the AI did, decision (accepted / challenged / ove
 - **AI:** Suggested internal modules and a broader delivery plan.
 - **Decision:** Rejected both as premature; kept only the agreed SPA, API, and database architecture.
 - **Reasoning:** Avoid premature decisions.
+
+### 2026-10-18: implementation planning
+
+- **Prompt:** Order the remaining design, setup, implementation, testing, and delivery work without deciding the architecture yet.
+- **AI:** Proposed steps that were too broad and added a redundant explanation.
+- **Decision:** Accepted after reducing it to concise decision, setup, build, and delivery checkpoints.
+- **Reasoning:** Technical details belong in later architecture discussions.

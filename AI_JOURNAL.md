@@ -52,3 +52,10 @@ Format per entry: prompt, what the AI did, decision (accepted / challenged / ove
 - **AI:** Drafted the screens and user flows, then revised them after a self-review and two subagent reviews.
 - **Decision:** Challenged the first draft as under-checked and later as too wordy; accepted after closing gaps against the API contract and domain model. Overrode the AI's advice to defer pagination controls in the UI, updating the plan and API contract to match, and chose disabled over hidden actions.
 - **Reasoning:** Confirm that the API supports every screen before building; if the backend paginates, the UI should too.
+
+### 2026-10-18: monorepo structure
+
+- **Prompt:** Define and validate a monorepo structure for a feature-sliced Angular and .NET application.
+- **AI:** Proposed a layout and checked it against official documentation and three independent reviews.
+- **Decision:** Challenged the level of detail. Kept self-contained app folders, placed separate backend test projects under `apps/api`, and removed the unnecessary root npm workspace.
+- **Reasoning:** Keep ownership and feature navigation clear without over-explaining standard tooling.

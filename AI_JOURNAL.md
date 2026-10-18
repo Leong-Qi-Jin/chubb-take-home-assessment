@@ -34,7 +34,14 @@ Format per entry: prompt, what the AI did, decision (accepted / challenged / ove
 
 ### 2026-10-18: domain and data model
 
-- **Prompt:** Define and review the domain and data model, including its workflow and database design.
-- **AI:** Proposed an initial model and revised it through the discussion and two independent reviews.
-- **Decision:** Accepted after simplifying the model, fixing the diagram, improving the terminology, and strengthening the database and concurrency rules.
-- **Reasoning:** Keep the MVP practical, consistent, and clear enough to implement and explain.
+- **Prompt:** Define and review the domain model, claim workflow, relational schema, history, and concurrency approach.
+- **AI:** Proposed an initial model, then revised it through discussion and two independent reviews.
+- **Decision:** Accepted after shortening the document, fixing the diagram, clarifying names, removing non-MVP fields, supporting multiple cancellable information requests, and strengthening database constraints and race handling.
+- **Reasoning:** Keep the MVP practical and explainable, enforce rules in SQL Server where possible, and update claim state and history together in synchronous transactions.
+
+### 2026-10-18: API contract
+
+- **Prompt:** Define the API contract, then review and refine it.
+- **AI:** Proposed a REST contract with one endpoint per workflow action, standard error responses, and optimistic concurrency, then revised it through the discussion and four subagent reviews.
+- **Decision:** Accepted after shortening the wording, restructuring the layout, and reviewing the roles, query parameters, status codes, and error codes. Overrode the claimant identity to use seeded users with verified emails instead of user management, and updated the domain model to match, including missing indexes and constraints found in review.
+- **Reasoning:** Action endpoints map cleanly to domain rules and history events; seeded users keep the MVP simple until the identity step.

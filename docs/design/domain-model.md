@@ -39,7 +39,7 @@ stateDiagram-v2
 6. Settlement requires an estimate, settlement amount, and rationale. Rejection requires a rationale. Both terminal states are final in the MVP.
 7. Every material change appends an immutable history entry in the same transaction as the change.
 
-Identity and authorization are designed separately. A claim links to a claimant, but an email address is not treated as verified identity or used to merge claimants.
+In the MVP, claimants and staff are seeded, and a claimant is identified by email, assumed verified. User management is deferred.
 
 ## Relational model
 
@@ -77,8 +77,8 @@ erDiagram
 
 `Claimants`
 
-- `Id`, `FullName`, `Email`, nullable `Phone`, and `CreatedAt`.
-- This is a domain record, not a login account. Claim submission creates a claimant; linking or merging records requires verified identity and is deferred.
+- `Id`, unique `Email`, `FullName`, nullable `Phone`, and `CreatedAt`.
+- Seeded demo claimants for the MVP; later linked to the chosen identity provider.
 
 `StaffMembers`
 
@@ -100,7 +100,7 @@ The domain ensures that a claim has exactly one detail row matching `Claims.Type
 `InformationRequests`
 
 - `Id`, `ClaimId`, `RequestedById`, `RequestText`, `RequestedAt`, and `Status` (`InformationRequestStatus`).
-- Nullable `ResponseText` and `RespondedAt`, plus nullable `CancelledById`, `CancelledAt`, `CancellationReason`, and `Version` (`rowversion`).
+- Nullable `ResponseText` and `RespondedAt`, plus nullable `CancelledById`, `CancelledAt`, and `CancellationReason`.
 - `RequestText` and `ResponseText` are plain text in the MVP; HTML and file attachments are not supported.
 - An answered request has response fields only; a cancelled request has cancellation fields only. Only an `Open` request can be answered or cancelled.
 
@@ -113,7 +113,7 @@ The domain ensures that a claim has exactly one detail row matching `Claims.Type
 `ClaimHistoryEntries`
 
 - `Id`, `ClaimId`, `EventType` (`ClaimHistoryEventType`), `Summary`, `ActorType` (`ClaimHistoryActorType`), nullable `ActorClaimantId`, nullable `ActorStaffMemberId`, and `OccurredAt`.
-- Nullable `InformationRequestId` links request-related events to the affected request.
+- Nullable `InformationRequestId` links request-related events to the affected request. A composite foreign key on `(ClaimId, InformationRequestId)` to a unique `InformationRequests(ClaimId, Id)` ensures the request belongs to the same claim.
 - Nullable `Details` (`json`) stores event-specific values, such as the previous and new liability.
 - `ActorClaimantId` is required for claimant events; `ActorStaffMemberId` is required for claims-officer events; both are null for system events.
 - The application does not rebuild a claim from its history entries. Current status, assigned officer, and estimated liability are read directly from `Claims`; history entries provide the user-visible timeline.
@@ -121,20 +121,35 @@ The domain ensures that a claim has exactly one detail row matching `Claims.Type
 ### Storage decisions
 
 - Target SQL Server 2025 and use its native `json` type for `Details`. Set the database compatibility level to 170 and configure the EF Core 10 SQL Server provider to match.
-- Persist enums as strings. Use database check constraints for their allowed values, non-negative money, valid information-request field combinations, and the actor ID required by each history actor type.
+- Persist enums as strings. Use database check constraints for:
+  - allowed enum values and non-negative money;
+  - an assigned officer if and only if the status is not `Submitted`, and an estimate on `Settled` claims;
+  - three-letter uppercase currency codes and an incident no later than submission;
+  - valid information-request field combinations, and a settlement amount if and only if the outcome is `Settled`; and
+  - the actor ID required by each history actor type, and the request ID required by request events.
 - Keep searchable and relational data in normal columns. `Details` contains only structured event data that varies by event type and excludes sensitive claim text.
 - Store timestamps as UTC `datetimeoffset` and money as `decimal(19,4)`.
 - Enforce rules in the database wherever SQL Server can express them with primary and foreign keys, unique constraints, required columns, and check constraints. Mirror them in the domain for earlier, clearer errors. Cross-table rules—such as matching claim details, decision outcome and claim status—plus permissions remain transactional application rules.
 - Add only indexes that support MVP queries:
-  - unique `Claims(Reference)` for claimant tracking;
+  - unique `Claims(Reference)` for claim lookup;
+  - `Claims(ClaimantId, SubmittedAt)` for a claimant's claims;
   - `Claims(Status, SubmittedAt)` for the incoming queue and status counts;
   - `Claims(AssignedOfficerId, Status, UpdatedAt)` for an officer's workload;
   - `ClaimHistoryEntries(ClaimId, OccurredAt)` for the claim timeline; and
   - `InformationRequests(ClaimId, Status)` for open requests.
-- Use `Version` for optimistic concurrency. Updates include the version originally read; if another request changed the claim first, no row matches and EF Core raises a concurrency exception. Roll back the transaction and return `409 Conflict` with the latest state rather than silently overwriting or retrying the action. Apply the same rule to information requests so a response and cancellation cannot both win.
+- Use `Version` for optimistic concurrency. Updates include the version originally read; if another request changed the claim first, no row matches and EF Core raises a concurrency exception. Roll back the transaction and return `409 Conflict` with the latest claim rather than silently overwriting or retrying the action. Every action updates `Claims.UpdatedAt`, so the claim's `Version` also guards its information requests.
+- Foreign keys use `NO ACTION` on delete, so history is never removed by a cascade; staff are deactivated, not deleted.
 - Query `Claims` directly for queue counts and outstanding liability until scale shows that a separate read model is necessary.
 - Keep claim operations synchronous: update the current state and append its history entry in one database transaction. Kafka and event-driven processing are deferred until an asynchronous integration, such as notifications, requires them.
 
 ## Deferred
 
-Attachments, policy validation, payments, notifications, fraud, reserve line items, reassignment, reopening decisions, market-specific rules, and multi-party claims are outside the MVP.
+- User management and sign-up.
+- Attachments.
+- Policy validation.
+- Payments and notifications.
+- Fraud checks.
+- Reserve line items.
+- Reassigning claims and reopening decisions.
+- Market-specific rules.
+- Multi-party claims.

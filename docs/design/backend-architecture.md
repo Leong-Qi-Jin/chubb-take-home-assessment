@@ -15,7 +15,7 @@ Prefer the .NET platform defaults and add dependencies only when they remove mea
 | Contract | Built-in OpenAPI with request and response metadata |
 | Validation | Built-in request validation plus domain rules |
 | Errors | RFC 9457 Problem Details with stable application error codes |
-| Logging | Built-in `ILogger`; choose production sinks later |
+| Platform concerns | Development caller resolution; built-in .NET logging and configuration |
 
 .NET 10 is the latest stable LTS release. Scaffold the solution, API, and tests with the official `dotnet new` templates, using the Minimal API default.
 
@@ -87,6 +87,14 @@ Seed data is for local development and demos; integration tests own their scenar
 ## API and platform concerns
 
 Use built-in OpenAPI, Minimal API validation, Problem Details, and `ILogger`. Keep workflow rules in the domain, and consider FluentValidation only if request rules become complex or reused. The frontend generates types from the OpenAPI contract and keeps handwritten HTTP adapters.
+
+## Platform concerns
+
+- **Identity and authorization:** Development headers select seeded users; the API enforces roles, ownership, and assignment.
+- **Logging and observability:** Use structured `ILogger` console logs with trace IDs; exclude personal data.
+- **Configuration and secrets:** Use built-in .NET configuration and options, with secrets supplied through user secrets or environment variables, never source control or the SPA.
+
+Production authentication, centralised telemetry, and managed secrets are deferred.
 
 ## Testing
 

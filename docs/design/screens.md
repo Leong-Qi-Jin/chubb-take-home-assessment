@@ -25,7 +25,7 @@ List screens are paginated and keep the page and page size in the URL.
 
 ### User switcher
 
-For the MVP, a switcher in the header picks a seeded claimant or active officer and stands in for sign-in until the identity step. Switching users opens that user's home screen.
+For the MVP, a switcher in the header picks a seeded claimant or active officer in place of production sign-in. Switching users opens that user's home screen.
 
 The seeded users and the allowed currencies come from frontend configuration, because the API does not list them.
 

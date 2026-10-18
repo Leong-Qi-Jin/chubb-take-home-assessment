@@ -87,3 +87,10 @@ Format per entry: prompt, what the AI did, decision (accepted / challenged / ove
 - **AI:** Added backend, frontend, and end-to-end coverage using mainstream tools.
 - **Decision:** Challenged implementation detail; kept the strategy in the relevant architecture documents and retained the existing filenames.
 - **Reasoning:** Document test intent without adding another file or prescribing the test harness.
+
+### 2026-10-18: MVP platform concerns
+
+- **Prompt:** Define identity, observability, configuration, and secrets handling without over-documenting them.
+- **AI:** Consolidated the decisions into the backend architecture and aligned existing identity wording.
+- **Decision:** Use seeded development identities and built-in .NET capabilities; defer production integrations.
+- **Reasoning:** Keep the MVP safe and explainable without adding infrastructure outside the assessment scope.

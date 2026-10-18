@@ -10,7 +10,7 @@
 
 ## Audiences
 
-MVP headers, replaced in the identity step:
+Development-only MVP identity:
 
 - `Claimant`: a seeded claimant, sent as `X-Claimant-Email` and assumed verified. Sees only their own claims.
 - `Officer`: an active seeded staff member, sent as `X-Staff-Id`.

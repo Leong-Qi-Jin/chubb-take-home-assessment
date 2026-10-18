@@ -24,12 +24,13 @@ One SPA, one backend, and one database. No Kafka or service split.
 - [x] Define the [frontend architecture](design/frontend-architecture.md).
 - [x] Define the [backend and database architecture](design/backend-architecture.md).
 - [x] Define the testing strategy for the [backend](design/backend-architecture.md#testing), [frontend, and end-to-end journeys](design/frontend-architecture.md#testing).
-- [ ] Define identity and authorization.
-- [ ] Define logging and observability.
-- [ ] Define configuration and secrets handling.
+- [x] Define [identity and authorization](design/backend-architecture.md#platform-concerns).
+- [x] Define [logging and observability](design/backend-architecture.md#platform-concerns).
+- [x] Define [configuration and secrets handling](design/backend-architecture.md#platform-concerns).
 
 ### Set up
 
+- [ ] Establish initial repository guidance in `AGENTS.md` and `CONTRIBUTING.md`.
 - [ ] Create the monorepo.
 - [ ] Scaffold applications using official CLIs.
 - [ ] Configure coding conventions, shared commands, and quality checks.
@@ -37,7 +38,7 @@ One SPA, one backend, and one database. No Kafka or service split.
 - [ ] Set up local environment configuration.
 - [ ] Set up Docker for one-command startup.
 - [ ] Set up continuous integration.
-- [ ] Complete the repository guidance and documentation.
+- [ ] Complete the README and supporting documentation.
 
 ### Build
 

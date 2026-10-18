@@ -59,3 +59,10 @@ Format per entry: prompt, what the AI did, decision (accepted / challenged / ove
 - **AI:** Proposed a layout and checked it against official documentation and three independent reviews.
 - **Decision:** Challenged the level of detail. Kept self-contained app folders, placed separate backend test projects under `apps/api`, and removed the unnecessary root npm workspace.
 - **Reasoning:** Keep ownership and feature navigation clear without over-explaining standard tooling.
+
+### 2026-10-18: frontend architecture
+
+- **Prompt:** Define a concise, modern Angular frontend architecture covering libraries, feature structure, data, forms, tables, styling, and testing.
+- **AI:** Checked current Angular compatibility and licensing, proposed the architecture, revised it through discussion, and completed an independent final review.
+- **Decision:** Accepted Angular Material over PrimeNG, Signal Forms, Material's server-backed table controls, `httpResource` reads, `HttpClient` commands, Tailwind layout, Lucide SVG icons, Vitest, Playwright, route-oriented feature slices, and minimal RxJS, with accessibility deferred.
+- **Reasoning:** Prefer first-party Angular defaults for this small application, adding focused libraries only where they improve developer experience without duplicating responsibilities.

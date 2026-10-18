@@ -96,6 +96,7 @@ flowchart LR
 
 ## Deferred
 
+- Accessibility review and hardening.
 - Sign-in and sign-up screens.
 - File uploads on the submit and reply forms.
 - Live updates; the user refreshes the screen.

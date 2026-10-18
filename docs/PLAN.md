@@ -21,7 +21,7 @@ One SPA, one backend, and one database. No Kafka or service split.
 - [x] Define the [API contract](design/api-contract.md).
 - [x] Define the [screens and user flows](design/screens.md).
 - [x] Define the [monorepo structure](design/monorepo-structure.md).
-- [ ] Define the frontend architecture.
+- [x] Define the [frontend architecture](design/frontend-architecture.md).
 - [ ] Define the backend architecture.
 - [ ] Define the testing strategy.
 - [ ] Define identity and authorization.

@@ -38,7 +38,7 @@ Application-owned folders will be defined during the frontend and backend archit
 
 - `apps/api` owns the API and its tests. Production and test folders use matching feature slices so a use case is easy to trace.
 - Unit and integration tests are separate projects so database and web-host dependencies do not leak into fast unit tests.
-- `apps/web` is a self-contained Angular workspace and owns its generated API client. Frontend tests stay beside their source files.
+- `apps/web` is a self-contained Angular workspace and owns its generated API types and HTTP adapters. Frontend tests stay beside their source files.
 - `docs` contains the brief, design decisions, and supporting reference material.
 
 ## Tooling

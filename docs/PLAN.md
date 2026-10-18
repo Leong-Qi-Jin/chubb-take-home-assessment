@@ -17,7 +17,7 @@ One SPA, one backend, and one database. No Kafka or service split.
 
 - [x] Agree the high-level architecture.
 - [x] Define the MVP scope and priorities.
-- [ ] Define the domain and data model.
+- [x] Define the [domain and data model](design/domain-model.md).
 - [ ] Define the API contract.
 - [ ] Define the backend architecture.
 - [ ] Define the frontend architecture.

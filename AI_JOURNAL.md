@@ -1,6 +1,6 @@
 # AI Working Journal
 
-Format per entry: prompt, what the AI did, decision (accepted / challenged / overrode), reasoning. Keep it concise. See [BRIEF.md](BRIEF.md) deliverable 3.
+Format per entry: prompt, what the AI did, decision (accepted / challenged / overrode), reasoning. Keep it concise. See [docs/BRIEF.md](docs/BRIEF.md) deliverable 3.
 
 ## Entries
 
@@ -31,3 +31,10 @@ Format per entry: prompt, what the AI did, decision (accepted / challenged / ove
 - **AI:** Proposed must-have, should-have, and deferred capabilities.
 - **Decision:** Accepted after expanding the core workflow and keeping production concerns deferred.
 - **Reasoning:** Demonstrate the full claims journey while prioritising backend quality.
+
+### 2026-10-18: domain and data model
+
+- **Prompt:** Define and review the domain and data model, including its workflow and database design.
+- **AI:** Proposed an initial model and revised it through the discussion and two independent reviews.
+- **Decision:** Accepted after simplifying the model, fixing the diagram, improving the terminology, and strengthening the database and concurrency rules.
+- **Reasoning:** Keep the MVP practical, consistent, and clear enough to implement and explain.

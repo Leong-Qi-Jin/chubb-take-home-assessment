@@ -22,7 +22,7 @@ stateDiagram-v2
     [*] --> Submitted: claimant submits
     Submitted --> UnderReview: officer takes ownership
     UnderReview --> AwaitingInformation: officer requests information
-    AwaitingInformation --> UnderReview: no open requests remain
+    AwaitingInformation --> UnderReview: request answered or cancelled
     UnderReview --> Settled: officer settles
     UnderReview --> Rejected: officer rejects
     Settled --> [*]
@@ -34,7 +34,7 @@ stateDiagram-v2
 1. A claim has exactly one type and one matching motor or property detail record.
 2. Only an unassigned `Submitted` claim can be taken. Assignment and the move to `UnderReview` happen atomically.
 3. Only the assigned officer can update liability, request information, or decide the claim. Review and liability updates remain available while awaiting information.
-4. A claim may have several open information requests. The assigned officer may cancel an open request. The claim remains `AwaitingInformation` until every request is answered or cancelled, then returns to `UnderReview`.
+4. A claim has at most one open information request, raised from `UnderReview`. The assigned officer may cancel it. Once it is answered or cancelled, the claim returns to `UnderReview`.
 5. Money cannot be negative and uses the claim's currency. Outstanding liability is the sum of estimates for non-terminal claims; a missing estimate contributes zero.
 6. Settlement requires an estimate, settlement amount, and rationale. Rejection requires a rationale. Both terminal states are final in the MVP.
 7. Every material change appends an immutable history entry in the same transaction as the change.
@@ -136,7 +136,7 @@ The domain ensures that a claim has exactly one detail row matching `Claims.Type
   - `Claims(Status, SubmittedAt)` for the incoming queue and status counts;
   - `Claims(AssignedOfficerId, Status, UpdatedAt)` for an officer's workload;
   - `ClaimHistoryEntries(ClaimId, OccurredAt)` for the claim timeline; and
-  - `InformationRequests(ClaimId, Status)` for open requests.
+  - unique `InformationRequests(ClaimId)` filtered to `Status = 'Open'`, enforcing one open request per claim.
 - Use `Version` for optimistic concurrency. Updates include the version originally read; if another request changed the claim first, no row matches and EF Core raises a concurrency exception. Roll back the transaction and return `409 Conflict` with the latest claim rather than silently overwriting or retrying the action. Every action updates `Claims.UpdatedAt`, so the claim's `Version` also guards its information requests.
 - Foreign keys use `NO ACTION` on delete, so history is never removed by a cascade; staff are deactivated, not deleted.
 - Query `Claims` directly for queue counts and outstanding liability until scale shows that a separate read model is necessary.
@@ -150,6 +150,7 @@ The domain ensures that a claim has exactly one detail row matching `Claims.Type
 - Payments and notifications.
 - Fraud checks.
 - Reserve line items.
-- Reassigning claims and reopening decisions.
+- Several open information requests per claim.
+- Reassigning or taking over claims, and reopening decisions.
 - Market-specific rules.
 - Multi-party claims.

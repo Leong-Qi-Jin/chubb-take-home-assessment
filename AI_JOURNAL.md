@@ -43,5 +43,5 @@ Format per entry: prompt, what the AI did, decision (accepted / challenged / ove
 
 - **Prompt:** Define the API contract, then review and refine it.
 - **AI:** Proposed a REST contract with one endpoint per workflow action, standard error responses, and optimistic concurrency, then revised it through the discussion and four subagent reviews.
-- **Decision:** Accepted after shortening the wording, restructuring the layout, and reviewing the roles, query parameters, status codes, and error codes. Overrode the claimant identity to use seeded users with verified emails instead of user management, and updated the domain model to match, including missing indexes and constraints found in review.
+- **Decision:** Accepted after shortening the wording, restructuring the layout, and reviewing the roles, query parameters, status codes, and error codes. Limited claims to one open information request and kept reassignment deferred, to keep the workflow simple. Overrode the claimant identity to use seeded users with verified emails instead of user management, and updated the domain model to match, including missing indexes and constraints found in review.
 - **Reasoning:** Action endpoints map cleanly to domain rules and history events; seeded users keep the MVP simple until the identity step.

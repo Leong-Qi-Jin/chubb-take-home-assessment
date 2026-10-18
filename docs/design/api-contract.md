@@ -28,7 +28,7 @@ Paths are relative to `/api/v1`. Body lists the request fields. Request amounts 
 | `GET` | `/claims` | Claimant | | The caller's own claims. |
 | `GET` | `/claims/{reference}` | Claimant, Officer | | Claim details, status, decision, and information requests. |
 | `GET` | `/claims/{reference}/history` | Claimant, Officer | | Timeline, oldest first. |
-| `POST` | `/claims/{reference}/information-requests/{requestId}/response` | Claimant | `responseText` | Answer an open request; the claim returns to `UnderReview` when none remain open. |
+| `POST` | `/claims/{reference}/information-requests/{requestId}/response` | Claimant | `responseText` | Answer the open request; the claim returns to `UnderReview`. |
 
 ### Claims staff
 
@@ -37,8 +37,8 @@ Paths are relative to `/api/v1`. Body lists the request fields. Request amounts 
 | `GET` | `/claims` | Officer | | Work queue with filters, sorting, and pagination. |
 | `POST` | `/claims/{reference}/take` | Officer | | Take an unassigned `Submitted` claim; moves it to `UnderReview`. |
 | `PUT` | `/claims/{reference}/estimated-liability` | AssignedOfficer | `amount` | Set or change the estimate while `UnderReview` or `AwaitingInformation`. |
-| `POST` | `/claims/{reference}/information-requests` | AssignedOfficer | `requestText` | Request information while `UnderReview` or `AwaitingInformation`; the claim is then `AwaitingInformation`. |
-| `POST` | `/claims/{reference}/information-requests/{requestId}/cancel` | AssignedOfficer | `cancellationReason` | Cancel an open request; the claim returns to `UnderReview` when none remain open. |
+| `POST` | `/claims/{reference}/information-requests` | AssignedOfficer | `requestText` | Request information while `UnderReview`; the claim is then `AwaitingInformation`. |
+| `POST` | `/claims/{reference}/information-requests/{requestId}/cancel` | AssignedOfficer | `cancellationReason` | Cancel the open request; the claim returns to `UnderReview`. |
 | `POST` | `/claims/{reference}/settle` | AssignedOfficer | `settlementAmount`, `rationale` | Settle an `UnderReview` claim that has an estimate. |
 | `POST` | `/claims/{reference}/reject` | AssignedOfficer | `rationale` | Reject an `UnderReview` claim. |
 | `GET` | `/dashboard` | Officer | | Workload counts and outstanding liability. |
@@ -217,6 +217,7 @@ Errors use the standard JSON error format from [RFC 9457 (Problem Details)](http
 
 - User management and sign-up; claimants and staff are seeded.
 - Real-time updates; the client refreshes instead.
+- Several open information requests per claim.
 - Reassigning or taking over a claim.
 - Webhooks, bulk operations, and uploads.
 - Duplicate-submission protection: a retried submit after a network error may create a second claim.

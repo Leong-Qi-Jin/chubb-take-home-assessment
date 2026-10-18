@@ -16,14 +16,14 @@ One SPA, one backend, and one database. No Kafka or service split.
 ### Define
 
 - [x] Agree the high-level architecture.
-- [ ] Define the MVP scope and priorities.
-- [ ] Define identity and authorization.
+- [x] Define the MVP scope and priorities.
 - [ ] Define the domain and data model.
 - [ ] Define the API contract.
 - [ ] Define the backend architecture.
 - [ ] Define the frontend architecture.
 - [ ] Define the monorepo structure.
 - [ ] Define the testing strategy.
+- [ ] Define identity and authorization.
 - [ ] Define logging and observability.
 - [ ] Define configuration and secrets handling.
 
@@ -54,3 +54,34 @@ One SPA, one backend, and one database. No Kafka or service split.
 - [ ] Review accessibility and security.
 - [ ] Review the delivered scope and trade-offs.
 - [ ] Prepare the walkthrough.
+
+## MVP Scope
+
+### Must have
+
+- Submit a motor or property claim and receive a reference.
+- Track claim details, status, and history.
+- View the staff work queue and take ownership of a claim.
+- Record estimated liability.
+- Request and provide additional information as text.
+- Settle or reject a claim with a recorded decision.
+- Show workload counts and total outstanding liability.
+- Enforce valid workflow transitions and input validation.
+- Test the important backend rules.
+- Provide a thin Angular UI for the core journey.
+
+### Should have
+
+- Queue filtering, sorting, and pagination.
+- Workload breakdowns and basic performance indicators.
+- A polished, responsive, and accessible UI.
+- Broader component and end-to-end test coverage.
+
+### Deferred
+
+- Production authentication.
+- File uploads.
+- Notifications and payments.
+- Complex reporting and market-specific rules.
+- Kafka and external integrations.
+- Production cloud deployment.

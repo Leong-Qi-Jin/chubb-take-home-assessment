@@ -24,3 +24,10 @@ Format per entry: prompt, what the AI did, decision (accepted / challenged / ove
 - **AI:** Proposed steps that were too broad and added a redundant explanation.
 - **Decision:** Accepted after reducing it to concise decision, setup, build, and delivery checkpoints.
 - **Reasoning:** Technical details belong in later architecture discussions.
+
+### 2026-10-18: MVP scope
+
+- **Prompt:** Define a complete but achievable MVP.
+- **AI:** Proposed must-have, should-have, and deferred capabilities.
+- **Decision:** Accepted after expanding the core workflow and keeping production concerns deferred.
+- **Reasoning:** Demonstrate the full claims journey while prioritising backend quality.

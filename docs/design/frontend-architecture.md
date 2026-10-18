@@ -101,3 +101,7 @@ Import Lucide SVGs individually.
 ## Tooling
 
 Use Angular ESLint flat config with TypeScript, Vitest, import-order, and `eslint-plugin-better-tailwindcss` correctness rules. Use Prettier with `eslint-config-prettier` and `prettier-plugin-tailwindcss`.
+
+## Testing
+
+Use Angular's default Vitest setup for focused component tests. Use a small Playwright suite for critical end-to-end journeys across the SPA, API, and database. Prioritise user-visible behaviour and important failure paths over a coverage target.

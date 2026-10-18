@@ -80,3 +80,10 @@ Format per entry: prompt, what the AI did, decision (accepted / challenged / ove
 - **AI:** Removed repeated request behaviour, setup mechanics, and speculative tooling, then completed a final independent review across the architecture documents.
 - **Decision:** Keep the stack, boundaries, feature structure, and core conventions; decide lower-level mechanics during setup and implementation.
 - **Reasoning:** Architecture should guide the build without prescribing details that have not yet been tested.
+
+### 2026-10-18: testing strategy and document names
+
+- **Prompt:** Define a concise testing strategy and review the architecture document names.
+- **AI:** Added backend, frontend, and end-to-end coverage using mainstream tools.
+- **Decision:** Challenged implementation detail; kept the strategy in the relevant architecture documents and retained the existing filenames.
+- **Reasoning:** Document test intent without adding another file or prescribing the test harness.

@@ -23,7 +23,7 @@ One SPA, one backend, and one database. No Kafka or service split.
 - [x] Define the [monorepo structure](design/monorepo-structure.md).
 - [x] Define the [frontend architecture](design/frontend-architecture.md).
 - [x] Define the [backend and database architecture](design/backend-architecture.md).
-- [ ] Define the testing strategy.
+- [x] Define the testing strategy for the [backend](design/backend-architecture.md#testing), [frontend, and end-to-end journeys](design/frontend-architecture.md#testing).
 - [ ] Define identity and authorization.
 - [ ] Define logging and observability.
 - [ ] Define configuration and secrets handling.

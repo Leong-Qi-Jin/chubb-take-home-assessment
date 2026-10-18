@@ -154,3 +154,5 @@ The domain ensures that a claim has exactly one detail row matching `Claims.Type
 - Reassigning or taking over claims, and reopening decisions.
 - Market-specific rules.
 - Multi-party claims.
+- Encryption at rest and column encryption for personal data.
+- Data retention and deletion of personal data.

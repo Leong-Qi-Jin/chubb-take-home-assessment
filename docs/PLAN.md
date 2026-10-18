@@ -19,6 +19,7 @@ One SPA, one backend, and one database. No Kafka or service split.
 - [x] Define the MVP scope and priorities.
 - [x] Define the [domain and data model](design/domain-model.md).
 - [x] Define the [API contract](design/api-contract.md).
+- [x] Define the [screens and user flows](design/screens.md).
 - [ ] Define the monorepo structure.
 - [ ] Define the frontend architecture.
 - [ ] Define the backend architecture.
@@ -62,6 +63,7 @@ One SPA, one backend, and one database. No Kafka or service split.
 - Submit a motor or property claim and receive a reference.
 - Track claim details, status, and history.
 - View the staff work queue and take ownership of a claim.
+- Paginate the claimant and staff claim lists.
 - Record estimated liability.
 - Request and provide additional information as text.
 - Settle or reject a claim with a recorded decision.
@@ -72,7 +74,7 @@ One SPA, one backend, and one database. No Kafka or service split.
 
 ### Should have
 
-- Queue filtering, sorting, and pagination.
+- Queue filter and sort controls.
 - Workload breakdowns and basic performance indicators.
 - A polished, responsive, and accessible UI.
 - Broader component and end-to-end test coverage.

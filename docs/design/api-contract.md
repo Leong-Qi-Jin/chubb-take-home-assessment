@@ -25,7 +25,7 @@ Paths are relative to `/api/v1`. Body lists the request fields. Request amounts 
 | Method | Path | Role | Body | Purpose |
 | --- | --- | --- | --- | --- |
 | `POST` | `/claims` | Claimant | See [example](#submit-a-claim) | Submit a motor or property claim for the caller. |
-| `GET` | `/claims` | Claimant | | The caller's own claims. |
+| `GET` | `/claims` | Claimant | | The caller's own claims, paginated. |
 | `GET` | `/claims/{reference}` | Claimant, Officer | | Claim details, status, decision, and information requests. |
 | `GET` | `/claims/{reference}/history` | Claimant, Officer | | Timeline, oldest first. |
 | `POST` | `/claims/{reference}/information-requests/{requestId}/response` | Claimant | `responseText` | Answer the open request; the claim returns to `UnderReview`. |
@@ -34,7 +34,7 @@ Paths are relative to `/api/v1`. Body lists the request fields. Request amounts 
 
 | Method | Path | Role | Body | Purpose |
 | --- | --- | --- | --- | --- |
-| `GET` | `/claims` | Officer | | Work queue with filters, sorting, and pagination. |
+| `GET` | `/claims` | Officer | | Work queue, paginated, with filters and sorting. |
 | `POST` | `/claims/{reference}/take` | Officer | | Take an unassigned `Submitted` claim; moves it to `UnderReview`. |
 | `PUT` | `/claims/{reference}/estimated-liability` | AssignedOfficer | `amount` | Set or change the estimate while `UnderReview` or `AwaitingInformation`. |
 | `POST` | `/claims/{reference}/information-requests` | AssignedOfficer | `requestText` | Request information while `UnderReview`; the claim is then `AwaitingInformation`. |
@@ -49,7 +49,7 @@ Submit and request information return `201` (submit adds a `Location` header); o
 
 `GET /claims?status=Submitted&type=Motor&assignedTo={staffId}|unassigned&claimantId={claimantId}&sort=submittedAt|updatedAt&order=asc|desc&page=1&pageSize=20`
 
-All parameters are optional. By default, the oldest claims come first. `pageSize` is capped at 100.
+All parameters are optional, and `status` can repeat. By default, officers get the oldest claims first and claimants the newest. Ties break on the internal claim `Id`, so pages stay stable. `page` starts at 1, and `pageSize` is 5, 10, 20 (the default), 50, or 100; other values return `400`. A page past the end returns empty `items`.
 
 ```json
 {

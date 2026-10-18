@@ -17,23 +17,21 @@ One SPA, one backend, and one database. No Kafka or service split.
 
 - [x] Agree the high-level architecture.
 - [ ] Define the MVP scope and priorities.
+- [ ] Define identity and authorization.
 - [ ] Define the domain and data model.
 - [ ] Define the API contract.
 - [ ] Define the backend architecture.
 - [ ] Define the frontend architecture.
-- [ ] Define the monorepo and folder structure.
-- [ ] Select libraries and development tooling.
-- [ ] Define coding conventions.
+- [ ] Define the monorepo structure.
 - [ ] Define the testing strategy.
-- [ ] Define identity and authorization.
 - [ ] Define logging and observability.
-- [ ] Define configuration and security handling.
+- [ ] Define configuration and secrets handling.
 
 ### Set up
 
 - [ ] Create the monorepo.
 - [ ] Scaffold applications using official CLIs.
-- [ ] Configure shared commands and quality checks.
+- [ ] Configure coding conventions, shared commands, and quality checks.
 - [ ] Set up SQL Server, migrations, and seed data.
 - [ ] Set up local environment configuration.
 - [ ] Set up Docker for one-command startup.
@@ -51,7 +49,7 @@ One SPA, one backend, and one database. No Kafka or service split.
 ### Verify and deliver
 
 - [ ] Verify clean setup and one-command startup.
-- [ ] Verify the production build.
+- [ ] Verify the production builds.
 - [ ] Run all quality checks and tests.
 - [ ] Review accessibility and security.
 - [ ] Review the delivered scope and trade-offs.

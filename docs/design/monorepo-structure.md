@@ -1,6 +1,6 @@
 # Monorepo Structure
 
-The repository contains one Angular SPA and one ASP.NET Core API. They remain independently buildable and deployable, while root tooling provides a consistent local and CI entry point.
+The repository contains one Angular SPA and one ASP.NET Core API. They remain independently buildable and deployable, while root tooling provides a consistent entry point for local commands, pre-commit hooks, and any future CI.
 
 ## Layout
 

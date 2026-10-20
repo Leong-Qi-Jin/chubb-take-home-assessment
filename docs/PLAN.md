@@ -33,10 +33,10 @@ One SPA, one backend, and one database. No Kafka or service split.
 - [x] Establish initial repository guidance in `AGENTS.md` and `CONTRIBUTING.md`.
 - [x] Create the monorepo.
 - [x] Scaffold applications using official CLIs.
-- [ ] Configure coding conventions, shared commands, and quality checks.
 - [x] Set up local SQL Server and environment configuration.
+- [ ] Configure coding conventions, shared commands, and quality checks.
 - [ ] Containerize the SPA and API and establish Docker Compose startup.
-- [ ] Set up continuous integration.
+- [ ] Set up pre-commit hooks.
 
 ### Build
 
@@ -44,7 +44,6 @@ One SPA, one backend, and one database. No Kafka or service split.
 - [ ] Build the prioritised backend features.
 - [ ] Build the matching frontend features.
 - [ ] Add automated tests alongside each feature.
-- [ ] Address accessibility and security alongside feature development.
 - [ ] Add end-to-end coverage for critical journeys.
 
 ### Verify and deliver
@@ -87,5 +86,6 @@ One SPA, one backend, and one database. No Kafka or service split.
 - Complex reporting and market-specific rules.
 - Kafka and external integrations.
 - Component catalogue.
-- Dedicated accessibility and security audit.
+- Dedicated accessibility and security work beyond framework defaults.
+- Continuous integration.
 - Production cloud deployment.

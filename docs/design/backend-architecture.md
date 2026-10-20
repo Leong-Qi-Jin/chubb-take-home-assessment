@@ -102,4 +102,4 @@ Use xUnit, a mainstream .NET choice. Unit tests cover the domain workflow and ru
 
 ## Quality defaults
 
-Pin the SDK with `global.json`. Keep nullable reference types and implicit usings enabled. Use the SDK's Roslyn analyzers in `Recommended` mode, enforce code style during builds, treat warnings as errors in CI, and run `dotnet format --verify-no-changes`. Configure these in `Directory.Build.props` and `.editorconfig`; add third-party analyzers only for a demonstrated gap.
+Pin the SDK with `global.json`. Keep nullable reference types and implicit usings enabled. Use the SDK's Roslyn analyzers in `Recommended` mode, enforce code style during builds, treat warnings as errors in the quality checks, and run `dotnet format --verify-no-changes`. Configure these in `Directory.Build.props` and `.editorconfig`; add third-party analyzers only for a demonstrated gap.

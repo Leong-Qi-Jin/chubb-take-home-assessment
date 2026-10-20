@@ -122,3 +122,10 @@ Format per entry: prompt, what the AI did, decision (accepted / challenged / ove
 - **AI:** Added a SQL Server 2025 Compose service, an environment file template, and setup docs. Refined the VS Code tasks and Node.js version selection.
 - **Decision:** Used environment variables for local configuration, with the password and port defined once and reused in the connection string; preferred Docker defaults; kept explicit `linux/amd64` emulation for Apple Silicon, and required nvm on macOS or Linux, with `.nvmrc` as the single Node.js version source.
 - **Reasoning:** Keep secrets out of source control, use standard .NET configuration, run the x86-64-only SQL Server image on Apple Silicon, and prevent duplicated settings from drifting.
+
+### 18. Scope reduction
+
+- **Prompt:** Defer CI and dedicated accessibility and security work.
+- **AI:** Updated the plan and design documents.
+- **Decision:** Replaced CI with pre-commit hooks.
+- **Reasoning:** Keep the take-home assessment focused on the MVP.

@@ -66,7 +66,7 @@ export default defineConfig(
     },
   },
   {
-    files: ['**/*.spec.ts'],
+    files: ['src/**/*.spec.ts'],
     plugins: { vitest },
     rules: vitest.configs.recommended.rules,
     languageOptions: { globals: vitest.environments.env.globals },

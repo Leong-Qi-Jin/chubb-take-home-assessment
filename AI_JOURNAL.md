@@ -171,3 +171,10 @@ Format per entry: prompt, what the AI did, human decision, and reasoning. The hu
 - **AI:** Consolidated the project documentation, command structure, editor tasks, and quality tooling; reset the database and verified the repository checks.
 - **Human decision:** Preferred one canonical README, focused conventions, commands owned at the lowest practical level, and no dependency overrides.
 - **Reasoning:** Keep guidance concise and commands maintainable while enforcing consistent repository-wide checks.
+
+### 25. Critical end-to-end journeys
+
+- **Prompts:** Add full-stack tests covering the database, API, and frontend; review the folder, configuration, documentation, TypeScript setup, and port.
+- **AI:** Added Playwright journeys for settlement and information-request flows, with automatic API and SPA startup against SQL Server.
+- **Human decision:** Required true full-stack coverage, kept tests in `apps/web/e2e`, shortened the docs, and chose port 5002.
+- **Reasoning:** Critical journeys should detect failures across every application layer while keeping the setup conventional.

@@ -85,4 +85,4 @@ Build pages from the shared components and Material rather than repeating markup
 
 ## Testing
 
-Use focused Vitest tests for behaviour and important failure paths, and browser checks for the claimant and officer journeys. `tools/ui-screenshots` regenerates [laptop and phone screenshots](../generated/ui-screenshots.md) of the main screens.
+Use focused Vitest tests for behaviour and important failure paths. Playwright runs the critical claimant and officer journeys through the Angular SPA, API, and SQL Server. `tools/ui-screenshots` regenerates [laptop and phone screenshots](../generated/ui-screenshots.md) of the main screens.

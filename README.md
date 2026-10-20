@@ -19,7 +19,7 @@ See [all UI screenshots](docs/generated/ui-screenshots.md) at laptop and phone s
 - ASP.NET Core Minimal APIs, C# 14, and Entity Framework Core 10
 - SQL Server 2025
 - OpenAPI-generated frontend client
-- Vitest and xUnit
+- Vitest, xUnit, and Playwright
 
 The system is one SPA, one API, and one database. REST keeps the request-driven MVP simple; asynchronous messaging is deferred until there is a concrete integration or throughput need.
 
@@ -112,11 +112,14 @@ npm run typecheck     # Type-check the SPA without a build
 npm run lint          # ESLint plus .NET analyzer and code-style checks
 npm run format:check  # Check Prettier and .NET whitespace formatting
 npm test              # Frontend, backend unit, and backend integration tests
+npm run test:e2e      # Full-stack browser journeys (requires SQL Server)
 npm run build         # Production SPA build and warning-free .NET build
 npm run check         # Run every quality check above
 ```
 
-Backend integration tests and `npm run check` require SQL Server and `.env`. Integration tests create and remove their own database. Use `npm run lint:fix` and `npm run format` to apply available automatic fixes.
+Backend integration and end-to-end tests require SQL Server and `.env`. End-to-end tests start the API and SPA. Install Chromium once with `npm --prefix apps/web run test:e2e:install`.
+
+Use `npm run lint:fix` and `npm run format` to apply available automatic fixes.
 
 Common commands are also exposed as descriptive [VS Code tasks](.vscode/tasks.json).
 

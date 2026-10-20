@@ -41,7 +41,7 @@ One SPA, one backend, and one database. No Kafka or service split.
 ### Build
 
 - [x] Implement database persistence, migrations, and development seed data.
-- [ ] Build the prioritised backend features.
+- [x] Build the prioritised backend features.
 - [ ] Build the matching frontend features.
 - [ ] Add tests alongside each feature, with end-to-end coverage for critical journeys.
 

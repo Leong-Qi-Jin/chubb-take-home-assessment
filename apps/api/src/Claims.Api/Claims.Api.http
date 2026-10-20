@@ -1,6 +1,67 @@
-@Claims.Api_HostAddress = https://localhost:5001
+# Requests against the development seed data. See docs/development-seed-data.md.
+# Send them from top to bottom: each change reuses the claim reference and latest ETag from an earlier response, so nothing needs copying and the file can be rerun.
+@host = https://localhost:5001/api/v1
+@claimant = alex.tan@example.com
+@officer = 00000000-0000-0000-0000-000000000101
+@reference = {{submitClaim.response.body.$.reference}}
 
-GET {{Claims.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+### Submit a motor claim as a claimant
+# @name submitClaim
+POST {{host}}/claims
+X-Claimant-Email: {{claimant}}
+Content-Type: application/json
 
-###
+{
+  "type": "Motor",
+  "policyNumber": "POL-123456",
+  "incident": {
+    "occurredAt": "2026-10-12T08:30:00Z",
+    "location": "Orchard Road, Singapore",
+    "description": "Rear-ended at a junction."
+  },
+  "motor": { "vehicleRegistration": "SBA1234A" },
+  "property": null,
+  "currency": "SGD"
+}
+
+### List the claimant's own claims
+GET {{host}}/claims?page=1&pageSize=5
+X-Claimant-Email: {{claimant}}
+
+### Work queue: unassigned submitted claims, oldest first
+GET {{host}}/claims?status=Submitted&assignedTo=unassigned
+X-Staff-Id: {{officer}}
+
+### Take the submitted claim
+# @name take
+POST {{host}}/claims/{{reference}}/take
+X-Staff-Id: {{officer}}
+
+### Set the estimated liability, using the ETag from taking the claim
+# @name estimate
+PUT {{host}}/claims/{{reference}}/estimated-liability
+X-Staff-Id: {{officer}}
+If-Match: {{take.response.headers.ETag}}
+Content-Type: application/json
+
+{ "amount": "4200.00" }
+
+### Settle the claim, using the ETag from the estimate change
+POST {{host}}/claims/{{reference}}/settle
+X-Staff-Id: {{officer}}
+If-Match: {{estimate.response.headers.ETag}}
+Content-Type: application/json
+
+{ "settlementAmount": "4000.00", "rationale": "The documented loss is covered under the policy." }
+
+### Claim details as the claimant
+GET {{host}}/claims/{{reference}}
+X-Claimant-Email: {{claimant}}
+
+### Claim history as the claimant
+GET {{host}}/claims/{{reference}}/history
+X-Claimant-Email: {{claimant}}
+
+### Workload dashboard
+GET {{host}}/dashboard
+X-Staff-Id: {{officer}}

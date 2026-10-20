@@ -67,6 +67,19 @@ npm --prefix apps/web start
 
 Open <http://localhost:4200>.
 
+## Run the tests
+
+With SQL Server running and the local environment loaded, run the backend unit and integration tests:
+
+```sh
+set -a
+. ./.env
+set +a
+dotnet test Claims.slnx
+```
+
+Integration tests create a temporary database on the local SQL Server and drop it afterwards.
+
 ## Generate the database ERD
 
 With the local environment loaded and the database migrated, regenerate [the ERD](docs/generated/database-erd.md):

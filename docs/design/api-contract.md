@@ -16,6 +16,8 @@ Development-only MVP identity:
 - `Officer`: an active seeded staff member, sent as `X-Staff-Id`.
 - `AssignedOfficer`: the staff member who owns the claim.
 
+Send exactly one identity header; sending both returns `401`.
+
 ## Endpoints
 
 Paths are relative to `/api/v1`. Body lists the request fields. Request amounts are non-negative decimal strings with up to 2 decimal places, in the claim's currency.
@@ -36,12 +38,18 @@ Paths are relative to `/api/v1`. Body lists the request fields. Request amounts 
 | --- | --- | --- | --- | --- |
 | `GET` | `/claims` | Officer | | Work queue, paginated, with filters and sorting. |
 | `POST` | `/claims/{reference}/take` | Officer | | Take an unassigned `Submitted` claim; moves it to `UnderReview`. |
-| `PUT` | `/claims/{reference}/estimated-liability` | AssignedOfficer | `amount` | Set or change the estimate while `UnderReview` or `AwaitingInformation`. |
+| `PUT` | `/claims/{reference}/estimated-liability` | AssignedOfficer | `amount` | Set or change the estimate while `UnderReview` or `AwaitingInformation`. An unchanged amount records nothing. |
 | `POST` | `/claims/{reference}/information-requests` | AssignedOfficer | `requestText` | Request information while `UnderReview`; the claim is then `AwaitingInformation`. |
 | `POST` | `/claims/{reference}/information-requests/{requestId}/cancel` | AssignedOfficer | `cancellationReason` | Cancel the open request; the claim returns to `UnderReview`. |
 | `POST` | `/claims/{reference}/settle` | AssignedOfficer | `settlementAmount`, `rationale` | Settle an `UnderReview` claim that has an estimate. |
 | `POST` | `/claims/{reference}/reject` | AssignedOfficer | `rationale` | Reject an `UnderReview` claim. |
 | `GET` | `/dashboard` | Officer | | Workload counts and outstanding liability. |
+
+### Shared
+
+| Method | Path | Role | Body | Purpose |
+| --- | --- | --- | --- | --- |
+| `GET` | `/currencies` | Claimant, Officer | | Currency codes a claim can be submitted in, such as `["SGD", "MYR"]`. |
 
 Submit and request information return `201` (submit adds a `Location` header); other changes return `200`. All return the claim.
 
@@ -62,7 +70,7 @@ All parameters are optional, and `status` can repeat. By default, officers get t
 
 Items are claim summaries: `reference`, `type`, `status`, `claimantId`, `claimantName`, `assignedOfficer`, `estimatedLiability`, `submittedAt`, `updatedAt`.
 
-Claimants get only their own claims. They cannot filter by `assignedTo` or `claimantId`, and see the same redactions as claim details.
+Claimants get only their own claims. They cannot filter by `assignedTo` or `claimantId` (`400`), and see the same redactions as claim details.
 
 ## Examples
 
@@ -85,7 +93,7 @@ Claimants get only their own claims. They cannot filter by `assignedTo` or `clai
 }
 ```
 
-Only the detail object matching `type` is set; `property` takes `{ "propertyAddress": "…" }`. `currency` must be a configured ISO 4217 code.
+Only the detail object matching `type` is set; `property` takes `{ "propertyAddress": "…" }`. `currency` must be one of the codes from `GET /currencies`.
 
 ### Claim details
 
@@ -138,7 +146,7 @@ Only the detail object matching `type` is set; `property` takes `{ "propertyAddr
 
 Once decided, `decision` holds `outcome`, `settlementAmount` (null if rejected), `rationale`, `decidedBy` (`{ id, displayName }`), and `decidedAt`.
 
-Claimants get the same shape without `estimatedLiability` or officer ids.
+Claimants get the same shape, with `estimatedLiability` and officer `id`s set to `null`.
 
 ### History entry
 
@@ -185,8 +193,8 @@ Liability is grouped by currency; there is no conversion.
 
 Every claim response has an `ETag` header holding the claim's version (`Claims.Version`). To change an existing claim (except `take`), the client sends it back in `If-Match`, so the change is rejected if someone else updated the claim first.
 
-- Missing `If-Match` returns `428`.
-- A stale `If-Match` returns `409` `claim_modified`, with the current claim in the error's `claim` field.
+- Missing `If-Match` returns `428`; `*` matches any version.
+- A stale `If-Match` returns `409` `claim_modified`, with the current claim in the error's `claim` field and its `ETag` header.
 - `take` needs no `If-Match`; if two officers race, the loser gets `409` `claim_already_assigned`.
 
 ## Errors
@@ -205,13 +213,15 @@ Errors use the standard JSON error format from [RFC 9457 (Problem Details)](http
 
 | Status | When | `code` |
 | --- | --- | --- |
-| `400` | Malformed or invalid input; includes field `errors`. | `validation_failed` |
+| `400` | Malformed or invalid input. Invalid fields are listed in `errors`, keyed by camelCase JSON path such as `incident.occurredAt`; unreadable JSON or query values have no field list. | `validation_failed` |
 | `401` | Missing identity header, an unknown claimant or staff member, or an inactive officer. | `caller_not_identified` |
 | `403` | Wrong role for the endpoint, or an officer acting on a claim they are not assigned. | `role_not_allowed`, `not_assigned_officer` |
 | `404` | Unknown claim or request; claimants also get this for others' claims. | `claim_not_found`, `information_request_not_found` |
 | `409` | Action not allowed in the current state, or the claim changed since it was read. | `claim_status_not_allowed`, `claim_already_assigned`, `information_request_not_open`, `estimated_liability_required`, `claim_modified` |
 | `428` | Missing `If-Match`. | `if_match_required` |
 | `500` | Unexpected server error; details are logged, not returned. | `internal_error` |
+
+Framework responses for unknown routes, methods, or media types (`404`, `405`, `415`) have no `code`.
 
 ## Deferred
 

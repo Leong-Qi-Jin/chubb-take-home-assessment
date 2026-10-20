@@ -27,7 +27,7 @@ List screens are paginated and keep the page and page size in the URL.
 
 For the MVP, a switcher in the header picks a seeded claimant or active officer in place of production sign-in. Switching users opens that user's home screen.
 
-The seeded users and the allowed currencies come from frontend configuration, because the API does not list them.
+The seeded users come from frontend configuration, because the API does not list them. The submit form loads the allowed currencies from `GET /currencies`.
 
 ### Staff claim actions
 

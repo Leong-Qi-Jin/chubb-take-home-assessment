@@ -1,4 +1,3 @@
-using Claims.Api.Infrastructure.Errors;
 using Claims.Api.Infrastructure.Identity;
 
 namespace Claims.Api.Features.Claims.Take;
@@ -16,6 +15,5 @@ public static class TakeClaimEndpoint
                         cancellationToken,
                         requireIfMatch: false))
             .WithName("TakeClaim")
-            .RequireAuthorization(CallerRoles.Officer)
-            .ProducesProblems(StatusCodes.Status401Unauthorized, StatusCodes.Status403Forbidden, StatusCodes.Status404NotFound, StatusCodes.Status409Conflict);
+            .WithClaimCommandContract(CallerRoles.Officer, requireIfMatch: false);
 }

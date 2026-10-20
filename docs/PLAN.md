@@ -48,8 +48,8 @@ One SPA, one backend, and one database. No Kafka or service split.
 ### Verify and deliver
 
 - [x] Complete the README and supporting documentation.
-- [ ] Verify clean setup, production builds, and all checks.
-- [ ] Review the delivered scope and trade-offs.
+- [x] Verify clean setup, production builds, and all checks.
+- [x] Review the delivered scope and trade-offs.
 - [ ] Prepare the walkthrough.
 
 ## MVP Scope

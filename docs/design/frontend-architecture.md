@@ -29,30 +29,31 @@ Use feature slices around user journeys, not root-level components, services, an
 apps/web/
 ├── src/
 │   ├── app/
-│   │   ├── core/
+│   │   ├── core/                           # App-wide API, identity, and titles
 │   │   │   ├── api/
-│   │   │   │   ├── generated/              # OpenAPI client and types; never edit by hand
+│   │   │   │   ├── generated/              # OpenAPI client; never edit by hand
 │   │   │   │   ├── claims-api.ts           # Adapter over the generated SDK
 │   │   │   │   └── identity.interceptor.ts # Development identity headers
 │   │   │   ├── identity/                   # Demo users and each role's routes
-│   │   │   └── title-strategy.ts           # "<page> · ClaimTrack" titles
-│   │   ├── features/
+│   │   │   └── title-strategy.ts           # Browser tab titles
+│   │   ├── features/                       # Route slices
 │   │   │   ├── claims/
-│   │   │   │   ├── claims-list.ts          # Pages, each beside its spec
-│   │   │   │   ├── claim-details.ts
-│   │   │   │   ├── submit-claim.ts
-│   │   │   │   ├── claims.routes.ts        # Claimant and officer route sets
-│   │   │   │   ├── claim-status.ts         # Status labels and tones
-│   │   │   │   ├── claim-type.ts
-│   │   │   │   └── status-badge.ts         # Claim-specific UI
+│   │   │   │   ├── claims-list.ts          # List for both roles
+│   │   │   │   ├── claim-details.ts        # Review and actions
+│   │   │   │   ├── submit-claim.ts         # Claimant intake
+│   │   │   │   └── claims.routes.ts        # Claimant and officer route sets
 │   │   │   └── dashboard/                  # One-page features stay flat
-│   │   ├── layout/                         # Application shell and error pages
+│   │   │       └── dashboard.ts
+│   │   ├── layout/
+│   │   │   ├── app-shell.ts                # Chrome and demo user switcher
+│   │   │   └── error-pages.ts              # Not found and unavailable
 │   │   ├── shared/
-│   │   │   ├── ui/                         # Generic components: headers, alert, badge, icon, dialog
-│   │   │   └── money.ts                    # Money formatting and pipe
+│   │   │   ├── ui/                         # Generic components
+│   │   │   └── money.ts                    # Currency formatting
 │   │   ├── app.config.ts                   # Providers
 │   │   └── app.routes.ts                   # Role guards and lazy-loaded features
 │   └── styles.css                          # Design tokens and component styles
+├── e2e/                                    # Playwright journeys
 ├── openapi-ts.config.ts                    # API client generation
 └── proxy.conf.json                         # Development proxy to the API
 ```

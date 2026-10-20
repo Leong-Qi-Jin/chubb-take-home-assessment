@@ -35,7 +35,7 @@
     "check:repo": "npm run lint:repo && npm run format:check:repo",
     "check:web": "npm --prefix apps/web run check",
     "check:api": "npm run lint:api && npm run format:check:api && npm run test:api && npm run build:api",
-    "check": "npm run check:repo && npm run check:web && npm run check:api"
+    "check": "npm run check:repo && npm run check:web && npm run check:api && npm run test:e2e"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

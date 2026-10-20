@@ -32,8 +32,8 @@ public sealed class ClaimConfiguration : IEntityTypeConfiguration<Claim>
 
         builder.HasKey(claim => claim.Id);
         builder.Property(claim => claim.Reference).HasMaxLength(50);
-        builder.Property(claim => claim.Type).HasConversion<string>().HasMaxLength(50);
-        builder.Property(claim => claim.Status).HasConversion<string>().HasMaxLength(50);
+        builder.Property(claim => claim.Type).HasEnumName();
+        builder.Property(claim => claim.Status).HasEnumName();
         builder.Property(claim => claim.PolicyNumber).HasMaxLength(50);
         builder.Property(claim => claim.IncidentLocation).HasMaxLength(500);
         builder.Property(claim => claim.IncidentDescription).HasMaxLength(2000);

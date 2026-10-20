@@ -24,7 +24,7 @@ public sealed class InformationRequestConfiguration : IEntityTypeConfiguration<I
         builder.HasKey(request => request.Id);
         builder.HasAlternateKey(request => new { request.ClaimId, request.Id });
         builder.Property(request => request.RequestText).HasMaxLength(2000);
-        builder.Property(request => request.Status).HasConversion<string>().HasMaxLength(50);
+        builder.Property(request => request.Status).HasEnumName();
         builder.Property(request => request.ResponseText).HasMaxLength(2000);
         builder.Property(request => request.CancellationReason).HasMaxLength(500);
 

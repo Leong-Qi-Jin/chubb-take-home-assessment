@@ -18,7 +18,7 @@ public sealed class ClaimDecisionConfiguration : IEntityTypeConfiguration<ClaimD
         });
 
         builder.HasKey(decision => decision.ClaimId);
-        builder.Property(decision => decision.Outcome).HasConversion<string>().HasMaxLength(50);
+        builder.Property(decision => decision.Outcome).HasEnumName();
         builder.Property(decision => decision.SettlementAmount).HasPrecision(18, 2);
         builder.Property(decision => decision.Rationale).HasMaxLength(2000);
 

@@ -37,16 +37,7 @@ public static class DevelopmentDataSeeder
             .Where(claimant => seededIds.Contains(claimant.Id))
             .ToDictionaryAsync(claimant => claimant.Id, cancellationToken);
 
-        return claimants.Select(claimant =>
-        {
-            if (existingClaimants.TryGetValue(claimant.Id, out var existingClaimant))
-            {
-                return existingClaimant;
-            }
-
-            dbContext.Claimants.Add(claimant);
-            return claimant;
-        }).ToArray();
+        return AddMissing(dbContext, claimants, existingClaimants, claimant => claimant.Id);
     }
 
     private static async Task<StaffMember[]> GetOrAddOfficersAsync(
@@ -59,16 +50,7 @@ public static class DevelopmentDataSeeder
             .Where(officer => seededIds.Contains(officer.Id))
             .ToDictionaryAsync(officer => officer.Id, cancellationToken);
 
-        return officers.Select(officer =>
-        {
-            if (existingOfficers.TryGetValue(officer.Id, out var existingOfficer))
-            {
-                return existingOfficer;
-            }
-
-            dbContext.StaffMembers.Add(officer);
-            return officer;
-        }).ToArray();
+        return AddMissing(dbContext, officers, existingOfficers, officer => officer.Id);
     }
 
     internal static Claimant[] CreateClaimants() =>
@@ -473,6 +455,25 @@ public static class DevelopmentDataSeeder
             OccurredAt = occurredAt,
         });
     }
+
+    private static T[] AddMissing<T>(
+        ClaimsDbContext dbContext,
+        T[] seeded,
+        IReadOnlyDictionary<Guid, T> existing,
+        Func<T, Guid> id)
+        where T : class =>
+        [
+            .. seeded.Select(item =>
+            {
+                if (existing.TryGetValue(id(item), out var found))
+                {
+                    return found;
+                }
+
+                dbContext.Set<T>().Add(item);
+                return item;
+            }),
+        ];
 
     private static Guid SeedGuid(int value) =>
         Guid.Parse($"00000000-0000-0000-0000-{value:D12}");

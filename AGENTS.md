@@ -9,7 +9,7 @@ This repository contains the Chubb APAC claims take-home assessment: one Angular
 - SQL Server 2025
 - REST/HTTP with an OpenAPI-defined contract
 - Vitest and Playwright for the frontend; xUnit for the backend
-- Docker Compose for the local application stack
+- Docker Compose for local SQL Server
 
 ## Project Information
 

@@ -27,28 +27,30 @@ Use vertical slices around API operations, not root-level Controllers, Services,
 ```sh
 apps/api/
 ├── src/Claims.Api/
-│   ├── Features/
+│   ├── Features/                           # Vertical slices
 │   │   ├── Claims/
 │   │   │   ├── Submit/                     # One folder per operation
 │   │   │   ├── List/
 │   │   │   ├── Settle/
 │   │   │   ├── …
+│   │   │   ├── ClaimsEndpoints.cs          # Registers the claim routes
 │   │   │   ├── ClaimCommandRunner.cs       # Shared by the claim slices
-│   │   │   └── ClaimResponses.cs
+│   │   │   └── ClaimResponses.cs           # Claim DTOs
 │   │   ├── Currencies/                     # One-operation features stay flat
-│   │   ├── Dashboard/
+│   │   ├── Dashboard/                      # Officer queue totals
 │   │   └── Shared/                         # Response types used by several features
 │   ├── Domain/
 │   │   └── Claims/                         # Aggregate and workflow rules
+│   │       └── Claim.cs
 │   ├── Infrastructure/
 │   │   ├── Errors/                         # Problem Details and error codes
 │   │   ├── Identity/                       # Development caller resolution
 │   │   └── Persistence/
 │   │       ├── Configurations/             # EF mappings
-│   │       ├── Migrations/
-│   │       ├── Seeding/
+│   │       ├── Migrations/                 # Schema history
+│   │       ├── Seeding/                    # Development demo data
 │   │       └── ClaimsDbContext.cs
-│   ├── Program.cs                          # Composition and middleware
+│   ├── Program.cs
 │   ├── appsettings.json
 │   └── Claims.Api.csproj
 └── tests/
@@ -59,6 +61,7 @@ apps/api/
         ├── Features/
         └── Infrastructure/                 # Test host, users, and HTTP helpers
 ```
+
 
 Each operation owns its endpoint, contract, validation, mapping, and use-case code. Keep small slices together and split them only as they grow. Shared workflow rules belong to the domain; EF Core and caller resolution belong to infrastructure.
 

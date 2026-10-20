@@ -158,7 +158,7 @@
     },
     {
       "label": "Check All",
-      "detail": "Run all lint, formatting, type, test, and build checks (needs SQL Server)",
+      "detail": "Run all lint, formatting, type, test, build, and end-to-end checks (needs SQL Server)",
       "type": "shell",
       "command": "npm run check",
       "problemMatcher": []

@@ -1,6 +1,6 @@
 # Monorepo Structure
 
-The repository contains one Angular SPA and one ASP.NET Core API. They remain independently buildable and deployable, while root tooling provides a consistent entry point for local commands, pre-commit hooks, and any future CI.
+The repository contains one Angular SPA and one ASP.NET Core API. They remain independently buildable and deployable, while root tooling provides a consistent entry point for local commands.
 
 ## Layout
 
@@ -47,7 +47,7 @@ Application-owned folders are detailed in the [frontend](frontend-architecture.m
 
 The Angular package files stay in `apps/web`, with their own ESLint and Prettier config. A small root package (not an npm workspace) lints and formats the rest of the repository: the Node.js tools, Markdown, JSON, and YAML. The .NET code uses `dotnet format`.
 
-Docker Compose provides one-command startup for the SPA, API, and SQL Server.
+Docker Compose starts the local SQL Server. The SPA and API are started separately with `npm run start:web` and `npm run start:api`.
 
 ## Boundaries
 

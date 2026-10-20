@@ -31,9 +31,9 @@ public sealed class ClaimHistoryEntryConfiguration : IEntityTypeConfiguration<Cl
         });
 
         builder.HasKey(entry => entry.Id);
-        builder.Property(entry => entry.EventType).HasConversion<string>().HasMaxLength(50);
+        builder.Property(entry => entry.EventType).HasEnumName();
         builder.Property(entry => entry.Summary).HasMaxLength(500);
-        builder.Property(entry => entry.ActorType).HasConversion<string>().HasMaxLength(50);
+        builder.Property(entry => entry.ActorType).HasEnumName();
         builder.Property(entry => entry.Details).HasColumnType("json");
         builder.HasIndex(entry => new { entry.ClaimId, entry.OccurredAt });
 

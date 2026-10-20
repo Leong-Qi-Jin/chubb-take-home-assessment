@@ -178,3 +178,10 @@ Format per entry: prompt, what the AI did, human decision, and reasoning. The hu
 - **AI:** Added Playwright journeys for settlement and information-request flows, with automatic API and SPA startup against SQL Server.
 - **Human decision:** Required true full-stack coverage, kept tests in `apps/web/e2e`, shortened the docs, and chose port 5002.
 - **Reasoning:** Critical journeys should detect failures across every application layer while keeping the setup conventional.
+
+### 26. Final verification and review
+
+- **Prompts:** Test the app in the browser and against the brief; review the codebase; confirm installs, builds, tests, and lint; check docs; tick the plan’s verify items; reset the database. Include e2e in `check`. Reduce backend duplication. Keep architecture structure trees to important folders and files.
+- **AI:** Completed the review, corrected stale docs, ticked the plan’s verify items, reset seed data, added e2e to `check`, shared the repeated command-route, enum mapping, and seed helpers, and trimmed the architecture trees.
+- **Human decision:** Required `check` to include e2e. Asked to reduce backend repetition. Architecture structure should list important folders and files only.
+- **Reasoning:** `check` should run the full delivery suite, and shared helpers keep repeated workflow rules in one place.

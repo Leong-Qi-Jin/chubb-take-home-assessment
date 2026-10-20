@@ -34,7 +34,7 @@ One SPA, one backend, and one database. No Kafka or service split.
 - [x] Create the monorepo.
 - [x] Scaffold applications using official CLIs.
 - [ ] Configure coding conventions, shared commands, and quality checks.
-- [ ] Set up local SQL Server and environment configuration.
+- [x] Set up local SQL Server and environment configuration.
 - [ ] Containerize the SPA and API and establish Docker Compose startup.
 - [ ] Set up continuous integration.
 

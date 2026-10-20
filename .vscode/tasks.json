@@ -1,0 +1,60 @@
+{
+  // https://code.visualstudio.com/docs/debugtest/tasks#vscode
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Install Frontend Dependencies",
+      "detail": "npm --prefix apps/web ci",
+      "type": "shell",
+      "command": "npm --prefix apps/web ci",
+      "problemMatcher": []
+    },
+    {
+      "label": "Restore Backend Dependencies",
+      "detail": "dotnet restore Claims.slnx",
+      "type": "shell",
+      "command": "dotnet restore Claims.slnx",
+      "problemMatcher": []
+    },
+    {
+      "label": "Start API",
+      "detail": "dotnet run --launch-profile https --project apps/api/src/Claims.Api",
+      "type": "shell",
+      "command": "dotnet run --launch-profile https --project apps/api/src/Claims.Api",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "dotnet",
+        "pattern": "$msCompile",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": {
+            "regexp": "(.*?)"
+          },
+          "endsPattern": {
+            "regexp": "Now listening on:"
+          }
+        }
+      }
+    },
+    {
+      "label": "Start SPA",
+      "detail": "npm --prefix apps/web start",
+      "type": "shell",
+      "command": "npm --prefix apps/web start",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "typescript",
+        "pattern": "$tsc",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": {
+            "regexp": "(.*?)"
+          },
+          "endsPattern": {
+            "regexp": "bundle generation complete"
+          }
+        }
+      }
+    }
+  ]
+}

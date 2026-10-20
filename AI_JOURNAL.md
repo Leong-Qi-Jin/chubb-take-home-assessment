@@ -101,3 +101,17 @@ Format per entry: prompt, what the AI did, decision (accepted / challenged / ove
 - **AI:** Expanded `AGENTS.md` with repository context and operational safeguards. Added `CONTRIBUTING.md` with explicit precedence and focused conventions for file organization, code, UI, copy, and tests.
 - **Decision:** Kept agent workflow in `AGENTS.md`, preliminary implementation decisions in the design documents, and durable, non-obvious conventions in `CONTRIBUTING.md`. Removed duplicated, basic, and implementation-heavy rules and clarified ambiguous wording.
 - **Reasoning:** Provide useful guardrails without repeating guidance or treating early design decisions as absolute.
+
+### 2026-10-19: monorepo and application scaffolding
+
+- **Prompt:** Create and review the monorepo and official application scaffolds, including run instructions and frontend formatting.
+- **AI:** Scaffolded the .NET 10 solution, API and tests, and the Angular 22 SPA. Added run documentation and VS Code tasks, reviewed the output, and verified both applications locally, including the API through Postman.
+- **Decision:** Kept the CLI defaults except for stable local API ports and a Node version pin, removed editor files and placeholder tests, and added only the requested tasks. Added Tailwind-aware Prettier formatting with an 80-character width and one HTML attribute per line; deferred extra lint flags.
+- **Reasoning:** Keep the baseline buildable, convenient, and minimal.
+
+### 2026-10-19: delivery plan refinement
+
+- **Prompt:** Refine the remaining delivery plan.
+- **AI:** Reordered tasks by dependency and delivery stage.
+- **Decision:** Set up the local environment and Docker before CI; build persistence and seed data with the features; keep final documentation in delivery. Deferred the component catalogue and dedicated audit.
+- **Reasoning:** Prioritise the MVP critical path.

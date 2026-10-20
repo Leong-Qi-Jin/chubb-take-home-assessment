@@ -2,7 +2,7 @@
 
 ## Principles
 
-- One Angular SPA serves claimants and claims staff; each role sees only its own screens.
+- One Angular SPA serves claimants and claims staff; each role sees only its own screens. The [roles and permissions matrix](roles-and-permissions.md) defines their access.
 - Action buttons are disabled when the user cannot take the action, and while a change is being sent.
 - After an action, the screen shows the returned claim, keeps its `ETag` for the next change, and refetches the history.
 

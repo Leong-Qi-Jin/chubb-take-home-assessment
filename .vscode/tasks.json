@@ -48,7 +48,7 @@
       "label": "Start API",
       "detail": "Load .env and run the API at https://localhost:5001",
       "type": "shell",
-      "command": "set -a && . ./.env && set +a && dotnet run --launch-profile https --project apps/api/src/Claims.Api",
+      "command": "npm run start:api",
       "isBackground": true,
       "problemMatcher": {
         "owner": "dotnet",
@@ -68,7 +68,7 @@
       "label": "Start SPA",
       "detail": "Select the .nvmrc Node.js version and run the SPA at http://localhost:4200",
       "type": "shell",
-      "command": ". \"${NVM_DIR:-$HOME/.nvm}/nvm.sh\" && nvm use && npm --prefix apps/web start",
+      "command": ". \"${NVM_DIR:-$HOME/.nvm}/nvm.sh\" && nvm use && npm run start:web",
       "isBackground": true,
       "problemMatcher": {
         "owner": "typescript",
@@ -88,13 +88,7 @@
       "label": "Start App",
       "detail": "Start SQL Server, then the API and SPA together",
       "dependsOrder": "sequence",
-      "dependsOn": ["Start SQL Server", "Start API and SPA"],
-      "problemMatcher": []
-    },
-    {
-      "label": "Start API and SPA",
-      "detail": "Run the API and SPA side by side",
-      "dependsOn": ["Start API", "Start SPA"],
+      "dependsOn": ["Start SQL Server", "Start API", "Start SPA"],
       "problemMatcher": []
     },
 
@@ -103,15 +97,23 @@
       "label": "Test Frontend",
       "detail": "Run the SPA's Vitest suite once",
       "type": "shell",
-      "command": "npm --prefix apps/web test -- --watch=false",
+      "command": "npm run test:web",
       "group": "test",
       "problemMatcher": []
+    },
+    {
+      "label": "Test Backend Unit",
+      "detail": "Run the backend unit tests without SQL Server",
+      "type": "shell",
+      "command": "npm run test:api:unit",
+      "group": "test",
+      "problemMatcher": "$msCompile"
     },
     {
       "label": "Test Backend",
       "detail": "Load .env and run the backend unit and integration tests (needs SQL Server)",
       "type": "shell",
-      "command": "set -a && . ./.env && set +a && dotnet test Claims.slnx",
+      "command": "npm run test:api",
       "group": "test",
       "problemMatcher": "$msCompile"
     },
@@ -121,47 +123,55 @@
       "label": "Build Frontend",
       "detail": "Production build of the SPA",
       "type": "shell",
-      "command": "npm --prefix apps/web run build",
+      "command": "npm run build:web",
       "group": "build",
       "problemMatcher": []
     },
     {
-      "label": "Lint Frontend",
-      "detail": "Run ESLint and the Prettier check on the SPA",
+      "label": "Build Backend",
+      "detail": "Build the API and tests with compiler and analyzer warnings treated as errors",
       "type": "shell",
-      "command": "npm --prefix apps/web run lint && npm --prefix apps/web run format:check",
+      "command": "npm run build:api",
+      "group": "build",
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Type Check Frontend",
+      "detail": "Type-check the SPA without creating build output",
+      "type": "shell",
+      "command": "npm run typecheck",
       "problemMatcher": []
     },
     {
-      "label": "Lint Repository",
-      "detail": "Run ESLint and the Prettier check on tools, Markdown, JSON, and YAML",
+      "label": "Lint All",
+      "detail": "Lint repository tooling, the SPA, and .NET code",
       "type": "shell",
-      "command": "npm run lint && npm run format:check",
+      "command": "npm run lint",
       "problemMatcher": []
     },
     {
-      "label": "Check Backend Formatting",
-      "detail": "Verify the .NET code matches dotnet format",
+      "label": "Check Formatting",
+      "detail": "Check formatting across repository files, the SPA, and .NET code",
       "type": "shell",
-      "command": "dotnet format Claims.slnx --verify-no-changes",
+      "command": "npm run format:check",
       "problemMatcher": []
     },
     {
       "label": "Check All",
-      "detail": "Run every test, lint, format check, and the frontend build in turn",
-      "dependsOrder": "sequence",
-      "dependsOn": [
-        "Lint Frontend",
-        "Lint Repository",
-        "Check Backend Formatting",
-        "Test Frontend",
-        "Test Backend",
-        "Build Frontend"
-      ],
+      "detail": "Run all lint, formatting, type, test, and build checks (needs SQL Server)",
+      "type": "shell",
+      "command": "npm run check",
       "problemMatcher": []
     },
 
     // Generate
+    {
+      "label": "Install Screenshot Browser",
+      "detail": "Install the Chromium binary used by the screenshot generator (one-time setup)",
+      "type": "shell",
+      "command": "npm --prefix tools/ui-screenshots run install:browser",
+      "problemMatcher": []
+    },
     {
       "label": "Generate API Client",
       "detail": "Regenerate the SPA's OpenAPI client from the running API",
@@ -178,9 +188,9 @@
     },
     {
       "label": "Generate UI Screenshots",
-      "detail": "Capture laptop and phone screenshots from the running SPA (installs Chromium if needed)",
+      "detail": "Capture laptop and phone screenshots from the running SPA",
       "type": "shell",
-      "command": "npx --prefix tools/ui-screenshots playwright install chromium && npm --prefix tools/ui-screenshots run generate",
+      "command": "npm --prefix tools/ui-screenshots run generate",
       "problemMatcher": []
     }
   ]

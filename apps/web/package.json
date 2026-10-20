@@ -5,13 +5,16 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "generate:api": "openapi-ts",
+    "generate:api": "NODE_TLS_REJECT_UNAUTHORIZED=0 openapi-ts",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "test:run": "ng test --watch=false",
+    "typecheck": "tsc -b --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write src eslint.config.mjs openapi-ts.config.ts proxy.conf.json",
-    "format:check": "prettier --check src eslint.config.mjs openapi-ts.config.ts proxy.conf.json"
+    "format:check": "prettier --check src eslint.config.mjs openapi-ts.config.ts proxy.conf.json",
+    "check": "npm run lint && npm run format:check && npm run typecheck && npm run test:run && npm run build"
   },
   "private": true,
   "packageManager": "npm@11.13.0",

@@ -97,7 +97,7 @@ Format per entry: prompt, what the AI did, human decision, and reasoning. The hu
 
 ### 14. Repository guidance
 
-- **Prompt:** Add initial agent and contributor guidance, using sibling projects as references, then refine its scope and wording.
+- **Prompt:** Add initial agent and contributor guidance, then refine its scope and wording.
 - **AI:** Expanded `AGENTS.md` with repository context and operational safeguards. Added `CONTRIBUTING.md` with explicit precedence and focused conventions for file organization, code, UI, copy, and tests.
 - **Human decision:** Challenged drafts as too detailed, repetitive, then too sparse. Kept workflows in `AGENTS.md`, preliminary decisions in the design documents, and focused conventions in `CONTRIBUTING.md`; restored precedence and clarified the structure and wording.
 - **Reasoning:** Provide useful guardrails without repeating guidance or treating early design decisions as absolute.
@@ -164,3 +164,10 @@ Format per entry: prompt, what the AI did, human decision, and reasoning. The hu
 - **AI:** Added `tools/ui-screenshots`, modelled on the ERD tool, which captures the main screens with Playwright at full page height and writes `docs/generated/ui-screenshots.md`.
 - **Human decision:** Asked for generated rather than hand-taken screenshots and compact Markdown tables.
 - **Reasoning:** A script keeps the visual documentation in step with the UI and makes review possible without running the stack.
+
+### 24. Delivery documentation and quality tooling
+
+- **Prompts:** Complete the delivery documentation, conventions, shared commands, quality checks, and development database reset.
+- **AI:** Consolidated the project documentation, command structure, editor tasks, and quality tooling; reset the database and verified the repository checks.
+- **Human decision:** Preferred one canonical README, focused conventions, commands owned at the lowest practical level, and no dependency overrides.
+- **Reasoning:** Keep guidance concise and commands maintainable while enforcing consistent repository-wide checks.

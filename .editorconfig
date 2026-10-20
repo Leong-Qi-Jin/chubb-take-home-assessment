@@ -1,0 +1,30 @@
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{cs,csx}]
+indent_style = space
+indent_size = 4
+
+[*.{json,jsonc,yml,yaml}]
+indent_style = space
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+# EF migrations are generated snapshots; quality checks cover the model and handwritten persistence code instead.
+[apps/api/src/Claims.Api/Infrastructure/Persistence/Migrations/*.cs]
+generated_code = true
+
+# Sentence-style xUnit names and collection fixtures are intentional test conventions.
+[apps/api/tests/**/*.cs]
+dotnet_diagnostic.CA1707.severity = none
+dotnet_diagnostic.CA1711.severity = none
+
+# Shared is an internal feature namespace, so cross-language keyword interoperability does not apply.
+[apps/api/src/Claims.Api/Features/Shared/*.cs]
+dotnet_diagnostic.CA1716.severity = none

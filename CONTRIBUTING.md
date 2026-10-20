@@ -22,8 +22,16 @@ Prefer idiomatic, well-architected solutions over minimising churn. Add dependen
 ## Code
 
 - Use comments to explain non-obvious intent, invariants, and edge cases. Match nearby comment style.
-- Declare TypeScript types, constants, and helpers immediately before first use; place shared declarations before their earliest use.
 - Prefer fixing lint violations. When a suppression makes the code clearer or more maintainable, add a brief reason unless project configuration documents an exception.
+
+### TypeScript and Angular
+
+- Declare types, constants, and helpers immediately before first use; place shared declarations before their earliest use.
+- Prefer signals for local state and RxJS for values that are naturally streams.
+
+### C# and ASP.NET Core
+
+- Pass request cancellation tokens through asynchronous EF Core operations.
 
 ## UI
 

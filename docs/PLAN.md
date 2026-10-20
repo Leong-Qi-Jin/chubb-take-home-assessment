@@ -19,12 +19,12 @@ One SPA, one backend, and one database. No Kafka or service split.
 - [x] Define the MVP scope and priorities.
 - [x] Define the [domain and data model](design/domain-model.md).
 - [x] Define the [API contract](design/api-contract.md).
-- [x] Define the [screens and user flows](design/screens.md).
+- [x] Define the [screens and user flows](design/screens-and-user-flows.md).
 - [x] Define the [monorepo structure](design/monorepo-structure.md).
 - [x] Define the [frontend architecture](design/frontend-architecture.md).
 - [x] Define the [backend and database architecture](design/backend-architecture.md).
 - [x] Define the testing strategy for the [backend](design/backend-architecture.md#testing), [frontend, and end-to-end journeys](design/frontend-architecture.md#testing).
-- [x] Define [identity and authorization](design/backend-architecture.md#platform-concerns).
+- [x] Define [roles and permissions](design/roles-and-permissions.md) and [identity and authorization](design/backend-architecture.md#platform-concerns).
 - [x] Define [logging and observability](design/backend-architecture.md#platform-concerns).
 - [x] Define [configuration and secrets handling](design/backend-architecture.md#platform-concerns).
 
@@ -47,7 +47,7 @@ One SPA, one backend, and one database. No Kafka or service split.
 
 ### Verify and deliver
 
-- [ ] Complete the README and supporting documentation.
+- [x] Complete the README and supporting documentation.
 - [ ] Verify clean setup, one-command startup, production builds, and all checks.
 - [ ] Review the delivered scope and trade-offs.
 - [ ] Prepare the walkthrough.

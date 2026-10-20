@@ -119,7 +119,7 @@ public sealed class DevelopmentCallerAuthenticationHandler(
             ErrorCodes.RoleNotAllowed,
             "Your role cannot use this endpoint.");
 
-    private AuthenticateResult Success(Guid id, string role)
+    private static AuthenticateResult Success(Guid id, string role)
     {
         var identity = new ClaimsIdentity(
             [new Claim(ClaimTypes.NameIdentifier, id.ToString()), new Claim(ClaimTypes.Role, role)],

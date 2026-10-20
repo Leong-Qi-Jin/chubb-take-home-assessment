@@ -4,6 +4,7 @@
   "type": "module",
   "packageManager": "npm@11.13.0",
   "scripts": {
+    "install:browser": "playwright install chromium",
     "generate": "node generate-screenshots.mjs"
   },
   "dependencies": {

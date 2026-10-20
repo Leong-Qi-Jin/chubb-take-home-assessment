@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 
 import { AppShell } from './app-shell';
@@ -66,5 +66,39 @@ describe('AppShell', () => {
 
     await harness.navigateByUrl('/queue/CLM-DEMO-0007');
     expect(document.activeElement).toBe(main);
+  });
+
+  it('stays on the current page when switching to another user of the same role', async () => {
+    localStorage.setItem('claims-user', 'sam');
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([
+          {
+            path: '',
+            component: AppShell,
+            children: [
+              { path: 'queue', component: Blank },
+              { path: 'dashboard', component: Blank },
+              { path: 'my-claims', component: Blank },
+            ],
+          },
+        ]),
+      ],
+    });
+    const fixture = TestBed.createComponent(AppShell);
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl('/queue');
+    fixture.detectChanges();
+
+    const shell = fixture.componentInstance as unknown as {
+      switchUser: (id: string) => void;
+    };
+    shell.switchUser('aisha');
+    await fixture.whenStable();
+    expect(router.url).toBe('/queue');
+
+    shell.switchUser('alex');
+    await fixture.whenStable();
+    expect(router.url).toBe('/my-claims');
   });
 });

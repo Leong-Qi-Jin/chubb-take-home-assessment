@@ -163,8 +163,10 @@ import {
 })
 export class Dashboard {
   private readonly api = inject(ClaimsApi);
-  // Errors are rethrown as Error so the resource reports the API's message.
+  private readonly identity = inject(Identity);
+  // Reloads when the demo officer changes so "my open claims" matches the new caller.
   protected readonly data = resource({
+    params: () => this.identity.user()?.identity,
     loader: async () => {
       try {
         return await this.api.dashboard();
@@ -177,7 +179,6 @@ export class Dashboard {
   protected readonly label = statusLabel;
   protected readonly tone = claimStatusTone;
   protected readonly currencyOf = currencyName;
-  private readonly identity = inject(Identity);
   protected readonly myId = computed(() => this.identity.user()?.identity);
   // Busiest officer first; each bar's length is its share of the busiest officer's count.
   protected readonly workload = computed(() => {

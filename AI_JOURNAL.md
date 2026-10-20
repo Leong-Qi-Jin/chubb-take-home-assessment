@@ -185,3 +185,10 @@ Format per entry: prompt, what the AI did, human decision, and reasoning. The hu
 - **AI:** Completed the review, corrected stale docs, ticked the plan’s verify items, reset seed data, added e2e to `check`, shared the repeated command-route, enum mapping, and seed helpers, and trimmed the architecture trees.
 - **Human decision:** Required `check` to include e2e. Asked to reduce backend repetition. Architecture structure should list important folders and files only.
 - **Reasoning:** `check` should run the full delivery suite, and shared helpers keep repeated workflow rules in one place.
+
+### 27. Filters and user switching
+
+- **Prompt:** Add closed and all-claims filters; persist them; stay on the page when switching users; whether to add more filters.
+- **AI:** Added the status groups, persisted officer filters, and kept same-role switches on the current page. Deferred further filters.
+- **Human decision:** Accepted. Asked not to add more dropdowns.
+- **Reasoning:** Officers should keep their view; extra filters would not show a new domain rule on the seeded set.

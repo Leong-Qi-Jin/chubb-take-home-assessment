@@ -21,6 +21,12 @@ export const OPEN_CLAIM_STATUSES: readonly ClaimStatus[] = [
   'AwaitingInformation',
 ];
 
+/** Terminal statuses; the queue "All closed claims" filter uses these. */
+export const CLOSED_CLAIM_STATUSES: readonly ClaimStatus[] = [
+  'Settled',
+  'Rejected',
+];
+
 const STATUS_LABELS: Record<ClaimStatus, string> = {
   Submitted: 'Submitted',
   UnderReview: 'Under review',

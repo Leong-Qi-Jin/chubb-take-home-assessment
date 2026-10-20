@@ -1,6 +1,6 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { DatePipe } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -512,6 +512,20 @@ export class ClaimDetails {
       this.actionMessage.set(null);
       this.textControls.forEach((control) => control.reset());
       void this.load();
+    });
+    let viewerId = this.identity.user()?.id;
+    // Same-role demo switches stay on this claim; reload so visibility and actions match the new caller.
+    effect(() => {
+      const nextId = this.identity.user()?.id;
+      if (nextId === viewerId) {
+        return;
+      }
+      viewerId = nextId;
+      if (this.reference) {
+        this.actionError.set(null);
+        this.actionMessage.set(null);
+        void this.load();
+      }
     });
   }
   protected isMe(id: string | null): boolean {

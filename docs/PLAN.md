@@ -81,6 +81,7 @@ One SPA, one backend, and one database. No Kafka or service split.
 - File uploads.
 - Notifications and payments.
 - Complex reporting and market-specific rules.
+- Reference search and further queue filters (currency, dates, amounts, policy).
 - Kafka and external integrations.
 - Component catalogue.
 - Dedicated accessibility and security work beyond framework defaults.

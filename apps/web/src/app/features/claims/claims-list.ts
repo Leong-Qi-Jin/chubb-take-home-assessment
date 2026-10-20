@@ -20,6 +20,7 @@ import { PageHeader } from '../../shared/ui/page-header';
 import { StatePanel } from '../../shared/ui/state-panel';
 import {
   CLAIM_STATUSES,
+  CLOSED_CLAIM_STATUSES,
   OPEN_CLAIM_STATUSES,
   statusLabel,
 } from './claim-status';
@@ -28,6 +29,53 @@ import { StatusBadge } from './status-badge';
 
 /** Page sizes the claims API accepts. */
 const PAGE_SIZE_OPTIONS = [5, 10, 20, 50, 100];
+
+/** Queue status groups that are not a single `ClaimStatus`. */
+const ALL_CLAIMS_STATUS = 'all';
+const CLOSED_CLAIMS_STATUS = 'closed';
+
+/** Translate the queue's status query into API `status` values. */
+function statusesForQuery(
+  status: string,
+  isOfficer: boolean,
+): ClaimStatus[] | undefined {
+  if (status === ALL_CLAIMS_STATUS) {
+    return undefined;
+  }
+  if (status === CLOSED_CLAIMS_STATUS) {
+    return [...CLOSED_CLAIM_STATUSES];
+  }
+  if (status) {
+    return [status as ClaimStatus];
+  }
+  return isOfficer ? [...OPEN_CLAIM_STATUSES] : undefined;
+}
+
+const QUEUE_FILTER_KEYS = ['status', 'type', 'assignedTo', 'sort'] as const;
+
+function queueFilterStorageKey(userId: string): string {
+  return `claims-queue-filters:${userId}`;
+}
+
+function readQueueFilters(userId: string): Params | null {
+  try {
+    const raw = localStorage.getItem(queueFilterStorageKey(userId));
+    if (!raw) {
+      return null;
+    }
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    const saved: Params = {};
+    for (const key of QUEUE_FILTER_KEYS) {
+      const value = parsed[key];
+      if (typeof value === 'string' && value) {
+        saved[key] = value;
+      }
+    }
+    return Object.keys(saved).length ? saved : null;
+  } catch {
+    return null;
+  }
+}
 
 @Component({
   imports: [
@@ -73,7 +121,10 @@ const PAGE_SIZE_OPTIONS = [5, 10, 20, 50, 100];
           ><mat-select
             [value]="status()"
             (selectionChange)="setFilter('status', $event.value)"
-            ><mat-option value="">All open claims</mat-option>
+            ><mat-option value="">All open claims</mat-option
+            ><mat-option [value]="closedClaimsStatus"
+              >All closed claims</mat-option
+            ><mat-option [value]="allClaimsStatus">All claims</mat-option>
             @for (item of statusOptions; track item) {
               <mat-option [value]="item">{{ label(item) }}</mat-option>
             }
@@ -253,41 +304,56 @@ export class ClaimsList {
   protected readonly sort = computed(
     () => this.query().get('sort') ?? 'submittedAt',
   );
-  // The status filter offers every status; with none chosen, the queue shows only open work.
+  // Group options sit above the individual statuses; empty means all open work.
   protected readonly statusOptions = CLAIM_STATUSES;
-  protected readonly openStatuses = OPEN_CLAIM_STATUSES;
+  protected readonly allClaimsStatus = ALL_CLAIMS_STATUS;
+  protected readonly closedClaimsStatus = CLOSED_CLAIMS_STATUS;
   protected readonly label = statusLabel;
   protected readonly pageSizes = PAGE_SIZE_OPTIONS;
   protected readonly routes =
     ROLE_ROUTES[this.isOfficer ? 'officer' : 'claimant'];
-  // Reloads whenever a filter, sort, or page signal changes; errors are rethrown as Error so the resource reports the API's message.
+  // Reloads whenever a filter, sort, page, or demo user changes; errors are rethrown as Error so the resource reports the API's message.
   protected readonly claims = resource({
     params: () => ({
-      page: this.page(),
-      pageSize: this.pageSize(),
-      status: this.status()
-        ? [this.status() as ClaimStatus]
-        : this.isOfficer
-          ? [...this.openStatuses]
-          : undefined,
-      type: (this.type() || undefined) as ClaimType | undefined,
-      // The API rejects an empty assignedTo, and claimants may not send it at all.
-      assignedTo: this.assignedTo() || undefined,
-      sort: this.sort(),
-      // Officers work oldest submissions first; recent updates and the claimant's own list show newest first.
-      order:
-        this.isOfficer && this.sort() === 'submittedAt'
-          ? ('asc' as const)
-          : ('desc' as const),
+      query: {
+        page: this.page(),
+        pageSize: this.pageSize(),
+        status: statusesForQuery(this.status(), this.isOfficer),
+        type: (this.type() || undefined) as ClaimType | undefined,
+        // The API rejects an empty assignedTo, and claimants may not send it at all.
+        assignedTo: this.assignedTo() || undefined,
+        sort: this.sort(),
+        // Officers work oldest submissions first; recent updates and the claimant's own list show newest first.
+        order:
+          this.isOfficer && this.sort() === 'submittedAt'
+            ? ('asc' as const)
+            : ('desc' as const),
+      },
+      viewer: this.currentUserId(),
     }),
     loader: async ({ params }) => {
       try {
-        return await this.api.list(params);
+        return await this.api.list(params.query);
       } catch (error) {
         throw new Error(this.api.problemMessage(error), { cause: error });
       }
     },
   });
+  constructor() {
+    // Bare /queue restores this officer's last filters. Dashboard links with query params win.
+    if (!this.isOfficer) {
+      return;
+    }
+    const query = this.route.snapshot.queryParamMap;
+    if (QUEUE_FILTER_KEYS.some((key) => query.has(key))) {
+      return;
+    }
+    const userId = this.identity.user()?.id;
+    const saved = userId ? readQueueFilters(userId) : null;
+    if (saved) {
+      void this.navigate(saved);
+    }
+  }
   /** True when a filter narrows the queue, such as after opening it from a dashboard total. */
   protected readonly hasFilters = computed(
     () => !!(this.status() || this.type() || this.assignedTo()),
@@ -317,5 +383,36 @@ export class ClaimsList {
       queryParamsHandling: 'merge',
       replaceUrl: true,
     });
+    this.persistQueueFilters(queryParams);
+  }
+
+  private persistQueueFilters(update: Params): void {
+    if (!this.isOfficer) {
+      return;
+    }
+    const userId = this.identity.user()?.id;
+    if (!userId) {
+      return;
+    }
+    const current: Record<(typeof QUEUE_FILTER_KEYS)[number], string> = {
+      status: this.status(),
+      type: this.type(),
+      assignedTo: this.assignedTo(),
+      sort: this.sort() === 'submittedAt' ? '' : this.sort(),
+    };
+    const stored: Record<string, string> = {};
+    for (const key of QUEUE_FILTER_KEYS) {
+      const next =
+        key in update ? ((update[key] as string | null) ?? '') : current[key];
+      if (next) {
+        stored[key] = next;
+      }
+    }
+    const storageKey = queueFilterStorageKey(userId);
+    if (Object.keys(stored).length) {
+      localStorage.setItem(storageKey, JSON.stringify(stored));
+    } else {
+      localStorage.removeItem(storageKey);
+    }
   }
 }

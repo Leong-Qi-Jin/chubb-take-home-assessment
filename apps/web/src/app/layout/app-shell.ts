@@ -168,7 +168,11 @@ export class AppShell {
     return ROLE_ROUTES[this.identity.role() ?? 'claimant'].home;
   }
   protected switchUser(id: string): void {
+    const previousRole = this.identity.role();
     this.identity.select(id);
-    void this.router.navigateByUrl(this.homeLink());
+    // Same-role switches stay on the current page so queue filters and open claims remain. A role change has to leave: the other role's routes are guarded.
+    if (this.identity.role() !== previousRole) {
+      void this.router.navigateByUrl(this.homeLink());
+    }
   }
 }

@@ -17,7 +17,7 @@ API paths are relative to `/api/v1`.
 | My claims | `/my-claims` | Claimant | The caller's claims, newest first. | `GET /claims` |
 | Submit claim | `/my-claims/new` | Claimant | Motor or property claim form. | `POST /claims` |
 | Claim (claimant) | `/my-claims/:reference` | Claimant | Details, status, decision, history, and a reply form for the open information request. | `GET /claims/{reference}`, `GET /claims/{reference}/history`, `POST /claims/{reference}/information-requests/{requestId}/response` |
-| Work queue | `/queue` | Officer | Undecided claims, oldest first. Filter and sort controls are should-haves. | `GET /claims` |
+| Work queue | `/queue` | Officer | Open claims by default, oldest first. Status, type, ownership, and sort persist in the browser per officer. | `GET /claims` |
 | Claim (staff) | `/queue/:reference` | Officer | Details, estimate, history, and the actions below. | `GET /claims/{reference}`, `GET /claims/{reference}/history`, the action endpoints |
 
 `/` redirects to the selected user's home screen: Dashboard for officers, My claims for claimants. Each route is guarded by role.
@@ -26,7 +26,7 @@ List screens are paginated and keep the page and page size in the URL.
 
 ### User switcher
 
-For the MVP, a switcher in the header picks a seeded claimant or active officer in place of production sign-in. Switching users opens that user's home screen.
+For the MVP, a switcher in the header picks a seeded claimant or active officer in place of production sign-in. Switching to another user of the same role keeps the current page; a role change opens that role's home screen.
 
 The seeded users come from frontend configuration, because the API does not list them. The submit form loads the allowed currencies from `GET /currencies`.
 
@@ -104,3 +104,4 @@ flowchart LR
 - File uploads on the submit and reply forms.
 - Live updates; the user refreshes the screen.
 - Tooltips explaining why a button is disabled.
+- Reference search and further queue filters: currency, date or amount range, estimate presence, and policy number.

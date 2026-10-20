@@ -40,18 +40,15 @@ One SPA, one backend, and one database. No Kafka or service split.
 
 ### Build
 
-- [ ] Implement database persistence, migrations, and development seed data.
+- [x] Implement database persistence, migrations, and development seed data.
 - [ ] Build the prioritised backend features.
 - [ ] Build the matching frontend features.
-- [ ] Add automated tests alongside each feature.
-- [ ] Add end-to-end coverage for critical journeys.
+- [ ] Add tests alongside each feature, with end-to-end coverage for critical journeys.
 
 ### Verify and deliver
 
 - [ ] Complete the README and supporting documentation.
-- [ ] Verify clean setup and one-command startup.
-- [ ] Verify the production builds.
-- [ ] Run all quality checks and tests.
+- [ ] Verify clean setup, one-command startup, production builds, and all checks.
 - [ ] Review the delivered scope and trade-offs.
 - [ ] Prepare the walkthrough.
 
@@ -78,7 +75,7 @@ One SPA, one backend, and one database. No Kafka or service split.
 - A polished, responsive, and accessible UI.
 - Broader component and end-to-end test coverage.
 
-### Deferred
+### Won't have
 
 - Production authentication.
 - File uploads.

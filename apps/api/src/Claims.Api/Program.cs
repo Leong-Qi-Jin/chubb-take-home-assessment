@@ -1,41 +1,32 @@
+using Claims.Api.Infrastructure.Persistence;
+using Claims.Api.Infrastructure.Persistence.Seeding;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddDbContext<ClaimsDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("ClaimsDatabase"),
+        sqlServerOptions => sqlServerOptions.UseCompatibilityLevel(170)));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    await using var scope = app.Services.CreateAsyncScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<ClaimsDbContext>();
+    await dbContext.Database.MigrateAsync();
+    await DatabaseCompatibility.EnsureLevel170Async(dbContext);
+
+    if (app.Configuration.GetValue("SeedData:Enabled", true))
+    {
+        await DevelopmentDataSeeder.SeedAsync(dbContext);
+    }
 }
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
-
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

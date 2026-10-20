@@ -129,3 +129,10 @@ Format per entry: prompt, what the AI did, decision (accepted / challenged / ove
 - **AI:** Updated the plan and design documents.
 - **Decision:** Replaced CI with pre-commit hooks.
 - **Reasoning:** Keep the take-home assessment focused on the MVP.
+
+### 19. Database persistence and ERD
+
+- **Prompts:** Implement database persistence, migrations, and development seed data. Have a subagent review the changes for readiness for the next plan step, document the work temporarily, and add an ERD that can be regenerated from the database.
+- **AI:** Added the EF Core model, initial migration, Development startup migration and repeatable seed data, plus focused model and seed tests. Addressed review findings covering claimant pagination, culture-safe JSON, SQL Server compatibility, partial-seed recovery, and dataset coverage. Added an isolated Node.js tool that reads the live SQL Server catalog and inserts the resulting Mermaid diagram into a maintained Markdown template. A final review caught migration drift; the migration and ERD were regenerated and verified against a fresh database.
+- **Decision:** Ensure the seed data supports the next `PLAN.md` step. Use Node.js for ERD generation, generate the Markdown through a template, and keep the generated ERD under `docs/generated` rather than `docs/design`.
+- **Reasoning:** Make local development immediately usable with representative workflow data, while keeping the checked-in schema reference reproducible and aligned with the migrated database.

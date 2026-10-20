@@ -27,7 +27,9 @@ From the repository root:
 
 ```sh
 npm --prefix apps/web ci
+npm --prefix tools/database-erd ci
 dotnet restore Claims.slnx
+dotnet tool restore
 ```
 
 ## Run SQL Server
@@ -54,6 +56,8 @@ dotnet run --launch-profile https --project apps/api/src/Claims.Api
 
 The API runs at <https://localhost:5001> and redirects HTTP requests from <http://localhost:5000>.
 
+In Development, startup applies migrations and seeds [demo data](docs/development-seed-data.md). Set `SeedData__Enabled=false` to skip seeding.
+
 In a second terminal, select the pinned Node.js version and start the SPA:
 
 ```sh
@@ -62,3 +66,11 @@ npm --prefix apps/web start
 ```
 
 Open <http://localhost:4200>.
+
+## Generate the database ERD
+
+With the local environment loaded and the database migrated, regenerate [the ERD](docs/generated/database-erd.md):
+
+```sh
+npm --prefix tools/database-erd run generate
+```

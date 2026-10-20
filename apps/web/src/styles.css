@@ -1,3 +1,1457 @@
-/* You can add global styles to this file, and also import other style files */
-
+@import '@angular/material/prebuilt-themes/azure-blue.css';
 @import 'tailwindcss';
+
+/* Design tokens, following chubb.com: Lato text, serif headlines, black type and buttons, square corners, and Chubb palette accents. Every colour is a Chubb palette colour or is mixed from one: tints mix the hue with white, text shades mix it with black until it meets WCAG AA on its tint. */
+:root {
+  --font-sans:
+    'Lato', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
+    Arial, sans-serif;
+  /* Chubb uses Publico Headline, a licensed face; Source Serif 4 is the closest open alternative. */
+  --font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+
+  /* Chubb palette */
+  --chubb-blue: #150f96;
+  --chubb-cyan: #01c1d6;
+  --chubb-orange: #ff6600;
+  --chubb-purple: #6e27c5;
+  --chubb-green: #7acb00;
+  --chubb-red: #f1352b;
+  --chubb-yellow: #ffb617;
+  --chubb-grey: #afafaf;
+
+  /* Brand roles */
+  --navy: var(--chubb-blue);
+  --navy-dark: color-mix(in srgb, var(--chubb-blue) 60%, black);
+  --navy-tint: color-mix(in srgb, var(--chubb-blue) 8%, white);
+  --navy-tint-strong: color-mix(in srgb, var(--chubb-blue) 16%, white);
+  --cyan: var(--chubb-cyan);
+  --purple-tint: color-mix(in srgb, var(--chubb-purple) 10%, white);
+
+  /* Neutrals, mixed from Chubb blue (ink) and Chubb grey (text, lines, canvas) */
+  --ink: #000;
+  --muted: color-mix(in srgb, var(--chubb-grey) 52%, black);
+  --line: color-mix(in srgb, var(--chubb-grey) 28%, white);
+  --line-strong: color-mix(in srgb, var(--chubb-grey) 60%, white);
+  --canvas: color-mix(in srgb, var(--chubb-grey) 9%, white);
+  --surface: #fff;
+
+  /* Type scale */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2.5rem;
+  --text-metric: 2.5rem;
+
+  /* Icon sizes: inline with text, inside buttons, and inside tiles */
+  --icon-sm: 1rem;
+  --icon-md: 1.125rem;
+  --icon-lg: 1.375rem;
+
+  /* Shape: Chubb's interface is square, so every radius is zero; the tokens stay so controls, panels, and surfaces can diverge later. Circles are reserved for avatars, step numbers, and timeline and status dots. */
+  /* Lengths, not unitless zeros: Material uses these inside max() for field padding, where a bare 0 would be invalid. */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --shadow-surface:
+    0 0.0625rem 0.125rem rgb(20 19 43 / 0.04),
+    0 0.5rem 1.5rem rgb(20 19 43 / 0.04);
+  --shadow-overlay: 0 0.75rem 2rem rgb(20 19 43 / 0.16);
+
+  /* Layout: the header, page, and footer share one content edge. */
+  --content-width: 72rem;
+  --gutter: clamp(1.25rem, 5vw, 3rem);
+  --page-inline: max(var(--gutter), calc((100% - var(--content-width)) / 2));
+
+  /* Material system colours mapped to the Chubb palette so no default Azure theme colours remain. */
+  --mat-sys-primary: var(--navy);
+  --mat-sys-on-primary: #fff;
+  --mat-sys-primary-container: var(--navy-tint);
+  --mat-sys-on-primary-container: var(--navy-dark);
+  --mat-sys-inverse-primary: var(--cyan);
+  --mat-sys-secondary: var(--navy);
+  --mat-sys-on-secondary: #fff;
+  --mat-sys-secondary-container: var(--navy-tint);
+  --mat-sys-on-secondary-container: var(--navy-dark);
+  --mat-sys-tertiary: var(--chubb-purple);
+  --mat-sys-on-tertiary: #fff;
+  --mat-sys-tertiary-container: var(--purple-tint);
+  --mat-sys-on-tertiary-container: color-mix(
+    in srgb,
+    var(--chubb-purple) 60%,
+    black
+  );
+  --mat-sys-error: color-mix(in srgb, var(--chubb-red) 80%, black);
+  --mat-sys-on-error: #fff;
+  --mat-sys-error-container: color-mix(in srgb, var(--chubb-red) 10%, white);
+  --mat-sys-on-error-container: color-mix(in srgb, var(--chubb-red) 55%, black);
+  --mat-sys-background: var(--canvas);
+  --mat-sys-on-background: var(--ink);
+  --mat-sys-surface: var(--surface);
+  --mat-sys-surface-bright: var(--surface);
+  --mat-sys-surface-dim: color-mix(in srgb, var(--chubb-grey) 20%, white);
+  --mat-sys-surface-tint: var(--navy);
+  --mat-sys-surface-variant: color-mix(in srgb, var(--chubb-grey) 12%, white);
+  --mat-sys-surface-container-lowest: #fff;
+  --mat-sys-surface-container-low: color-mix(
+    in srgb,
+    var(--chubb-grey) 5%,
+    white
+  );
+  --mat-sys-surface-container: color-mix(in srgb, var(--chubb-grey) 8%, white);
+  --mat-sys-surface-container-high: color-mix(
+    in srgb,
+    var(--chubb-grey) 11%,
+    white
+  );
+  --mat-sys-surface-container-highest: color-mix(
+    in srgb,
+    var(--chubb-grey) 14%,
+    white
+  );
+  --mat-sys-on-surface: var(--ink);
+  --mat-sys-on-surface-variant: var(--muted);
+  --mat-sys-outline: var(--line-strong);
+  --mat-sys-outline-variant: var(--line);
+  --mat-sys-inverse-surface: var(--ink);
+  --mat-sys-inverse-on-surface: #fff;
+  --mat-sys-shadow: var(--ink);
+  --mat-sys-scrim: var(--ink);
+
+  --mat-sys-body-large-font: var(--font-sans);
+  --mat-sys-body-medium-font: var(--font-sans);
+  --mat-sys-body-small-font: var(--font-sans);
+  --mat-sys-label-large-font: var(--font-sans);
+  --mat-sys-label-medium-font: var(--font-sans);
+  --mat-sys-label-small-font: var(--font-sans);
+  --mat-sys-title-large-font: var(--font-sans);
+  --mat-sys-title-medium-font: var(--font-sans);
+  --mat-sys-title-small-font: var(--font-sans);
+  --mat-sys-headline-large-font: var(--font-sans);
+  --mat-sys-headline-medium-font: var(--font-sans);
+  --mat-sys-headline-small-font: var(--font-sans);
+  --mat-sys-display-large-font: var(--font-sans);
+  --mat-sys-display-medium-font: var(--font-sans);
+  --mat-sys-display-small-font: var(--font-sans);
+  --mat-sys-label-large-tracking: 0;
+  /* Lato ships 300, 400, and 700 here, so emphasis uses 700. */
+  --mat-sys-label-large-weight-prominent: 700;
+  --mat-sys-body-large-tracking: 0;
+  --mat-sys-body-medium-tracking: 0;
+  --mat-sys-body-small-tracking: 0;
+
+  /* Button variants. Use only these three Material appearances: matButton="filled" for the primary action, "outlined" for secondary actions, and "text" for low-emphasis actions and navigation. Add the "danger" class for destructive actions. */
+  --mat-button-filled-container-shape: var(--radius-sm);
+  --mat-button-outlined-container-shape: var(--radius-sm);
+  --mat-button-text-container-shape: var(--radius-sm);
+  --mat-button-filled-container-height: 2.75rem;
+  --mat-button-outlined-container-height: 2.75rem;
+  --mat-button-text-container-height: 2.75rem;
+  --mat-button-filled-horizontal-padding: 1.5rem;
+  --mat-button-outlined-horizontal-padding: 1.5rem;
+  --mat-button-text-horizontal-padding: 0.875rem;
+  --mat-button-filled-container-color: var(--ink);
+  --mat-button-filled-label-text-color: #fff;
+  --mat-button-filled-label-text-weight: 700;
+  --mat-button-outlined-label-text-weight: 700;
+  --mat-button-text-label-text-weight: 700;
+  --mat-button-filled-label-text-size: var(--text-sm);
+  --mat-button-outlined-label-text-size: var(--text-sm);
+  --mat-button-text-label-text-size: var(--text-sm);
+  --mat-button-outlined-outline-color: var(--ink);
+  --mat-button-outlined-label-text-color: var(--ink);
+  --mat-button-text-label-text-color: var(--ink);
+
+  /* Form fields and menus */
+  --mat-form-field-outlined-container-shape: var(--radius-sm);
+  --mat-form-field-outlined-outline-color: var(--line-strong);
+  --mat-form-field-outlined-hover-outline-color: var(--muted);
+  --mat-form-field-outlined-focus-outline-color: var(--navy);
+  --mat-form-field-outlined-focus-label-text-color: var(--navy);
+  --mat-form-field-outlined-label-text-color: var(--muted);
+  --mat-form-field-container-text-size: var(--text-md);
+  --mat-form-field-outlined-label-text-size: var(--text-md);
+  --mat-form-field-subscript-text-size: var(--text-xs);
+  --mat-form-field-container-height: 3rem;
+  --mat-form-field-container-vertical-padding: 0.75rem;
+  --mat-form-field-focus-select-arrow-color: var(--navy);
+  --mat-select-trigger-text-size: var(--text-md);
+  --mat-select-panel-background-color: var(--surface);
+  --mat-select-container-elevation-shadow: var(--shadow-overlay);
+  --mat-option-label-text-size: var(--text-sm);
+  --mat-option-label-text-color: var(--ink);
+  --mat-option-hover-state-layer-color: rgb(21 15 150 / 0.06);
+  --mat-option-focus-state-layer-color: rgb(21 15 150 / 0.08);
+  --mat-option-selected-state-layer-color: var(--navy-tint);
+  --mat-option-selected-state-label-text-color: var(--navy);
+  --mat-radio-selected-icon-color: var(--navy);
+  --mat-radio-selected-hover-icon-color: var(--navy);
+  --mat-radio-selected-focus-icon-color: var(--navy);
+  --mat-radio-selected-pressed-icon-color: var(--navy);
+  --mat-radio-checked-ripple-color: var(--navy);
+  --mat-datepicker-calendar-container-shape: var(--radius-md);
+  --mat-datepicker-calendar-container-elevation-shadow: var(--shadow-overlay);
+  --mat-datepicker-calendar-container-background-color: var(--surface);
+  --mat-datepicker-calendar-container-text-color: var(--ink);
+  --mat-datepicker-calendar-text-font: var(--font-sans);
+  --mat-datepicker-calendar-header-text-color: var(--muted);
+  --mat-datepicker-calendar-header-divider-color: var(--line);
+  --mat-datepicker-calendar-period-button-text-color: var(--ink);
+  --mat-datepicker-calendar-navigation-button-icon-color: var(--navy);
+  --mat-datepicker-calendar-date-text-color: var(--ink);
+  --mat-datepicker-calendar-date-selected-state-background-color: var(--navy);
+  --mat-datepicker-calendar-date-selected-state-text-color: #fff;
+  --mat-datepicker-calendar-date-today-outline-color: var(--navy);
+  --mat-datepicker-calendar-date-hover-state-background-color: rgb(
+    21 15 150 / 0.06
+  );
+  --mat-datepicker-calendar-date-focus-state-background-color: rgb(
+    21 15 150 / 0.08
+  );
+  --mat-datepicker-toggle-icon-color: var(--muted);
+  --mat-datepicker-toggle-active-state-icon-color: var(--navy);
+  --mat-timepicker-container-shape: var(--radius-md);
+  --mat-timepicker-container-elevation-shadow: var(--shadow-overlay);
+  --mat-timepicker-container-background-color: var(--surface);
+  --mat-progress-spinner-active-indicator-color: var(--navy);
+  --mat-divider-color: var(--line);
+  --mat-dialog-container-shape: var(--radius-lg);
+  --mat-dialog-subhead-font: var(--font-serif);
+  --mat-dialog-subhead-weight: 400;
+  --mat-dialog-supporting-text-font: var(--font-sans);
+  --mat-dialog-supporting-text-color: var(--ink);
+  --mat-paginator-container-background-color: transparent;
+  --mat-paginator-container-text-color: var(--muted);
+  --mat-paginator-container-text-size: var(--text-sm);
+  --mat-paginator-select-trigger-text-size: var(--text-sm);
+
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: var(--canvas);
+  font-synthesis: none;
+}
+
+/* Tones shared by badges and alerts. Text shades are the darkest mix that keeps AA contrast on the tint. */
+[data-tone='brand'] {
+  --tone-fg: var(--navy);
+  --tone-bg: var(--navy-tint);
+  --tone-border: var(--navy-tint-strong);
+}
+[data-tone='info'] {
+  --tone-fg: color-mix(in srgb, var(--chubb-cyan) 60%, black);
+  --tone-bg: color-mix(in srgb, var(--chubb-cyan) 12%, white);
+  --tone-border: color-mix(in srgb, var(--chubb-cyan) 35%, white);
+}
+[data-tone='warning'] {
+  --tone-fg: color-mix(in srgb, var(--chubb-orange) 70%, black);
+  --tone-bg: color-mix(in srgb, var(--chubb-orange) 10%, white);
+  --tone-border: color-mix(in srgb, var(--chubb-orange) 30%, white);
+}
+[data-tone='success'] {
+  --tone-fg: color-mix(in srgb, var(--chubb-green) 55%, black);
+  --tone-bg: color-mix(in srgb, var(--chubb-green) 12%, white);
+  --tone-border: color-mix(in srgb, var(--chubb-green) 40%, white);
+}
+[data-tone='danger'] {
+  --tone-fg: color-mix(in srgb, var(--chubb-red) 80%, black);
+  --tone-bg: color-mix(in srgb, var(--chubb-red) 9%, white);
+  --tone-border: color-mix(in srgb, var(--chubb-red) 30%, white);
+}
+[data-tone='neutral'] {
+  --tone-fg: var(--muted);
+  --tone-bg: color-mix(in srgb, var(--chubb-grey) 16%, white);
+  --tone-border: var(--line-strong);
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-width: 20rem;
+  min-height: 100vh;
+  background: var(--canvas);
+  font-family: inherit;
+  font-size: var(--text-md);
+  line-height: 1.5;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+:focus-visible {
+  outline: 0.125rem solid var(--cyan);
+  outline-offset: 0.125rem;
+}
+/* Keep focused elements clear of the sticky header (and the mobile bottom nav below) when the browser scrolls them into view. */
+html {
+  scroll-padding-top: 5.5rem;
+}
+/* The main region receives focus programmatically after navigation; it is not an interactive control, so it shows no ring. */
+main:focus {
+  outline: none;
+}
+.skip-link {
+  position: absolute;
+  z-index: 20;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  color: var(--navy);
+  background: #fff;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+.skip-link:focus {
+  transform: none;
+  box-shadow: var(--shadow-overlay);
+}
+a {
+  color: inherit;
+}
+
+/* Typography. Tailwind preflight resets heading sizes and weights, so every level is set explicitly. */
+h1,
+h2,
+h3,
+p {
+  margin-block: 0;
+}
+/* Headlines use the serif at regular weight, as on chubb.com; smaller headings stay in Lato bold. */
+h1,
+h2,
+.metric-card strong,
+.liability-list strong,
+.decision-amount {
+  font-family: var(--font-serif);
+  /* The serif defaults to old-style figures, which make references and amounts uneven. */
+  font-variant-numeric: lining-nums tabular-nums;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+h1 {
+  font-size: var(--text-2xl);
+  line-height: 1.15;
+}
+h2 {
+  font-size: var(--text-xl);
+  line-height: 1.25;
+}
+h3 {
+  font-size: var(--text-md);
+  font-weight: 700;
+}
+p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+.eyebrow {
+  display: block;
+  margin-bottom: 0.375rem;
+  color: var(--navy);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Icons */
+.icon {
+  display: inline-flex;
+  width: var(--icon-size, var(--icon-md));
+  height: var(--icon-size, var(--icon-md));
+  flex-shrink: 0;
+}
+.icon ng-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/* Material's icon buttons (such as the date and time picker toggles) force any SVG inside them to 24px; our icons always fill their own box. */
+.icon ng-icon svg {
+  width: 100%;
+  height: 100%;
+}
+/* Hover and keyboard focus follow chubb.com: filled and outlined buttons turn Chubb purple with an underlined label, replacing Material's grey state layer. Destructive buttons keep their red. */
+:root {
+  --mat-button-filled-hover-state-layer-opacity: 0;
+  --mat-button-outlined-hover-state-layer-opacity: 0;
+  --mat-button-filled-focus-state-layer-opacity: 0;
+  --mat-button-outlined-focus-state-layer-opacity: 0;
+}
+:is(.mat-mdc-unelevated-button, .mat-mdc-outlined-button:not(.danger)):not(
+    :disabled
+  ):is(:hover, :focus-visible) {
+  --mat-button-filled-container-color: var(--chubb-purple);
+  --mat-button-outlined-label-text-color: #fff;
+  --mat-button-outlined-outline-color: var(--chubb-purple);
+  background-color: var(--chubb-purple);
+}
+.mat-mdc-button-base:focus-visible {
+  outline: 0.125rem solid var(--cyan);
+  outline-offset: 0.125rem;
+}
+.mat-mdc-button-base:not(:disabled):is(:hover, :focus-visible)
+  .mdc-button__label {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+/* Icons sit left of button labels with a consistent gap. */
+.mat-mdc-button-base .mdc-button__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+.mat-mdc-button-base .icon {
+  --icon-size: var(--icon-md);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  width: max-content;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  color: var(--tone-fg);
+  background: var(--tone-bg);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Alerts */
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 1rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--tone-border);
+  border-radius: var(--radius-md);
+  color: var(--tone-fg);
+  background: var(--tone-bg);
+  font-size: var(--text-sm);
+}
+.alert .icon {
+  --icon-size: var(--icon-md);
+}
+.alert strong {
+  margin-right: 0.25rem;
+}
+/* A message that sits beside an inline action takes the remaining width and pushes the action to the end. */
+.alert-message {
+  flex: 1;
+}
+.alert .mat-mdc-button-base {
+  --mat-button-text-label-text-color: var(--tone-fg);
+  --mat-button-text-state-layer-color: var(--tone-fg);
+  --mat-button-text-container-height: 2rem;
+}
+
+/* Shell */
+.app-header {
+  position: sticky;
+  z-index: 10;
+  top: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+  min-height: 4.5rem;
+  padding: 0 var(--page-inline);
+  color: var(--ink);
+  border-bottom: 1px solid var(--line-strong);
+  background: var(--surface);
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  width: max-content;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+.brand-mark {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  background: var(--navy);
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  font-weight: 700;
+}
+.brand-muted {
+  color: var(--navy);
+}
+/* Navigation items run the full header height, so the current page's black block reaches both edges. */
+.app-header nav {
+  display: flex;
+  align-self: stretch;
+}
+.app-header nav a {
+  height: auto;
+  --mat-button-text-container-height: 100%;
+}
+/* Navigation follows chubb.com: black bold links whose text underlines on hover (like every button), with the current page as a solid black block. */
+.app-header nav a {
+  --mat-button-text-label-text-color: var(--ink);
+  --mat-button-text-state-layer-color: var(--ink);
+  --mat-button-text-hover-state-layer-opacity: 0;
+}
+.app-header nav a.active {
+  --mat-button-text-label-text-color: #fff;
+  --mat-button-text-state-layer-color: #fff;
+  background: var(--ink);
+}
+
+/* Role switcher: a compact control in the header. */
+.user-switcher {
+  justify-self: end;
+}
+.user-switcher .mat-mdc-form-field {
+  width: 12.5rem;
+  --mat-form-field-container-height: 2.5rem;
+  --mat-form-field-container-vertical-padding: 0.5rem;
+  --mat-form-field-outlined-focus-outline-width: 0.0625rem;
+  --mat-select-trigger-text-size: var(--text-sm);
+}
+.user-switcher .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+.user-switcher .option-meta {
+  margin-left: 0.5rem;
+  color: var(--muted);
+  font-size: var(--text-xs);
+  text-transform: capitalize;
+}
+
+/* Select panels and triggers. Panels use the menu radius on every corner, float just below the field, and keep labels on one line. */
+.mat-mdc-select-value,
+.mat-mdc-select-value-text,
+.mat-mdc-select-min-line,
+:is(div.mat-mdc-select-panel, .mat-timepicker-panel)
+  .mat-mdc-option
+  .mdc-list-item__primary-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Select, time picker, and date picker popups share the menu radius, border, and option rows. */
+div.mat-mdc-select-panel,
+.mat-timepicker-panel,
+.mat-datepicker-content {
+  margin-block: 0.25rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md) !important;
+}
+div.mat-mdc-select-panel,
+.mat-timepicker-panel {
+  padding: 0.375rem;
+}
+:is(div.mat-mdc-select-panel, .mat-timepicker-panel) .mat-mdc-option {
+  min-height: 2.5rem;
+  border-radius: var(--radius-sm);
+}
+/* The period button already names the month, so the month view's repeated label in the leading empty cells is hidden. */
+.mat-month-view .mat-calendar-body-label {
+  visibility: hidden;
+}
+/* Calendar days use the control radius instead of Material's circles, matching option rows. */
+.mat-calendar-body-cell-content,
+.mat-calendar-body-cell::before,
+.mat-calendar-body-cell::after {
+  border-radius: var(--radius-sm) !important;
+}
+:is(div.mat-mdc-select-panel, .mat-timepicker-panel)
+  .mat-mdc-option.mdc-list-item--selected {
+  font-weight: 700;
+}
+div.mat-mdc-select-panel .mat-mdc-optgroup-label {
+  min-height: 2rem;
+  color: var(--muted);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+div.mat-mdc-select-panel .mat-mdc-optgroup-label .mdc-list-item__primary-text {
+  font-size: inherit;
+}
+.user-switcher-panel .mat-mdc-option {
+  padding-left: 1rem;
+}
+
+/* The shell fills the viewport and the main region takes the remaining height, so short pages keep the footer at the bottom without scrolling. */
+app-shell {
+  display: flex;
+  min-height: 100dvh;
+  flex-direction: column;
+}
+.page-shell {
+  flex: 1;
+  padding: 2.5rem var(--page-inline) 3.5rem;
+}
+.app-footer {
+  padding: 1.5rem var(--page-inline);
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  text-align: center;
+  font-size: var(--text-xs);
+}
+
+/* Page structure */
+.page-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.page-heading p {
+  margin-top: 0.5rem;
+  font-size: var(--text-md);
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  width: max-content;
+  min-height: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--navy);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-decoration: none;
+}
+.back-link .icon {
+  --icon-size: var(--icon-sm);
+}
+.back-link:hover {
+  text-decoration: underline;
+}
+.surface {
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-surface);
+}
+.section-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.section-heading p {
+  margin-top: 0.25rem;
+  font-size: var(--text-sm);
+}
+
+/* Dashboard */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.surface.metric-card {
+  display: flex;
+  min-height: 8.5rem;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem;
+}
+/* Labels reserve two lines so every metric number sits on the same baseline. */
+.metric-card > span {
+  min-height: 2.6em;
+  color: var(--muted);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  line-height: 1.3;
+}
+/* A tone dot beside plain text marks the status without a badge box, so long labels wrap like normal text. */
+.metric-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+/* Centred on the first line of the label, so it stays put when the label wraps. */
+.status-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  flex-shrink: 0;
+  margin-top: calc((1.3em - 0.5rem) / 2);
+  border-radius: 50%;
+  background: var(--tone-fg);
+}
+.metric-card small {
+  margin-top: auto;
+  color: var(--muted);
+  font-size: var(--text-xs);
+}
+/* Headline figures use the serif, like chubb.com's large type. */
+.metric-card strong {
+  font-size: var(--text-metric);
+  line-height: 1;
+}
+/* Metric cards are links into the filtered queue and use Chubb purple on hover, the same hover colour as buttons. */
+a.metric-card {
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+/* White cards take a light purple tint so the status dots stay readable; a full purple fill is reserved for the filled blue card. */
+a.metric-card:hover {
+  border-color: color-mix(in srgb, var(--chubb-purple) 40%, white);
+  background: var(--purple-tint);
+}
+/* The blue "My open claims" card is a filled element, so it behaves like a filled button: its fill turns Chubb purple on hover. */
+a.metric-card.accent:hover {
+  border-color: var(--chubb-purple);
+  background: var(--chubb-purple);
+}
+.metric-card.accent {
+  color: #fff;
+  border-color: var(--navy);
+  background: var(--navy);
+}
+.metric-card.accent > span,
+.metric-card.accent small {
+  color: rgb(255 255 255 / 0.78);
+}
+/* Equal two-column layouts. */
+.dashboard-grid,
+.liability-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1rem;
+}
+.liability-list div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 1.25rem;
+  border-radius: var(--radius-md);
+  background: var(--navy-tint);
+}
+.liability-list span {
+  color: var(--navy);
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+.liability-list strong {
+  font-size: var(--text-xl);
+}
+.workload-list {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.workload-row:hover .workload-officer {
+  text-decoration: underline;
+}
+.workload-row {
+  color: inherit;
+  text-decoration: none;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 0.75rem;
+  row-gap: 0.375rem;
+  padding-block: 0.25rem;
+  font-size: var(--text-sm);
+}
+.workload-row .avatar {
+  grid-row: 1 / span 2;
+}
+.workload-name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.workload-list strong {
+  font-weight: 700;
+}
+/* Single series, so one brand hue; the bar is square like every other shape in the system. */
+.workload-bar {
+  grid-column: 2 / -1;
+  height: 0.5rem;
+}
+.workload-bar span {
+  display: block;
+  min-width: 0.25rem;
+  height: 100%;
+  border-radius: var(--radius-sm);
+  background: var(--navy);
+}
+.icon-tile.avatar {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+/* Claim lists */
+.surface.filter-bar {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+.surface.list-surface {
+  padding: 0;
+  overflow: hidden;
+}
+.list-meta {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.875rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+.list-count {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.list-meta {
+  align-items: center;
+}
+.list-meta .mat-mdc-button-base {
+  --mat-button-text-container-height: 2rem;
+  --mat-button-text-horizontal-padding: 0.5rem;
+}
+.list-meta strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+/* Claimant rows: icon, claim, status, date/estimate, arrow. Officer rows add an owner column. */
+.claim-row {
+  display: grid;
+  grid-template-columns:
+    auto minmax(0, 2fr) minmax(0, 1.2fr) minmax(0, 1fr)
+    auto;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+.claim-row.officer {
+  grid-template-columns:
+    auto minmax(0, 2fr) minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr)
+    auto;
+}
+.claim-row:last-of-type {
+  border-bottom: 0;
+}
+.claim-row:hover {
+  background: color-mix(in srgb, var(--chubb-blue) 3%, white);
+}
+.list-surface .mat-mdc-paginator {
+  border-top: 1px solid var(--line);
+}
+/* Tinted square holding an icon or initial: claim types, empty and error states, and avatars (which are round). */
+.icon-tile {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: var(--radius-md);
+  color: var(--navy);
+  background: var(--navy-tint);
+  --icon-size: var(--icon-lg);
+}
+.claim-type-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.claim-type-icon.property {
+  color: var(--chubb-purple);
+  background: var(--purple-tint);
+}
+.claim-primary,
+.claim-detail {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+.claim-primary strong {
+  font-size: var(--text-md);
+  font-weight: 700;
+}
+.claim-detail {
+  font-size: var(--text-sm);
+}
+.claim-primary span,
+.claim-detail small {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: var(--text-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.row-arrow {
+  --icon-size: var(--icon-md);
+  justify-self: end;
+  color: var(--muted);
+  transition:
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+.claim-row:hover .row-arrow {
+  color: var(--navy);
+  transform: translateX(0.125rem);
+}
+.empty-list {
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+  padding: 4rem 1.5rem;
+  text-align: center;
+}
+.empty-icon,
+.state-icon {
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Forms */
+/* The form keeps a readable width and is centred under the full-width header. */
+app-submit-claim {
+  display: grid;
+  grid-template-columns: minmax(0, 50rem);
+  justify-content: center;
+}
+.form-layout {
+  display: grid;
+  gap: 1rem;
+}
+.form-section {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 1.25rem;
+}
+.form-section > :not(.step-number) {
+  grid-column: 2;
+}
+.step-number {
+  display: grid;
+  grid-row: 1 / span 3;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--navy);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+.choice-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+/* The padding lives inside Material's label, which fills the card, so the whole card is clickable rather than just the circle and text. */
+.choice-cards mat-radio-button {
+  display: flex;
+  cursor: pointer;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+/* Hovering anywhere on a card shows the radio's own hover halo, which Material otherwise shows only over the circle. */
+.choice-cards
+  mat-radio-button:hover
+  .mdc-radio__native-control:not([disabled]):not(:focus)
+  ~ .mdc-radio__background::before {
+  opacity: 0.04;
+  transform: scale(1);
+}
+/* Unselected cards darken on hover like field outlines; the selected card keeps its brand border. */
+.choice-cards mat-radio-button:not(.mat-mdc-radio-checked):hover {
+  border-color: var(--muted);
+}
+.choice-cards mat-radio-button.mat-mdc-radio-checked {
+  border-color: var(--navy);
+  background: var(--navy-tint);
+}
+/* In Material 22 the whole radio, circle and text, is one <label> element. */
+.choice-cards .mdc-form-field {
+  flex: 1;
+  padding: 0.75rem 1rem 0.75rem 0.5rem;
+  cursor: pointer;
+}
+/* Own classes rather than tag selectors, so these styles never reach the spans inside Material's radio (which offset its focus ring). */
+.choice-title,
+.choice-description {
+  display: block;
+}
+.choice-title {
+  color: var(--ink);
+  font-size: var(--text-md);
+  font-weight: 700;
+}
+.choice-description {
+  margin-top: 0.125rem;
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 0.25rem 1rem;
+}
+.field-grid .full,
+.full-width {
+  width: 100%;
+  grid-column: 1 / -1;
+}
+/* Text areas grow with their content (cdkTextareaAutosize) without a maximum, so they never scroll internally and need no resize handle. */
+textarea.mat-mdc-input-element {
+  overflow: hidden;
+  resize: none;
+}
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+/* Claim details */
+/* The badge sits on the title's first-line baseline, so it stays with the first line when a long title wraps. */
+.title-line {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 21rem;
+  align-items: start;
+  gap: 1rem;
+}
+.detail-main,
+.detail-side {
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+}
+.detail-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 1.25rem 2rem;
+  margin: 0;
+}
+/* A label stacked above its value. */
+.detail-list div,
+.summary-card dl div,
+.decision-details div,
+.message {
+  display: grid;
+  align-content: start;
+  gap: 0.25rem;
+}
+.detail-list .full {
+  grid-column: 1 / -1;
+}
+/* Every label above a value (details lists, decision details, and request messages) shares one style. */
+dt,
+.message-label {
+  color: var(--muted);
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+dd {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: var(--text-sm);
+}
+/* These cards space their children with a flex gap, so their section headers drop the usual bottom margin. */
+.summary-card .section-heading,
+.action-panel .section-heading {
+  margin-bottom: 0.25rem;
+}
+/* The taller box meets the 24px minimum touch target. */
+.summary-card a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.75rem;
+  color: var(--navy);
+  overflow-wrap: anywhere;
+}
+.summary-card .mat-divider {
+  margin: 1.25rem 0;
+}
+.summary-card dl {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+}
+.request-card {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--line);
+  font-size: var(--text-sm);
+}
+.request-card:first-of-type {
+  padding-top: 0;
+  border-top: 0;
+}
+.request-card:last-of-type {
+  padding-bottom: 0;
+}
+.request-card > .mat-mdc-button-base {
+  justify-self: end;
+}
+/* Messages in an information request: a labelled request, then a quoted reply or cancellation. Replies are content, not a status, so they stay neutral. */
+.message-body {
+  color: var(--ink);
+  font-size: var(--text-md);
+  white-space: pre-line;
+}
+.response {
+  padding: 0.875rem 1rem;
+  border-left: 0.1875rem solid var(--line-strong);
+  background: color-mix(in srgb, var(--chubb-grey) 10%, white);
+}
+.response .message-body {
+  font-size: var(--text-sm);
+}
+.inline-action {
+  display: flex;
+  align-items: start;
+  gap: 0.75rem;
+}
+.inline-action mat-form-field {
+  flex: 1;
+}
+.inline-action .mat-mdc-button-base {
+  margin-top: 0.25rem;
+}
+/* The left rule takes the decision's shared tone (settled success, rejected danger). */
+.decision-card {
+  border-left: 0.25rem solid var(--tone-fg);
+}
+.decision-details {
+  display: grid;
+  gap: 1rem;
+  margin: 0 0 1rem;
+}
+.decision-amount {
+  color: var(--navy);
+  font-size: var(--text-xl);
+}
+.decision-card p {
+  font-size: var(--text-sm);
+}
+.decision-meta {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-size: var(--text-xs);
+}
+
+/* The decision is stacked, primary first, so both labels fit the narrow side column. */
+.decision-actions {
+  display: grid;
+  gap: 0.5rem;
+}
+
+/* Each entry draws the connector from its dot's centre to the next dot's centre, so the line always meets both dots and the last entry never trails a line. */
+.timeline {
+  --timeline-gap: 1.25rem;
+  --timeline-dot: 0.75rem;
+  --timeline-dot-top: 0.375rem;
+  display: grid;
+  gap: var(--timeline-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.timeline li {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--timeline-dot) minmax(0, 1fr);
+  gap: 1rem;
+}
+.timeline li:not(:last-child)::before {
+  position: absolute;
+  top: calc(var(--timeline-dot-top) + var(--timeline-dot) / 2);
+  bottom: calc(
+    -1 *
+      (var(--timeline-gap) + var(--timeline-dot-top) + var(--timeline-dot) / 2)
+  );
+  left: calc(var(--timeline-dot) / 2 - 0.0625rem);
+  width: 0.125rem;
+  content: '';
+  background: var(--navy-tint-strong);
+}
+.timeline-dot {
+  position: relative;
+  z-index: 1;
+  width: var(--timeline-dot);
+  height: var(--timeline-dot);
+  margin-top: var(--timeline-dot-top);
+  border-radius: 50%;
+  background: var(--navy);
+  box-shadow: 0 0 0 0.1875rem var(--navy-tint);
+}
+.timeline li div {
+  display: grid;
+  gap: 0.125rem;
+}
+.timeline li strong {
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+.timeline li span {
+  color: var(--muted);
+  font-size: var(--text-xs);
+}
+.action-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+}
+.action-panel h3 {
+  margin-top: 0.25rem;
+}
+.action-panel .mat-divider {
+  margin: 0.75rem 0;
+}
+.mat-mdc-outlined-button.danger:not(:disabled) {
+  --mat-button-outlined-label-text-color: color-mix(
+    in srgb,
+    var(--chubb-red) 80%,
+    black
+  );
+  --mat-button-outlined-outline-color: color-mix(
+    in srgb,
+    var(--chubb-red) 35%,
+    white
+  );
+  --mat-button-outlined-state-layer-color: var(--chubb-red);
+}
+.read-only-note {
+  display: grid;
+  gap: 0.25rem;
+  border-left: 0.25rem solid var(--chubb-grey);
+  font-size: var(--text-sm);
+}
+
+/* Loading and empty states */
+.loading-state,
+.state-panel {
+  display: grid;
+  min-height: 18rem;
+  place-items: center;
+  align-content: center;
+  text-align: center;
+}
+.loading-state {
+  gap: 0.75rem;
+}
+.state-panel {
+  gap: 0.5rem;
+}
+.state-panel p {
+  max-width: 30rem;
+  margin-bottom: 0.75rem;
+}
+.state-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+.empty-copy {
+  font-size: var(--text-sm);
+}
+@media (max-width: 68rem) {
+  .metrics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .claim-row.officer {
+    grid-template-columns:
+      auto minmax(0, 2fr) minmax(0, 1.2fr) minmax(0, 1fr)
+      auto;
+  }
+  .claim-row .owner {
+    display: none;
+  }
+}
+@media (max-width: 52rem) {
+  .app-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .app-header nav {
+    position: fixed;
+    z-index: 10;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    justify-content: center;
+    height: 3.5rem;
+    padding: 0 var(--gutter);
+    border-top: 1px solid var(--line-strong);
+    background: var(--surface);
+  }
+  html {
+    scroll-padding-bottom: 5rem;
+  }
+  /* Only the last element needs room for the fixed bottom navigation. */
+  .app-footer {
+    padding-bottom: 5rem;
+  }
+  .page-heading {
+    align-items: start;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .dashboard-grid,
+  .detail-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  /* On one column, an officer reaches the actions straight after the claim details instead of below the whole history. */
+  .detail-main,
+  .detail-side {
+    display: contents;
+  }
+  .incident-card {
+    order: 1;
+  }
+  .action-panel,
+  .read-only-note {
+    order: 2;
+  }
+  .requests-card {
+    order: 3;
+  }
+  .decision-card {
+    order: 4;
+  }
+  .history-card {
+    order: 5;
+  }
+  .summary-card {
+    order: 6;
+  }
+  .surface.filter-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .claim-row,
+  .claim-row.officer {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    row-gap: 0.375rem;
+  }
+  .claim-row .badge {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .claim-row .claim-detail {
+    display: none;
+  }
+  .row-arrow {
+    grid-column: 3;
+    grid-row: 1 / 3;
+  }
+  .claim-type-icon {
+    grid-row: 1 / 3;
+  }
+}
+@media (max-width: 36rem) {
+  h1 {
+    font-size: 1.75rem;
+  }
+  .brand > span:last-child {
+    display: none;
+  }
+  .user-switcher .mat-mdc-form-field {
+    width: 10.5rem;
+  }
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+  .surface.metric-card {
+    min-height: 7.5rem;
+    padding: 1rem;
+  }
+  .surface.filter-bar,
+  .choice-cards,
+  .field-grid,
+  .detail-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .surface {
+    padding: 1.25rem;
+  }
+  .claim-row {
+    padding-inline: 1.25rem;
+  }
+  .form-section {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .form-section > :not(.step-number) {
+    grid-column: 1;
+  }
+  .step-number {
+    grid-row: auto;
+    margin-bottom: 1rem;
+  }
+  .inline-action {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .form-actions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+  .form-actions .mat-mdc-button-base {
+    width: 100%;
+  }
+}

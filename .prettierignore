@@ -1,0 +1,9 @@
+# apps/web has its own Prettier config; apps/api is formatted by dotnet format.
+apps/
+
+# Generated output and lockfiles.
+docs/generated/
+**/package-lock.json
+**/node_modules/
+**/bin/
+**/obj/

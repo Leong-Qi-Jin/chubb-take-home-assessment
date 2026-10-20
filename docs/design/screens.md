@@ -10,6 +10,7 @@
 
 API paths are relative to `/api/v1`.
 
+<!-- prettier-ignore -->
 | Screen | Route | Role | Purpose | API |
 | --- | --- | --- | --- | --- |
 | Dashboard | `/dashboard` | Officer | Workload counts and outstanding liability. | `GET /dashboard` |
@@ -31,9 +32,10 @@ The seeded users come from frontend configuration, because the API does not list
 
 ### Staff claim actions
 
+<!-- prettier-ignore -->
 | Action | Enabled when | Input |
 | --- | --- | --- |
-| Take claim | `Submitted` | |
+| Take claim | `Submitted` |  |
 | Set estimate | Assigned to me; `UnderReview` or `AwaitingInformation` | Amount |
 | Request information | Assigned to me; `UnderReview` | Request text |
 | Cancel request | Assigned to me; `AwaitingInformation` | Reason |
@@ -44,10 +46,10 @@ Claims assigned to another officer, and decided claims, are read-only. Settle an
 
 ### Shared states
 
+<!-- prettier-ignore -->
 | State | Shown when |
 | --- | --- |
 | Loading | A screen's data is loading. |
-| Choose a user | No user is selected; points to the switcher. |
 | Not allowed | The route belongs to the other role, or loading returns `403`. |
 | Not found | The route is unknown, or loading returns `404`. |
 | Coming soon | The route is planned but not built yet, such as a should-have screen left out of the MVP. |
@@ -57,10 +59,11 @@ Claims assigned to another officer, and decided claims, are read-only. Settle an
 
 A failure while loading a screen shows a shared state. A failed action keeps the form and shows the message inline.
 
+<!-- prettier-ignore -->
 | API response | On load | On action |
 | --- | --- | --- |
-| `400` `validation_failed` | | Show the field errors. |
-| `401` | Clear the selected user and show Choose a user. | Same as on load. |
+| `400` `validation_failed` | | Show the message. Client validation mirrors the API's rules, so field errors normally show on the field first. |
+| `401` | Show Something went wrong. | Show the message. |
 | `403` | Show Not allowed. | Show the message and reload the claim. |
 | `404` | Show Not found. | Show the message and reload the claim. |
 | `409` | | Show the message and reload the claim, keeping any typed text. |

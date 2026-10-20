@@ -4,17 +4,18 @@
 
 Prefer the .NET platform defaults and add dependencies only when they remove meaningful work.
 
-| Concern           | Choice                                                                 |
-| ----------------- | ---------------------------------------------------------------------- |
-| Runtime           | .NET 10 LTS, ASP.NET Core, and C# 14                                   |
-| API style         | Minimal APIs with route groups and `TypedResults`                      |
-| Architecture      | Single deployable with vertical feature slices                         |
-| Domain            | `Claim` aggregate with explicit transition methods                     |
-| Persistence       | EF Core 10 with the SQL Server provider                                |
-| Database          | SQL Server 2025 Developer in Docker for local development              |
-| Contract          | Built-in OpenAPI with request and response metadata                    |
-| Validation        | Built-in request validation plus domain rules                          |
-| Errors            | RFC 9457 Problem Details with stable application error codes           |
+<!-- prettier-ignore -->
+| Concern | Choice |
+| --- | --- |
+| Runtime | .NET 10 LTS, ASP.NET Core, and C# 14 |
+| API style | Minimal APIs with route groups and `TypedResults` |
+| Architecture | Single deployable with vertical feature slices |
+| Domain | `Claim` aggregate with explicit transition methods |
+| Persistence | EF Core 10 with the SQL Server provider |
+| Database | SQL Server 2025 Developer in Docker for local development |
+| Contract | Built-in OpenAPI with request and response metadata |
+| Validation | Built-in request validation plus domain rules |
+| Errors | RFC 9457 Problem Details with stable application error codes |
 | Platform concerns | Development caller resolution; built-in .NET logging and configuration |
 
 .NET 10 is the latest stable LTS release. Scaffold the solution, API, and tests with the official `dotnet new` templates, using the Minimal API default.

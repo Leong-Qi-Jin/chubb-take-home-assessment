@@ -1,0 +1,12 @@
+{
+  "name": "@claims/ui-screenshots",
+  "private": true,
+  "type": "module",
+  "packageManager": "npm@11.13.0",
+  "scripts": {
+    "generate": "node generate-screenshots.mjs"
+  },
+  "dependencies": {
+    "playwright": "1.63.0"
+  }
+}

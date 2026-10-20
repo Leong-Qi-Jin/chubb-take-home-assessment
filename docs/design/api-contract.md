@@ -24,32 +24,35 @@ Paths are relative to `/api/v1`. Body lists the request fields. Request amounts 
 
 ### Claimant
 
+<!-- prettier-ignore -->
 | Method | Path | Role | Body | Purpose |
 | --- | --- | --- | --- | --- |
 | `POST` | `/claims` | Claimant | See [example](#submit-a-claim) | Submit a motor or property claim for the caller. |
-| `GET` | `/claims` | Claimant | | The caller's own claims, paginated. |
-| `GET` | `/claims/{reference}` | Claimant, Officer | | Claim details, status, decision, and information requests. |
-| `GET` | `/claims/{reference}/history` | Claimant, Officer | | Timeline, oldest first. |
+| `GET` | `/claims` | Claimant |  | The caller's own claims, paginated. |
+| `GET` | `/claims/{reference}` | Claimant, Officer |  | Claim details, status, decision, and information requests. |
+| `GET` | `/claims/{reference}/history` | Claimant, Officer |  | Timeline, oldest first. |
 | `POST` | `/claims/{reference}/information-requests/{requestId}/response` | Claimant | `responseText` | Answer the open request; the claim returns to `UnderReview`. |
 
 ### Claims staff
 
+<!-- prettier-ignore -->
 | Method | Path | Role | Body | Purpose |
 | --- | --- | --- | --- | --- |
-| `GET` | `/claims` | Officer | | Work queue, paginated, with filters and sorting. |
-| `POST` | `/claims/{reference}/take` | Officer | | Take an unassigned `Submitted` claim; moves it to `UnderReview`. |
+| `GET` | `/claims` | Officer |  | Work queue, paginated, with filters and sorting. |
+| `POST` | `/claims/{reference}/take` | Officer |  | Take an unassigned `Submitted` claim; moves it to `UnderReview`. |
 | `PUT` | `/claims/{reference}/estimated-liability` | AssignedOfficer | `amount` | Set or change the estimate while `UnderReview` or `AwaitingInformation`. An unchanged amount records nothing. |
 | `POST` | `/claims/{reference}/information-requests` | AssignedOfficer | `requestText` | Request information while `UnderReview`; the claim is then `AwaitingInformation`. |
 | `POST` | `/claims/{reference}/information-requests/{requestId}/cancel` | AssignedOfficer | `cancellationReason` | Cancel the open request; the claim returns to `UnderReview`. |
 | `POST` | `/claims/{reference}/settle` | AssignedOfficer | `settlementAmount`, `rationale` | Settle an `UnderReview` claim that has an estimate. |
 | `POST` | `/claims/{reference}/reject` | AssignedOfficer | `rationale` | Reject an `UnderReview` claim. |
-| `GET` | `/dashboard` | Officer | | Workload counts and outstanding liability. |
+| `GET` | `/dashboard` | Officer |  | Workload counts and outstanding liability. |
 
 ### Shared
 
+<!-- prettier-ignore -->
 | Method | Path | Role | Body | Purpose |
 | --- | --- | --- | --- | --- |
-| `GET` | `/currencies` | Claimant, Officer | | Currency codes a claim can be submitted in, such as `["SGD", "MYR"]`. |
+| `GET` | `/currencies` | Claimant, Officer |  | Currency codes a claim can be submitted in, such as `["SGD", "MYR"]`. |
 
 Submit and request information return `201` (submit adds a `Location` header); other changes return `200`. All return the claim.
 
@@ -181,9 +184,7 @@ Claimants do not see `EstimatedLiabilityUpdated` entries.
       "count": 3
     }
   ],
-  "outstandingLiability": [
-    { "amount": "58200.00", "currency": "SGD" }
-  ]
+  "outstandingLiability": [{ "amount": "58200.00", "currency": "SGD" }]
 }
 ```
 
@@ -211,6 +212,7 @@ Errors use the standard JSON error format from [RFC 9457 (Problem Details)](http
 }
 ```
 
+<!-- prettier-ignore -->
 | Status | When | `code` |
 | --- | --- | --- |
 | `400` | Malformed or invalid input. Invalid fields are listed in `errors`, keyed by camelCase JSON path such as `incident.occurredAt`; unreadable JSON or query values have no field list. | `validation_failed` |

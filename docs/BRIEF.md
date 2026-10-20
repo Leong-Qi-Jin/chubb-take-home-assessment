@@ -59,6 +59,7 @@ You will not build everything. Decide what matters most and build that well.
 
 ### Walkthrough Format
 
+<!-- prettier-ignore -->
 | Segment | Duration |
 | --- | --- |
 | Your presentation — architecture, decisions, demo | 15–20 min |

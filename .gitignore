@@ -8,3 +8,9 @@
 # .NET build output
 **/bin/
 **/obj/
+
+# Node.js dependencies
+node_modules/
+
+# TypeScript incremental build state
+*.tsbuildinfo

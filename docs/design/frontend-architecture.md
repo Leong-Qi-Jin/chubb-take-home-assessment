@@ -2,106 +2,87 @@
 
 ## Decisions
 
-Prefer Angular defaults; otherwise choose a stable modern library that materially improves developer experience.
+Prefer Angular defaults and add a dependency only when it materially improves the implementation.
 
+<!-- prettier-ignore -->
 | Concern | Choice |
 | --- | --- |
-| Runtime | Angular/CLI 22 with compatible Node.js and TypeScript versions |
+| Runtime | Angular/CLI 22: standalone, zoneless, and OnPush by default |
 | Package management | npm with a committed lockfile |
-| Build | Angular CLI `application` builder and its Vite development server |
-| Routing | Angular Router with lazy route groups and functional guards |
-| Components | Angular Material/CDK 22 |
-| Styling | Tailwind CSS 4 for layout; Angular Material 3 theme tokens for components |
-| Forms | Angular 22 Signal Forms |
-| Tables | Material Table, Sort, and Paginator with server-side data |
-| HTTP and server state | Generated OpenAPI types; Angular `httpResource` for reads and `HttpClient` for commands |
-| Local state | Signals and `computed`; list state in URL query parameters |
-| Icons | Lucide SVG icons via `@ng-icons/core` and `@ng-icons/lucide` |
-| Unit/integration tests | Angular CLI Vitest, `TestBed`, HTTP and router test utilities |
-| End-to-end tests | Playwright against the running application stack |
+| Routing | Angular Router with lazy-loaded feature routes, role guards, and page titles |
+| Components | Angular Material/CDK 22 for controls; semantic HTML for application-specific views |
+| Styling | One token system in `styles.css` that also themes Material |
+| Forms | Typed Reactive Forms; Material date and time pickers with the date-fns adapter |
+| Server state | Generated OpenAPI client behind a thin `ClaimsApi` adapter; Angular `resource()` for reads |
+| Local state | Signals; list filters in URL query parameters |
+| Icons | Lucide via `@ng-icons/lucide` |
+| Tests | Vitest with `TestBed`; browser checks against the running stack |
+| Linting | ESLint with Angular, TypeScript, import-order, and Vitest rules; Prettier for formatting |
 
 Keep Angular packages aligned, pin Material/CDK to the same release, and commit `package-lock.json`.
 
-Angular Material and PrimeNG are two of the most popular full Angular component libraries. Material is the default because it is first-party, MIT-licensed, and sufficient here; PrimeNG is not MIT-licensed.
-
 ## Structure
 
-Use route-oriented feature slices and keep code with its only consumer until reuse is demonstrated.
+Use feature slices around user journeys, not root-level components, services, and models folders.
 
 ```sh
 apps/web/
-├── e2e/                                     # Playwright
-├── public/                                  # Static assets
 ├── src/
 │   ├── app/
-│   │   ├── core/                            # App-wide infrastructure
+│   │   ├── core/
 │   │   │   ├── api/
-│   │   │   │   └── generated/               # OpenAPI types
-│   │   │   ├── config/
-│   │   │   ├── http/                        # App-wide HTTP setup
-│   │   │   └── identity/
-│   │   ├── features/                        # Route slices
-│   │   │   ├── claimant/
-│   │   │   │   ├── my-claims/
-│   │   │   │   ├── claim-details/
-│   │   │   │   ├── submit-claim/
-│   │   │   │   └── claimant.routes.ts
-│   │   │   └── officer/
-│   │   │       ├── dashboard/
-│   │   │       ├── work-queue/
-│   │   │       ├── claim-review/
-│   │   │       └── officer.routes.ts
-│   │   ├── layout/                          # Application shell
-│   │   │   ├── app-shell/
-│   │   │   └── user-switcher/
-│   │   ├── shared/                          # Reused UI
-│   │   │   └── ui/
-│   │   ├── app.config.ts
-│   │   ├── app.routes.ts
-│   │   └── app.ts
-│   ├── styles/                              # Brand and Material theme
-│   │   ├── chubb-tokens.scss
-│   │   └── material-theme.scss
-│   ├── index.html
-│   ├── main.ts
-│   └── styles.css
-├── angular.json
-├── package-lock.json
-└── package.json
+│   │   │   │   ├── generated/              # OpenAPI client and types; never edit by hand
+│   │   │   │   ├── claims-api.ts           # Adapter over the generated SDK
+│   │   │   │   └── identity.interceptor.ts # Development identity headers
+│   │   │   ├── identity/                   # Demo users and each role's routes
+│   │   │   └── title-strategy.ts           # "<page> · ClaimTrack" titles
+│   │   ├── features/
+│   │   │   ├── claims/
+│   │   │   │   ├── claims-list.ts          # Pages, each beside its spec
+│   │   │   │   ├── claim-details.ts
+│   │   │   │   ├── submit-claim.ts
+│   │   │   │   ├── claims.routes.ts        # Claimant and officer route sets
+│   │   │   │   ├── claim-status.ts         # Status labels and tones
+│   │   │   │   ├── claim-type.ts
+│   │   │   │   └── status-badge.ts         # Claim-specific UI
+│   │   │   └── dashboard/                  # One-page features stay flat
+│   │   ├── layout/                         # Application shell and error pages
+│   │   ├── shared/
+│   │   │   ├── ui/                         # Generic components: headers, alert, badge, icon, dialog
+│   │   │   └── money.ts                    # Money formatting and pipe
+│   │   ├── app.config.ts                   # Providers
+│   │   └── app.routes.ts                   # Role guards and lazy-loaded features
+│   └── styles.css                          # Design tokens and component styles
+├── openapi-ts.config.ts                    # API client generation
+└── proxy.conf.json                         # Development proxy to the API
 ```
 
-Keep each page and its supporting code in the same route folder. Start flat, create subfolders only for cohesive units, and move code to `shared` only after it is reused. `core` holds app-wide infrastructure, including shared HTTP setup; feature-specific adapters stay with their route slices. `layout` owns the shell, and the claimant and officer routes are lazy-loaded.
+Each feature owns its pages, routes, and the UI and mappings only it needs. The claims list and details pages serve both roles, because their behaviour differs only by route mode and available actions; the dashboard imports from the claims feature. Move code into `shared` only once more than one feature uses it.
 
-## Modern Angular conventions
+## OpenAPI client
 
-- Use standalone components, strict templates, zoneless change detection, OnPush, and the current CLI file naming style.
-- Prefer signals and `computed`, signal inputs/outputs, built-in control flow, and functional interceptors and guards.
+The backend OpenAPI document is the source of truth for endpoints and types. With the API running, regenerate the client from `apps/web` with `npm run generate:api`. Never edit `core/api/generated` by hand.
 
-## Data and state
-
-Generate runtime-free OpenAPI types with `openapi-typescript`. Use signals for local state, URL parameters for list state, `httpResource` for reads, and `HttpClient` for commands. Do not add RxJS-based application state; use RxJS only where Angular APIs require it. TanStack Query and NgRx are unnecessary for this application.
-
-## Forms and tables
-
-Use Signal Forms with native Material inputs where possible. Use typed Reactive Forms only when a complex control requires them.
-
-Use Material Table, Sort, and Paginator with the server-side operations defined by the API.
+`ClaimsApi` wraps the generated SDK: it configures `HttpClient`, reads ETags, and turns errors into problem details. It does not redefine the contract.
 
 ## Visual system
 
-Use Tailwind for application layout and Material theme tokens for components. Base the Material 3 theme on Chubb dark blue and expose the official Chubb colours as application tokens:
+The UI follows chubb.com's design language:
 
-```text
-#01C1D6  #FF6600  #150F96  #6E27C5  #7ACB00
-#FF0198  #F1352B  #FFB617  #AFAFAF
-```
+- Lato for text and a serif for headlines (Source Serif 4 stands in for Chubb's licensed Publico).
+- Black text and buttons on white, with the Chubb palette for accents and every Material colour mapped to it.
+- Square corners; circles only for avatars, step numbers, and dots.
+- Filled and outlined buttons turn Chubb purple with an underlined label on hover; text links underline.
+- Shared tones colour badges, alerts, and status markers consistently.
 
-Import Lucide SVGs individually.
+Build pages from the shared components and Material rather than repeating markup, and keep status, claim-type, and route mappings in one place. Style the app's own class names rather than tag selectors, which can leak into Material components.
 
-## Tooling
+## Accessibility
 
-Use Angular ESLint flat config with TypeScript, Vitest, import-order, and `eslint-plugin-better-tailwindcss` correctness rules. Use Prettier with `eslint-config-prettier` and `prettier-plugin-tailwindcss`.
+- Every control works by keyboard with a visible focus ring; a skip link and focus management on navigation support keyboard and screen reader users.
+- Text meets WCAG AA contrast, and touch targets are at least 24px.
+- Each page has a descriptive title.
 
 ## Testing
 
-Use Angular's default Vitest setup for focused component tests. Use a small Playwright suite for critical end-to-end journeys across the SPA, API, and database. Prioritise user-visible behaviour and important failure paths over a coverage target.
+Use focused Vitest tests for behaviour and important failure paths, and browser checks for the claimant and officer journeys. `tools/ui-screenshots` regenerates [laptop and phone screenshots](../generated/ui-screenshots.md) of the main screens.

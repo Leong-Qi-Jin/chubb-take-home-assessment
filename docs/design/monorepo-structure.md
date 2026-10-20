@@ -45,7 +45,7 @@ Application-owned folders are detailed in the [frontend](frontend-architecture.m
 
 ## Tooling
 
-The Angular package files stay in `apps/web`; a root npm workspace would add little while there is only one JavaScript package.
+The Angular package files stay in `apps/web`, with their own ESLint and Prettier config. A small root package (not an npm workspace) lints and formats the rest of the repository: the Node.js tools, Markdown, JSON, and YAML. The .NET code uses `dotnet format`.
 
 Docker Compose provides one-command startup for the SPA, API, and SQL Server.
 

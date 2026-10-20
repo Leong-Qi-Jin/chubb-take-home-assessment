@@ -150,3 +150,17 @@ Format per entry: prompt, what the AI did, human decision, and reasoning. The hu
 - **AI:** Maintained the working journal as the project evolved.
 - **Human decision:** Changed the journal to numbered, topic-based entries with explicit human decisions.
 - **Reasoning:** Make decision ownership and the development process clear.
+
+### 22. Frontend features
+
+- **Prompts:** Build the matching frontend features and verify them in the browser. Over many review rounds, generate the API client from OpenAPI, match Chubb's design language, fix reported UI issues, and check mobile, keyboard, and every state. Later, restructure into feature slices, remove duplication, follow current Angular conventions, set up linting, and have a subagent audit the UI.
+- **AI:** Built the claimant and officer journeys on a generated `@hey-api/openapi-ts` client, which exposed a wrongly named status. Matched chubb.com's typography, colours, shapes, and buttons, and audited layout, contrast, keyboard use, and states in the browser, fixing several real bugs. Consolidated shared components, variants, and mappings, and acted on most of the subagent's findings.
+- **Human decision:** Required a generated contract, browser evidence, and reusable components over per-page fixes. Held the UI to Chubb's real design language, correcting colours, spacing, hierarchy, radii, and hover states, and removing decorative extras. Rejected casual copy and asked for every value to be labelled. Asked for dashboard totals to open the filtered queue, Material date pickers, fully clickable radio cards, and descriptive page titles. Named the app ClaimTrack, asked for feature slices, current Angular conventions, and repository-wide linting, and allowed removing only clearly unnecessary edge cases. Accepted keeping officer actions in the side column, demo users in the frontend, and hey-api.
+- **Reasoning:** Generated contracts catch backend drift at compile time, shared tokens and components keep one consistent brand, and browser checks catch what code review misses.
+
+### 23. UI screenshot documentation
+
+- **Prompt:** Generate laptop and phone screenshots with a script, publish them in Markdown, and show the dashboard in the README.
+- **AI:** Added `tools/ui-screenshots`, modelled on the ERD tool, which captures the main screens with Playwright at full page height and writes `docs/generated/ui-screenshots.md`.
+- **Human decision:** Asked for generated rather than hand-taken screenshots and compact Markdown tables.
+- **Reasoning:** A script keeps the visual documentation in step with the UI and makes review possible without running the stack.

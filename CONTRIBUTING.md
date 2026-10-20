@@ -32,9 +32,13 @@ Prefer idiomatic, well-architected solutions over minimising churn. Add dependen
 - Prefer `rem` over `px` except for borders.
 - Place icons on the left side of button labels, except for directional arrows.
 
+## Docs
+
+- In Markdown, put `<!-- prettier-ignore -->` before each table so Prettier keeps it compact instead of padding the columns.
+
 ## Copy
 
-- Use clear, friendly language for user-facing text.
+- Use clear, plain, professional language for user-facing text, and label every value and message so its meaning is unambiguous.
 
 ## Tests
 

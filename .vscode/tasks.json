@@ -2,6 +2,7 @@
   // https://code.visualstudio.com/docs/debugtest/tasks#vscode
   "version": "2.0.0",
   "tasks": [
+    // Install
     {
       "label": "Install Frontend Dependencies",
       "detail": "Install the SPA's npm packages from the lockfile",
@@ -10,10 +11,37 @@
       "problemMatcher": []
     },
     {
-      "label": "Restore Backend Dependencies",
-      "detail": "Restore NuGet packages for the API and test projects",
+      "label": "Install Tooling Dependencies",
+      "detail": "Install the repository lint and format tools and the ERD and screenshot tools",
       "type": "shell",
-      "command": "dotnet restore Claims.slnx",
+      "command": "npm ci && npm --prefix tools/database-erd ci && npm --prefix tools/ui-screenshots ci",
+      "problemMatcher": []
+    },
+    {
+      "label": "Restore Backend Dependencies",
+      "detail": "Restore NuGet packages and .NET tools for the API and test projects",
+      "type": "shell",
+      "command": "dotnet restore Claims.slnx && dotnet tool restore",
+      "problemMatcher": []
+    },
+    {
+      "label": "Install All Dependencies",
+      "detail": "Install frontend, tooling, and backend dependencies",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Install Frontend Dependencies",
+        "Install Tooling Dependencies",
+        "Restore Backend Dependencies"
+      ],
+      "problemMatcher": []
+    },
+
+    // Run
+    {
+      "label": "Start SQL Server",
+      "detail": "Start SQL Server 2025 in Docker on localhost:1433",
+      "type": "shell",
+      "command": "docker compose up -d sqlserver",
       "problemMatcher": []
     },
     {
@@ -55,6 +83,105 @@
           }
         }
       }
+    },
+    {
+      "label": "Start App",
+      "detail": "Start SQL Server, then the API and SPA together",
+      "dependsOrder": "sequence",
+      "dependsOn": ["Start SQL Server", "Start API and SPA"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Start API and SPA",
+      "detail": "Run the API and SPA side by side",
+      "dependsOn": ["Start API", "Start SPA"],
+      "problemMatcher": []
+    },
+
+    // Test
+    {
+      "label": "Test Frontend",
+      "detail": "Run the SPA's Vitest suite once",
+      "type": "shell",
+      "command": "npm --prefix apps/web test -- --watch=false",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Test Backend",
+      "detail": "Load .env and run the backend unit and integration tests (needs SQL Server)",
+      "type": "shell",
+      "command": "set -a && . ./.env && set +a && dotnet test Claims.slnx",
+      "group": "test",
+      "problemMatcher": "$msCompile"
+    },
+
+    // Check
+    {
+      "label": "Build Frontend",
+      "detail": "Production build of the SPA",
+      "type": "shell",
+      "command": "npm --prefix apps/web run build",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Lint Frontend",
+      "detail": "Run ESLint and the Prettier check on the SPA",
+      "type": "shell",
+      "command": "npm --prefix apps/web run lint && npm --prefix apps/web run format:check",
+      "problemMatcher": []
+    },
+    {
+      "label": "Lint Repository",
+      "detail": "Run ESLint and the Prettier check on tools, Markdown, JSON, and YAML",
+      "type": "shell",
+      "command": "npm run lint && npm run format:check",
+      "problemMatcher": []
+    },
+    {
+      "label": "Check Backend Formatting",
+      "detail": "Verify the .NET code matches dotnet format",
+      "type": "shell",
+      "command": "dotnet format Claims.slnx --verify-no-changes",
+      "problemMatcher": []
+    },
+    {
+      "label": "Check All",
+      "detail": "Run every test, lint, format check, and the frontend build in turn",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Lint Frontend",
+        "Lint Repository",
+        "Check Backend Formatting",
+        "Test Frontend",
+        "Test Backend",
+        "Build Frontend"
+      ],
+      "problemMatcher": []
+    },
+
+    // Generate
+    {
+      "label": "Generate API Client",
+      "detail": "Regenerate the SPA's OpenAPI client from the running API",
+      "type": "shell",
+      "command": "npm --prefix apps/web run generate:api",
+      "problemMatcher": []
+    },
+    {
+      "label": "Generate Database ERD",
+      "detail": "Load .env and regenerate docs/generated/database-erd.md from the database",
+      "type": "shell",
+      "command": "set -a && . ./.env && set +a && npm --prefix tools/database-erd run generate",
+      "problemMatcher": []
+    },
+    {
+      "label": "Generate UI Screenshots",
+      "detail": "Capture laptop and phone screenshots from the running SPA (installs Chromium if needed)",
+      "type": "shell",
+      "command": "npx --prefix tools/ui-screenshots playwright install chromium && npm --prefix tools/ui-screenshots run generate",
+      "problemMatcher": []
     }
   ]
 }

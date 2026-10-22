@@ -62,7 +62,6 @@ apps/api/
         └── Infrastructure/                 # Test host, users, and HTTP helpers
 ```
 
-
 Each operation owns its endpoint, contract, validation, mapping, and use-case code. Keep small slices together and split them only as they grow. Shared workflow rules belong to the domain; EF Core and caller resolution belong to infrastructure.
 
 ## Request and workflow handling
@@ -81,7 +80,7 @@ The API representation, precision limits, and currency handling remain defined i
 
 ## EF Core and SQL Server
 
-Use one scoped `ClaimsDbContext` and EF Core migrations. The schema, constraints, indexes, transactions, and concurrency rules remain defined in the [domain model](domain-model.md) and [API contract](api-contract.md).
+Use one scoped `ClaimsDbContext` and EF Core migrations. The schema, constraints, indexes, transactions, and concurrency rules are defined in the [domain model](domain-model.md) and [API contract](api-contract.md).
 
 Queries perform filtering, sorting, pagination, and dashboard aggregation in SQL.
 

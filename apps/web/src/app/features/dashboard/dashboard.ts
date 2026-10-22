@@ -31,6 +31,170 @@ import {
     StatePanel,
   ],
   selector: 'app-dashboard',
+  styles: `
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .metric-card {
+      display: flex;
+      min-height: 8.5rem;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 1.25rem;
+      color: inherit;
+      text-decoration: none;
+      transition:
+        border-color 0.15s ease,
+        background-color 0.15s ease;
+    }
+    /* Labels reserve two lines so every metric number sits on the same baseline. */
+    .metric-card > span {
+      min-height: 2.6em;
+      color: var(--muted);
+      font-size: var(--text-sm);
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    /* A tone dot beside plain text marks the status without a badge box, so long labels wrap like normal text. */
+    .metric-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    /* Centred on the first line of the label, so it stays put when the label wraps. */
+    .status-dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      flex-shrink: 0;
+      margin-top: calc((1.3em - 0.5rem) / 2);
+      border-radius: 50%;
+      background: var(--tone-fg);
+    }
+    .metric-card small {
+      margin-top: auto;
+      color: var(--muted);
+      font-size: var(--text-xs);
+    }
+    .metric-card strong {
+      font-size: var(--text-metric);
+      line-height: 1;
+    }
+    /* Metric cards are links into the filtered queue and use Chubb purple on hover, the same hover colour as buttons. White cards take a light purple tint so the status dots stay readable. */
+    .metric-card:hover {
+      border-color: color-mix(in srgb, var(--chubb-purple) 40%, white);
+      background: var(--purple-tint);
+    }
+    .metric-card.accent {
+      color: #fff;
+      border-color: var(--navy);
+      background: var(--navy);
+    }
+    /* The blue "My open claims" card is a filled element, so it behaves like a filled button: its fill turns Chubb purple on hover. */
+    .metric-card.accent:hover {
+      border-color: var(--chubb-purple);
+      background: var(--chubb-purple);
+    }
+    .metric-card.accent > span,
+    .metric-card.accent small {
+      color: rgb(255 255 255 / 0.78);
+    }
+    /* Equal two-column layouts. */
+    .dashboard-grid,
+    .liability-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+      gap: 1rem;
+    }
+    .liability-list div {
+      display: flex;
+      flex-direction: column;
+      gap: 0.375rem;
+      padding: 1.25rem;
+      border-radius: var(--radius-md);
+      background: var(--navy-tint);
+    }
+    .liability-list span {
+      color: var(--navy);
+      font-size: var(--text-xs);
+      font-weight: 700;
+    }
+    .liability-list strong {
+      font-size: var(--text-xl);
+    }
+    .workload-list {
+      display: grid;
+      gap: 1rem;
+    }
+    .workload-row {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      column-gap: 0.75rem;
+      row-gap: 0.375rem;
+      padding-block: 0.25rem;
+      color: inherit;
+      text-decoration: none;
+      font-size: var(--text-sm);
+    }
+    .workload-row:hover .workload-officer {
+      text-decoration: underline;
+    }
+    .avatar {
+      grid-row: 1 / span 2;
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 50%;
+      font-size: var(--text-sm);
+      font-weight: 700;
+    }
+    .workload-name {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 0;
+    }
+    .workload-row strong {
+      font-weight: 700;
+    }
+    /* Single series, so one brand hue; the bar is square like every other shape in the system. */
+    .workload-bar {
+      grid-column: 2 / -1;
+      height: 0.5rem;
+    }
+    .workload-bar span {
+      display: block;
+      min-width: 0.25rem;
+      height: 100%;
+      border-radius: var(--radius-sm);
+      background: var(--navy);
+    }
+    .empty-copy {
+      font-size: var(--text-sm);
+    }
+    @media (max-width: 68rem) {
+      .metrics {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 52rem) {
+      .dashboard-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+    @media (max-width: 36rem) {
+      .metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+      }
+      .metric-card {
+        min-height: 7.5rem;
+        padding: 1rem;
+      }
+    }
+  `,
   template: `
     <app-page-header
       eyebrow="Claims operations"
@@ -64,7 +228,7 @@ import {
           [queryParams]="{ assignedTo: myId() }"
         >
           <span>My open claims</span
-          ><strong>{{ dashboard.myOpenClaims }}</strong
+          ><strong class="headline-figure">{{ dashboard.myOpenClaims }}</strong
           ><small>Assigned to you</small>
         </a>
         @for (item of statuses; track item) {
@@ -79,7 +243,9 @@ import {
                 [attr.data-tone]="tone(item)"
               ></span
               >{{ label(item) }}</span
-            ><strong>{{ dashboard.countsByStatus[item] }}</strong
+            ><strong class="headline-figure">{{
+              dashboard.countsByStatus[item]
+            }}</strong
             ><small>Across the team</small>
           </a>
         }
@@ -98,7 +264,7 @@ import {
               ) {
                 <div>
                   <span>{{ currencyOf(item.currency) }}</span
-                  ><strong>{{ item | money }}</strong>
+                  ><strong class="headline-figure">{{ item | money }}</strong>
                 </div>
               }
             </div>

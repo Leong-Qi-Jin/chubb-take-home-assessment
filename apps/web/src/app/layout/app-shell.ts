@@ -30,6 +30,148 @@ import { Icon } from '../shared/ui/icon';
     RouterOutlet,
   ],
   selector: 'app-shell',
+  styles: `
+    /* The shell fills the viewport and the main region takes the remaining height, so short pages keep the footer at the bottom without scrolling. */
+    :host {
+      display: flex;
+      min-height: 100dvh;
+      flex-direction: column;
+    }
+    .skip-link {
+      position: absolute;
+      z-index: 20;
+      top: 0.75rem;
+      left: 0.75rem;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      color: var(--navy);
+      background: #fff;
+      font-size: var(--text-sm);
+      font-weight: 700;
+      text-decoration: none;
+      transform: translateY(-200%);
+    }
+    .skip-link:focus {
+      transform: none;
+      box-shadow: var(--shadow-overlay);
+    }
+    .app-header {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      gap: 1rem;
+      min-height: 4.5rem;
+      padding: 0 var(--page-inline);
+      color: var(--ink);
+      border-bottom: 1px solid var(--line-strong);
+      background: var(--surface);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.625rem;
+      width: max-content;
+      color: var(--ink);
+      font-family: var(--font-serif);
+      font-size: var(--text-xl);
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+    .brand-mark {
+      display: grid;
+      width: 2rem;
+      height: 2rem;
+      place-items: center;
+      border-radius: var(--radius-sm);
+      color: #fff;
+      background: var(--navy);
+      font-family: var(--font-sans);
+      font-size: var(--text-md);
+      font-weight: 700;
+    }
+    .brand-muted {
+      color: var(--navy);
+    }
+    /* Navigation items run the full header height, so the current page's black block reaches both edges. */
+    nav {
+      display: flex;
+      align-self: stretch;
+    }
+    /* Navigation follows chubb.com: black bold links whose text underlines on hover (like every button), with the current page as a solid black block. */
+    nav a {
+      height: auto;
+      --mat-button-text-container-height: 100%;
+      --mat-button-text-label-text-color: var(--ink);
+      --mat-button-text-state-layer-color: var(--ink);
+      --mat-button-text-hover-state-layer-opacity: 0;
+    }
+    nav a.active {
+      --mat-button-text-label-text-color: #fff;
+      --mat-button-text-state-layer-color: #fff;
+      background: var(--ink);
+    }
+    /* User switcher: a compact control in the header. */
+    .user-switcher {
+      justify-self: end;
+    }
+    .user-switcher mat-form-field {
+      width: 12.5rem;
+      --mat-form-field-container-height: 2.5rem;
+      --mat-form-field-container-vertical-padding: 0.5rem;
+      --mat-form-field-outlined-focus-outline-width: 0.0625rem;
+      --mat-select-trigger-text-size: var(--text-sm);
+    }
+    .option-meta {
+      margin-left: 0.5rem;
+      color: var(--muted);
+      font-size: var(--text-xs);
+      text-transform: capitalize;
+    }
+    .page-shell {
+      flex: 1;
+      padding: 2.5rem var(--page-inline) 3.5rem;
+    }
+    .app-footer {
+      padding: 1.5rem var(--page-inline);
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      text-align: center;
+      font-size: var(--text-xs);
+    }
+    @media (max-width: 52rem) {
+      .app-header {
+        grid-template-columns: minmax(0, 1fr) auto;
+      }
+      nav {
+        position: fixed;
+        z-index: 10;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        justify-content: center;
+        height: 3.5rem;
+        padding: 0 var(--gutter);
+        border-top: 1px solid var(--line-strong);
+        background: var(--surface);
+      }
+      /* Only the last element needs room for the fixed bottom navigation. */
+      .app-footer {
+        padding-bottom: 5rem;
+      }
+    }
+    @media (max-width: 36rem) {
+      .brand > span:last-child {
+        display: none;
+      }
+      .user-switcher mat-form-field {
+        width: 10.5rem;
+      }
+    }
+  `,
   template: `
     <!-- The skip link moves focus programmatically: a plain fragment link would change the URL and trigger router navigation. -->
     <a

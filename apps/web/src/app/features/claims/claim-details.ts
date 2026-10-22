@@ -51,6 +51,258 @@ import { StatusBadge } from './status-badge';
     SectionHeader,
   ],
   selector: 'app-claim-details',
+  styles: `
+    app-alert strong {
+      margin-right: 0.25rem;
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 21rem;
+      align-items: start;
+      gap: 1rem;
+    }
+    .detail-main,
+    .detail-side {
+      display: grid;
+      align-content: start;
+      gap: 1rem;
+    }
+    .detail-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+      gap: 1.25rem 2rem;
+    }
+    .detail-list .full {
+      grid-column: 1 / -1;
+    }
+    /* A label stacked above its value. */
+    .detail-list div,
+    .summary-card dl div,
+    .decision-details div,
+    .message {
+      display: grid;
+      align-content: start;
+      gap: 0.25rem;
+    }
+    /* Every label above a value (details lists, decision details, and request messages) shares one style. */
+    dt,
+    .message-label {
+      color: var(--muted);
+      font-size: var(--text-xs);
+      font-weight: 700;
+    }
+    dd {
+      font-size: var(--text-sm);
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+    .full-width {
+      width: 100%;
+    }
+    .summary-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: var(--text-sm);
+    }
+    /* These cards space their children with a flex gap, so their section headers drop the usual bottom margin. */
+    .summary-card app-section-header,
+    .action-panel app-section-header {
+      margin-bottom: 0.25rem;
+    }
+    /* The taller box meets the 24px minimum touch target. */
+    .summary-card a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 1.75rem;
+      color: var(--navy);
+      overflow-wrap: anywhere;
+    }
+    .summary-card mat-divider {
+      margin: 1.25rem 0;
+    }
+    .summary-card dl {
+      display: grid;
+      gap: 1rem;
+    }
+    .request-card {
+      display: grid;
+      gap: 0.75rem;
+      padding: 1.25rem 0;
+      border-top: 1px solid var(--line);
+      font-size: var(--text-sm);
+    }
+    .request-card:first-of-type {
+      padding-top: 0;
+      border-top: 0;
+    }
+    .request-card:last-of-type {
+      padding-bottom: 0;
+    }
+    .request-card > button {
+      justify-self: end;
+    }
+    /* Messages in an information request: a labelled request, then a quoted reply or cancellation. Replies are content, not a status, so they stay neutral. */
+    .message-body {
+      color: var(--ink);
+      font-size: var(--text-md);
+      white-space: pre-line;
+    }
+    .response {
+      padding: 0.875rem 1rem;
+      border-left: 0.1875rem solid var(--line-strong);
+      background: color-mix(in srgb, var(--chubb-grey) 10%, white);
+    }
+    .response .message-body {
+      font-size: var(--text-sm);
+    }
+    .inline-action {
+      display: flex;
+      align-items: start;
+      gap: 0.75rem;
+    }
+    .inline-action mat-form-field {
+      flex: 1;
+    }
+    .inline-action button {
+      margin-top: 0.25rem;
+    }
+    /* The left rule takes the decision's shared tone (settled success, rejected danger). */
+    .decision-card {
+      border-left: 0.25rem solid var(--tone-fg);
+    }
+    .decision-details {
+      display: grid;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .decision-amount {
+      color: var(--navy);
+      font-size: var(--text-xl);
+    }
+    .decision-card p {
+      font-size: var(--text-sm);
+    }
+    .decision-meta {
+      display: block;
+      margin-top: 0.5rem;
+      color: var(--muted);
+      font-size: var(--text-xs);
+    }
+    /* The decision is stacked, primary first, so both labels fit the narrow side column. */
+    .decision-actions {
+      display: grid;
+      gap: 0.5rem;
+    }
+    /* Each entry draws the connector from its dot's centre to the next dot's centre, so the line always meets both dots and the last entry never trails a line. */
+    .timeline {
+      --timeline-gap: 1.25rem;
+      --timeline-dot: 0.75rem;
+      --timeline-dot-top: 0.375rem;
+      display: grid;
+      gap: var(--timeline-gap);
+    }
+    .timeline li {
+      position: relative;
+      display: grid;
+      grid-template-columns: var(--timeline-dot) minmax(0, 1fr);
+      gap: 1rem;
+    }
+    .timeline li:not(:last-child)::before {
+      position: absolute;
+      top: calc(var(--timeline-dot-top) + var(--timeline-dot) / 2);
+      bottom: calc(
+        -1 *
+          (
+            var(--timeline-gap) + var(--timeline-dot-top) +
+              var(--timeline-dot) / 2
+          )
+      );
+      left: calc(var(--timeline-dot) / 2 - 0.0625rem);
+      width: 0.125rem;
+      content: '';
+      background: var(--navy-tint-strong);
+    }
+    .timeline-dot {
+      position: relative;
+      z-index: 1;
+      width: var(--timeline-dot);
+      height: var(--timeline-dot);
+      margin-top: var(--timeline-dot-top);
+      border-radius: 50%;
+      background: var(--navy);
+      box-shadow: 0 0 0 0.1875rem var(--navy-tint);
+    }
+    .timeline li div {
+      display: grid;
+      gap: 0.125rem;
+    }
+    .timeline li strong {
+      font-size: var(--text-sm);
+      font-weight: 700;
+    }
+    .timeline li span {
+      color: var(--muted);
+      font-size: var(--text-xs);
+    }
+    .action-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+    }
+    .action-panel h3 {
+      margin-top: 0.25rem;
+    }
+    .action-panel mat-divider {
+      margin: 0.75rem 0;
+    }
+    .read-only-note {
+      display: grid;
+      gap: 0.25rem;
+      border-left: 0.25rem solid var(--chubb-grey);
+      font-size: var(--text-sm);
+    }
+    @media (max-width: 52rem) {
+      .detail-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      /* On one column, an officer reaches the actions straight after the claim details instead of below the whole history. */
+      .detail-main,
+      .detail-side {
+        display: contents;
+      }
+      .incident-card {
+        order: 1;
+      }
+      .action-panel,
+      .read-only-note {
+        order: 2;
+      }
+      .requests-card {
+        order: 3;
+      }
+      .decision-card {
+        order: 4;
+      }
+      .history-card {
+        order: 5;
+      }
+      .summary-card {
+        order: 6;
+      }
+    }
+    @media (max-width: 36rem) {
+      .detail-list {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .inline-action {
+        align-items: stretch;
+        flex-direction: column;
+      }
+    }
+  `,
   template: `
     @if (loading()) {
       <app-loading-state message="Loading claim…" />
@@ -249,7 +501,7 @@ import { StatusBadge } from './status-badge';
                 @if (decision.settlementAmount) {
                   <div>
                     <dt>Settlement amount</dt>
-                    <dd class="decision-amount">
+                    <dd class="decision-amount headline-figure">
                       {{ decision.settlementAmount | money }}
                     </dd>
                   </div>
@@ -478,19 +730,19 @@ export class ClaimDetails {
   });
   protected readonly requestText = new FormControl('', {
     nonNullable: true,
-    validators: [requiredText, Validators.maxLength(2000)],
+    validators: [Validators.required, requiredText, Validators.maxLength(2000)],
   });
   protected readonly responseText = new FormControl('', {
     nonNullable: true,
-    validators: [requiredText, Validators.maxLength(2000)],
+    validators: [Validators.required, requiredText, Validators.maxLength(2000)],
   });
   protected readonly cancellationReason = new FormControl('', {
     nonNullable: true,
-    validators: [requiredText, Validators.maxLength(500)],
+    validators: [Validators.required, requiredText, Validators.maxLength(500)],
   });
   protected readonly rationale = new FormControl('', {
     nonNullable: true,
-    validators: [requiredText, Validators.maxLength(2000)],
+    validators: [Validators.required, requiredText, Validators.maxLength(2000)],
   });
   protected readonly settlementAmount = new FormControl('', {
     nonNullable: true,

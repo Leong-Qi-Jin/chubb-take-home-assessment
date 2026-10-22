@@ -192,3 +192,10 @@ Format per entry: prompt, what the AI did, human decision, and reasoning. The hu
 - **AI:** Added the status groups, persisted officer filters, and kept same-role switches on the current page. Deferred further filters.
 - **Human decision:** Accepted. Asked not to add more dropdowns.
 - **Reasoning:** Officers should keep their view; extra filters would not show a new domain rule on the seeded set.
+
+### 28. Component-scoped styles
+
+- **Prompt:** Scope styles to their components and remove Tailwind.
+- **AI:** Moved component styles out of `styles.css`, kept global styles for tokens, shared classes, and Material overrides, and replaced Tailwind with its preflight.
+- **Human decision:** Accepted. Removed Tailwind because no utilities were used.
+- **Reasoning:** Co-located styles are easier to maintain and cannot leak between components.

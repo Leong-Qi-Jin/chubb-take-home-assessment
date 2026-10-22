@@ -11,7 +11,7 @@ Prefer Angular defaults and add a dependency only when it materially improves th
 | Package management | npm with a committed lockfile |
 | Routing | Angular Router with lazy-loaded feature routes, role guards, and page titles |
 | Components | Angular Material/CDK 22 for controls; semantic HTML for application-specific views |
-| Styling | One token system in `styles.css` that also themes Material |
+| Styling | Component-scoped styles; global tokens and Material theme in `styles.css` |
 | Forms | Typed Reactive Forms; Material date and time pickers with the date-fns adapter |
 | Server state | Generated OpenAPI client behind a thin `ClaimsApi` adapter; Angular `resource()` for reads |
 | Local state | Signals; list filters in URL query parameters |
@@ -52,7 +52,8 @@ apps/web/
 │   │   │   └── money.ts                    # Currency formatting
 │   │   ├── app.config.ts                   # Providers
 │   │   └── app.routes.ts                   # Role guards and lazy-loaded features
-│   └── styles.css                          # Design tokens and component styles
+│   ├── preflight.css                       # Base reset, based on Tailwind's preflight
+│   └── styles.css                          # Tokens, typography, shared classes, and Material overrides
 ├── e2e/                                    # Playwright journeys
 ├── openapi-ts.config.ts                    # API client generation
 └── proxy.conf.json                         # Development proxy to the API
@@ -76,7 +77,9 @@ The UI follows chubb.com's design language:
 - Filled and outlined buttons turn Chubb purple with an underlined label on hover; text links underline.
 - Shared tones colour badges, alerts, and status markers consistently.
 
-Build pages from the shared components and Material rather than repeating markup, and keep status, claim-type, and route mappings in one place. Style the app's own class names rather than tag selectors, which can leak into Material components.
+Build pages from the shared components and Material rather than repeating markup, and keep status, claim-type, and route mappings in one place.
+
+Keep each component's styles in the component. `styles.css` holds only tokens, typography, shared classes, and Material overrides. Style the app's own class names rather than tag selectors, which can leak into Material components.
 
 ## Accessibility
 

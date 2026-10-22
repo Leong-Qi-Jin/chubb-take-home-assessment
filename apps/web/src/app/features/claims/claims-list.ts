@@ -93,6 +93,156 @@ function readQueueFilters(userId: string): Params | null {
     PageHeader,
   ],
   selector: 'app-claims-list',
+  styles: `
+    .filter-bar {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding: 1rem;
+    }
+    .list-surface {
+      padding: 0;
+      overflow: hidden;
+    }
+    .list-surface mat-paginator {
+      border-top: 1px solid var(--line);
+    }
+    .list-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.875rem 1.5rem;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: var(--text-sm);
+    }
+    .list-count {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .list-meta button {
+      --mat-button-text-container-height: 2rem;
+      --mat-button-text-horizontal-padding: 0.5rem;
+    }
+    .list-meta strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+    /* Claimant rows: icon, claim, status, date/estimate, arrow. Officer rows add an owner column. */
+    .claim-row {
+      display: grid;
+      grid-template-columns:
+        auto minmax(0, 2fr) minmax(0, 1.2fr) minmax(0, 1fr)
+        auto;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
+      transition: background 0.15s ease;
+    }
+    .claim-row.officer {
+      grid-template-columns:
+        auto minmax(0, 2fr) minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr)
+        auto;
+    }
+    .claim-row:last-of-type {
+      border-bottom: 0;
+    }
+    .claim-row:hover {
+      background: color-mix(in srgb, var(--chubb-blue) 3%, white);
+    }
+    .claim-primary,
+    .claim-detail {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      gap: 0.125rem;
+    }
+    .claim-primary strong {
+      font-size: var(--text-md);
+      font-weight: 700;
+    }
+    .claim-detail {
+      font-size: var(--text-sm);
+    }
+    .claim-primary span,
+    .claim-detail small {
+      overflow: hidden;
+      color: var(--muted);
+      font-size: var(--text-xs);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .row-arrow {
+      --icon-size: var(--icon-md);
+      justify-self: end;
+      color: var(--muted);
+      transition:
+        color 0.15s ease,
+        transform 0.15s ease;
+    }
+    .claim-row:hover .row-arrow {
+      color: var(--navy);
+      transform: translateX(0.125rem);
+    }
+    .empty-list {
+      display: grid;
+      justify-items: center;
+      gap: 0.5rem;
+      padding: 4rem 1.5rem;
+      text-align: center;
+    }
+    .empty-icon {
+      width: 3rem;
+      height: 3rem;
+      margin-bottom: 0.5rem;
+    }
+    @media (max-width: 68rem) {
+      .claim-row.officer {
+        grid-template-columns:
+          auto minmax(0, 2fr) minmax(0, 1.2fr) minmax(0, 1fr)
+          auto;
+      }
+      .claim-row .owner {
+        display: none;
+      }
+    }
+    @media (max-width: 52rem) {
+      .filter-bar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .claim-row,
+      .claim-row.officer {
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        row-gap: 0.375rem;
+      }
+      .claim-row app-status-badge {
+        grid-column: 2;
+        grid-row: 2;
+      }
+      .claim-row .claim-detail {
+        display: none;
+      }
+      .row-arrow {
+        grid-column: 3;
+        grid-row: 1 / 3;
+      }
+      app-claim-type-icon {
+        grid-row: 1 / 3;
+      }
+    }
+    @media (max-width: 36rem) {
+      .filter-bar {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .claim-row {
+        padding-inline: 1.25rem;
+      }
+    }
+  `,
   template: `
     <app-page-header
       [eyebrow]="isOfficer ? 'Claims operations' : 'Claims'"

@@ -1,0 +1,8 @@
+{
+  "VSCodeCounter.exclude": [
+    "**/package-lock.json",
+    "apps/web/src/app/core/api/generated/**",
+    "docs/generated/**",
+    "apps/api/src/Claims.Api/Infrastructure/Persistence/Migrations/**"
+  ]
+}

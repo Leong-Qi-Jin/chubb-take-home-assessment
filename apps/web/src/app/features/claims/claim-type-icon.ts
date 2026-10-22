@@ -13,6 +13,16 @@ import { CLAIM_TYPES } from './claim-type';
     '[class]': 'meta().tileClass',
     'aria-hidden': 'true',
   },
+  styles: `
+    :host {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+    :host(.property) {
+      color: var(--chubb-purple);
+      background: var(--purple-tint);
+    }
+  `,
   template: `<app-icon [name]="meta().icon" />`,
 })
 export class ClaimTypeIcon {

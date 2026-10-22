@@ -6,9 +6,13 @@ import { MatInputModule } from '@angular/material/input';
 @Component({
   imports: [MatInputModule, ReactiveFormsModule],
   selector: 'app-money-field',
+  styles: `
+    mat-form-field {
+      width: 100%;
+    }
+  `,
   template: `
     <mat-form-field
-      class="full-width"
       floatLabel="always"
       subscriptSizing="dynamic"
     >

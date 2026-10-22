@@ -1,41 +1,37 @@
 import { Component } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { RouterLink } from '@angular/router';
 
-import { Icon } from '../shared/ui/icon';
+import { StatePanel } from '../shared/ui/state-panel';
 
 @Component({
-  imports: [Icon, MatButtonModule, RouterLink],
+  imports: [StatePanel],
   selector: 'app-not-found',
   template: `
-    <section class="state-panel">
-      <span class="icon-tile state-icon"><app-icon name="search" /></span>
-      <h1>Page not found</h1>
-      <p>The page you requested does not exist.</p>
-      <a
-        matButton="filled"
-        routerLink="/"
-        ><app-icon name="house" />Return home</a
-      >
-    </section>
+    <app-state-panel
+      icon="search"
+      title="Page not found"
+      message="The page you requested does not exist."
+      backLink="/"
+      backLabel="Return home"
+      backIcon="house"
+      [announce]="false"
+    />
   `,
 })
 export class NotFound {}
 
 @Component({
-  imports: [Icon, MatButtonModule, RouterLink],
+  imports: [StatePanel],
   selector: 'app-not-allowed',
   template: `
-    <section class="state-panel">
-      <span class="icon-tile state-icon"><app-icon name="lock" /></span>
-      <h1>Not allowed</h1>
-      <p>This page belongs to a different role. Switch users or return home.</p>
-      <a
-        matButton="filled"
-        routerLink="/"
-        ><app-icon name="house" />Return home</a
-      >
-    </section>
+    <app-state-panel
+      icon="lock"
+      title="Not allowed"
+      message="This page belongs to a different role. Switch users or return home."
+      backLink="/"
+      backLabel="Return home"
+      backIcon="house"
+      [announce]="false"
+    />
   `,
 })
 export class NotAllowed {}

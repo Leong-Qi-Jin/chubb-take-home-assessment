@@ -4,6 +4,19 @@ import { Component, input } from '@angular/core';
 @Component({
   selector: 'app-section-header',
   host: { class: 'section-heading' },
+  styles: `
+    :host {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    p {
+      margin-top: 0.25rem;
+      font-size: var(--text-sm);
+    }
+  `,
   template: `
     <div>
       @if (eyebrow()) {

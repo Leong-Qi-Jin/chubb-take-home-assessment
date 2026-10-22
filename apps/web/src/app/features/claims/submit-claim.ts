@@ -89,6 +89,117 @@ const notInFuture = (time: AbstractControl): ValidationErrors | null => {
     { provide: MAT_DATE_LOCALE, useValue: enGB },
   ],
   selector: 'app-submit-claim',
+  styles: `
+    /* The form keeps a readable width and is centred under the full-width header. */
+    :host {
+      display: grid;
+      grid-template-columns: minmax(0, 50rem);
+      justify-content: center;
+    }
+    .form-layout {
+      display: grid;
+      gap: 1rem;
+    }
+    .form-section {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      column-gap: 1.25rem;
+    }
+    .form-section > :not(.step-number) {
+      grid-column: 2;
+    }
+    .step-number {
+      display: grid;
+      grid-row: 1 / span 3;
+      width: 2rem;
+      height: 2rem;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--navy);
+      font-size: var(--text-sm);
+      font-weight: 700;
+    }
+    .choice-cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    /* Whole-card radios; the padding and hover halo inside Material's radio are in the global styles. */
+    .choice-cards mat-radio-button {
+      display: flex;
+      cursor: pointer;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      transition:
+        border-color 0.15s ease,
+        background 0.15s ease;
+    }
+    /* Unselected cards darken on hover like field outlines; the selected card keeps its brand border. */
+    .choice-cards mat-radio-button:not(.mat-mdc-radio-checked):hover {
+      border-color: var(--muted);
+    }
+    .choice-cards mat-radio-button.mat-mdc-radio-checked {
+      border-color: var(--navy);
+      background: var(--navy-tint);
+    }
+    /* Own classes rather than tag selectors, so these styles never reach the spans inside Material's radio (which offset its focus ring). */
+    .choice-title,
+    .choice-description {
+      display: block;
+    }
+    .choice-title {
+      color: var(--ink);
+      font-size: var(--text-md);
+      font-weight: 700;
+    }
+    .choice-description {
+      margin-top: 0.125rem;
+      color: var(--muted);
+      font-size: var(--text-sm);
+    }
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+      gap: 0.25rem 1rem;
+    }
+    .field-grid .full {
+      width: 100%;
+      grid-column: 1 / -1;
+    }
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      padding-top: 0.5rem;
+    }
+    @media (max-width: 36rem) {
+      .choice-cards,
+      .field-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .form-section {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .form-section > :not(.step-number) {
+        grid-column: 1;
+      }
+      .step-number {
+        grid-row: auto;
+        margin-bottom: 1rem;
+      }
+      .form-actions {
+        align-items: stretch;
+        flex-direction: column-reverse;
+      }
+      .form-actions button,
+      .form-actions a {
+        width: 100%;
+      }
+    }
+  `,
   template: `
     <app-page-header
       eyebrow="Report an incident"
@@ -322,7 +433,7 @@ export class SubmitClaim {
     type: new FormControl<ClaimType>('Motor', { nonNullable: true }),
     policyNumber: new FormControl('', {
       nonNullable: true,
-      validators: [requiredText, Validators.maxLength(50)],
+      validators: [Validators.required, requiredText, Validators.maxLength(50)],
     }),
     occurredDate: new FormControl<Date | null>(null, {
       validators: [Validators.required],
@@ -332,11 +443,19 @@ export class SubmitClaim {
     }),
     location: new FormControl('', {
       nonNullable: true,
-      validators: [requiredText, Validators.maxLength(500)],
+      validators: [
+        Validators.required,
+        requiredText,
+        Validators.maxLength(500),
+      ],
     }),
     description: new FormControl('', {
       nonNullable: true,
-      validators: [requiredText, Validators.maxLength(2000)],
+      validators: [
+        Validators.required,
+        requiredText,
+        Validators.maxLength(2000),
+      ],
     }),
     vehicleRegistration: new FormControl('', { nonNullable: true }),
     propertyAddress: new FormControl('', { nonNullable: true }),
@@ -362,7 +481,7 @@ export class SubmitClaim {
           type === 'Motor'
             ? [vehicleRegistration, propertyAddress]
             : [propertyAddress, vehicleRegistration];
-        required.setValidators(requiredText);
+        required.setValidators([Validators.required, requiredText]);
         optional.clearValidators();
         required.updateValueAndValidity({ emitEvent: false });
         optional.updateValueAndValidity({ emitEvent: false });

@@ -21,6 +21,31 @@ const TONE_ICONS: Record<Tone, IconName> = {
     '[attr.data-tone]': 'tone()',
     '[attr.role]': "tone() === 'danger' ? 'alert' : 'status'",
   },
+  styles: `
+    :host {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      margin-bottom: 1rem;
+      padding: 0.875rem 1rem;
+      border: 1px solid var(--tone-border);
+      border-radius: var(--radius-md);
+      color: var(--tone-fg);
+      background: var(--tone-bg);
+      font-size: var(--text-sm);
+      /* An inline action is projected from the page, so it takes the tone through these inherited button tokens. */
+      --mat-button-text-label-text-color: var(--tone-fg);
+      --mat-button-text-state-layer-color: var(--tone-fg);
+      --mat-button-text-container-height: 2rem;
+    }
+    app-icon {
+      --icon-size: var(--icon-md);
+    }
+    /* A message that sits beside an inline action takes the remaining width and pushes the action to the end. */
+    .alert-message {
+      flex: 1;
+    }
+  `,
   template: `
     <app-icon [name]="icon()" />
     <span class="alert-message"><ng-content /></span>

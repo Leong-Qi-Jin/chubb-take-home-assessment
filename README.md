@@ -15,7 +15,7 @@ See [all UI screenshots](docs/generated/ui-screenshots.md) at laptop and phone s
 
 ## Technology
 
-- Angular 22, TypeScript, Angular Material/CDK, and Tailwind CSS 4
+- Angular 22, TypeScript, and Angular Material/CDK
 - ASP.NET Core Minimal APIs, C# 14, and Entity Framework Core 10
 - SQL Server 2025
 - OpenAPI-generated frontend client
@@ -28,23 +28,23 @@ The system is one SPA, one API, and one database. REST keeps the request-driven 
 ```sh
 apps/
 ├── api/
-│   ├── src/Claims.Api/             # Minimal API, domain, and persistence
-│   └── tests/                      # Unit and SQL Server integration tests
+│   ├── src/Claims.Api/  # Minimal API, domain, and persistence
+│   └── tests/           # Unit and SQL Server integration tests
 └── web/
     └── src/app/
-        ├── core/                   # Identity and API infrastructure
-        ├── features/               # Claims and dashboard slices
-        ├── layout/                 # Application shell and error pages
-        └── shared/                 # Reusable UI and formatting
+        ├── core/        # Identity and API infrastructure
+        ├── features/    # Claims and dashboard slices
+        ├── layout/      # Application shell and error pages
+        └── shared/      # Reusable UI and formatting
 docs/
-├── design/                         # Domain, contract, architecture, and flows
-├── generated/                      # Regenerable ERD and UI screenshots
-└── reference/                      # Original assessment source
-tools/                              # ERD and screenshot generators
-.vscode/tasks.json                  # Editor entry points for shared commands
-Claims.slnx                         # API and test solution
-docker-compose.yml                  # Local SQL Server
-package.json                        # Shared commands
+├── design/              # Domain, contract, architecture, and flows
+├── generated/           # Regenerable ERD and UI screenshots
+└── reference/           # Original assessment source
+tools/                   # ERD and screenshot generators
+.vscode/tasks.json       # Editor entry points for shared commands
+Claims.slnx              # API and test solution
+docker-compose.yml       # Local SQL Server
+package.json             # Shared commands
 ```
 
 See [monorepo structure](docs/design/monorepo-structure.md) for ownership and boundaries.
@@ -121,7 +121,7 @@ Backend integration and end-to-end tests require SQL Server and `.env`. End-to-e
 
 Use `npm run lint:fix` and `npm run format` to apply available automatic fixes.
 
-Common commands are also exposed as descriptive [VS Code tasks](.vscode/tasks.json).
+Common commands are also exposed as [VS Code tasks](.vscode/tasks.json).
 
 ## Generated artifacts
 

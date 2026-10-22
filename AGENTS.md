@@ -4,7 +4,7 @@ This repository contains the Chubb APAC claims take-home assessment: one Angular
 
 ## Core Technologies
 
-- Angular 22, TypeScript, Angular Material/CDK, and Tailwind CSS 4
+- Angular 22, TypeScript, and Angular Material/CDK
 - .NET 10, C# 14, ASP.NET Core Minimal APIs, and Entity Framework Core 10
 - SQL Server 2025
 - REST/HTTP with an OpenAPI-defined contract

@@ -56,6 +56,19 @@ export type IconName = keyof typeof ICONS;
   imports: [NgIcon],
   selector: 'app-icon',
   host: { class: 'icon', 'aria-hidden': 'true' },
+  styles: `
+    :host {
+      display: inline-flex;
+      width: var(--icon-size, var(--icon-md));
+      height: var(--icon-size, var(--icon-md));
+      flex-shrink: 0;
+    }
+    ng-icon {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  `,
   template: `<ng-icon
     size="100%"
     [svg]="svg()"

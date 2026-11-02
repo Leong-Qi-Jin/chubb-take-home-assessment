@@ -7,6 +7,7 @@
     "start:web": "npm --prefix apps/web start",
     "start:api": "sh -c 'set -a && . ./.env && set +a && dotnet run --launch-profile https --project apps/api/src/Claims.Api'",
     "start:api:e2e": "sh -c 'set -a && . ./.env && set +a && dotnet run --launch-profile http --project apps/api/src/Claims.Api -- --urls http://localhost:5002'",
+    "db:reset": "sh -c 'set -a && . ./.env && set +a && dotnet tool restore && dotnet ef database drop --force --project apps/api/src/Claims.Api'",
     "build": "npm run build:web && npm run build:api",
     "build:web": "npm --prefix apps/web run build",
     "build:api": "dotnet build Claims.slnx --no-restore --warnaserror",

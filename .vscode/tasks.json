@@ -91,6 +91,13 @@
       "dependsOn": ["Start SQL Server", "Start API", "Start SPA"],
       "problemMatcher": []
     },
+    {
+      "label": "Reset Database",
+      "detail": "Drop the database so the next API start recreates it with seed data (stop the API first)",
+      "type": "shell",
+      "command": "npm run db:reset",
+      "problemMatcher": []
+    },
 
     // Test
     {

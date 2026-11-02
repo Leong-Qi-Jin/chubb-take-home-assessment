@@ -2,6 +2,8 @@
 
 Development startup applies pending migrations and inserts deterministic demo data when `SeedData__Enabled` is not `false`. Repeated startup does not duplicate the data.
 
+To restore the original data, run `npm run db:reset` with the API stopped, then start the API again. The command drops the database; startup recreates and reseeds it.
+
 ## Primary demo journey
 
 Use `alex.tan@example.com` as `X-Claimant-Email`. Alex owns six claims covering the complete lifecycle:

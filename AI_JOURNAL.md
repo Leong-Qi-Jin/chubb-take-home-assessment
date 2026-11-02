@@ -199,3 +199,10 @@ Format per entry: prompt, what the AI did, human decision, and reasoning. The hu
 - **AI:** Moved component styles out of `styles.css`, kept global styles for tokens, shared classes, and Material overrides, and replaced Tailwind with its preflight.
 - **Human decision:** Accepted. Removed Tailwind because no utilities were used.
 - **Reasoning:** Co-located styles are easier to maintain and cannot leak between components.
+
+### 29. Database reset command
+
+- **Prompt:** Add a command to reset the seed data.
+- **AI:** Added `npm run db:reset` and a VS Code task.
+- **Human decision:** Accepted.
+- **Reasoning:** The seeder only adds missing records, so restoring demo data needs a fresh database.
